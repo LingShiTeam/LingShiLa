@@ -35,7 +35,7 @@ public class JsonUtils<T> {
                 LogUtils.loge("onSuccess");
                 LogUtils.loge(result);
                 if(result != null) {
-                    // 保存数据
+                    // 保存首页数据
                     SPUtils.putString(MyApplication.getContext(), SPUtils.HOME_TOP_DATA,result);
                 }
                 parseJson(result);
@@ -58,9 +58,10 @@ public class JsonUtils<T> {
         });
     }
 
-    public void parseJson(String json) {
+    public T parseJson(String json) {
         t = (T) new Gson().fromJson(json, clazz);
         sendEventBus();
+        return t;
     }
 
     private void sendEventBus() {

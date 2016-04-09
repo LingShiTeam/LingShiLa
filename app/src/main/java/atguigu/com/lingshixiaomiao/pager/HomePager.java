@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -27,7 +29,10 @@ import atguigu.com.lingshixiaomiao.pager.home.adapter.MyAdapter;
 import atguigu.com.lingshixiaomiao.pager.home.bean.HomeTopBean;
 import atguigu.com.lingshixiaomiao.pager.home.utils.CarouselUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.JsonUtils;
+import atguigu.com.lingshixiaomiao.pager.home.utils.NetWorkUtils;
+import atguigu.com.lingshixiaomiao.pager.home.utils.SPUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.Url;
+import atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout;
 
 /**
  * 首页
@@ -40,7 +45,7 @@ public class HomePager extends BasePager {
     private LinearLayout lv_left_menu;
     private DrawerLayout dl_menu;
     private ViewPager vp_top_image;
-    private SwipeRefreshLayout refreshlayout_home;
+    private RefreshLayout refreshlayout_home;
     private RecyclerView recyclerview_home;
 
     /**
@@ -49,6 +54,7 @@ public class HomePager extends BasePager {
     private HomeTopBean homeTopBean;
     // 顶部轮播图数据
     private List<HomeTopBean.DataEntity.TopicsEntity> topics;
+    private LinearLayout ll_top_points;
 
     public HomePager(Activity mActivity, DrawerLayout dl_menu) {
         super(mActivity);
@@ -59,7 +65,7 @@ public class HomePager extends BasePager {
     public View initView() {
         View inflate = View.inflate(mActivity, R.layout.home_pager, null);
         findViewById(inflate);
-        //addHeaderView();
+        addHeaderView();
         setListener();
         return inflate;
     }
@@ -68,10 +74,14 @@ public class HomePager extends BasePager {
      * 加载顶部轮播图
      */
     private void addHeaderView() {
-        /*View headerView = View.inflate(mActivity, R.layout.home_top, null);
-        vp_top_image = (ViewPager) headerView.findViewById(R.id.vp_top_image);*/
 
         refreshlayout_home.setOnRefreshListener(new MyOnRefreshListener());
+        refreshlayout_home.setOnLoadListener(new RefreshLayout.OnLoadListener() {
+            @Override
+            public void onLoad() {
+                LogUtils.loge("TAG", "已加载更多");
+            }
+        });
 
     }
 
@@ -79,7 +89,12 @@ public class HomePager extends BasePager {
 
         @Override
         public void onRefresh() {
-
+            refreshlayout_home.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refreshlayout_home.setRefreshing(false);
+                }
+            },2000);
         }
     }
 
@@ -102,7 +117,7 @@ public class HomePager extends BasePager {
         tv_search = (TextView) parent.findViewById(R.id.tv_search);
         rl_cart = (RelativeLayout) parent.findViewById(R.id.rl_cart);
         lv_left_menu = (LinearLayout) parent.findViewById(R.id.lv_left_menu);
-        refreshlayout_home = (SwipeRefreshLayout) parent.findViewById(R.id.refreshlayout_home);
+        refreshlayout_home = (RefreshLayout) parent.findViewById(R.id.refreshlayout_home);
         recyclerview_home = (RecyclerView) parent.findViewById(R.id.recyclerview_home);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
@@ -118,6 +133,7 @@ public class HomePager extends BasePager {
         View headerView = layoutInflater.inflate(R.layout.home_top, null);
 
         vp_top_image = (ViewPager) headerView.findViewById(R.id.vp_top_image);
+        ll_top_points = (LinearLayout) headerView.findViewById(R.id.ll_top_points);
 
         adapter.addHeadView(headerView);
         // 设置布局管理器
@@ -129,6 +145,16 @@ public class HomePager extends BasePager {
     public void initData() {
         super.initData();
         LogUtils.loge("首页 开始加载首页数据");
+
+        //获取保存的首页数据
+        String homeData = SPUtils.getString(mActivity, SPUtils.HOME_TOP_DATA);
+        if (homeData != null && !NetWorkUtils.isNetworkConnected()) {
+            homeTopBean = new Gson().fromJson(homeData, HomeTopBean.class);
+            topics = this.homeTopBean.getData().getTopics();
+            //设置顶部轮播图
+            new CarouselUtils(vp_top_image, ll_top_points, mActivity).setViewPagerData(topics);
+        }
+
         //通过JsonUtils工具类解析url, 并通过EventBus返回数据
         new JsonUtils().loadData(Url.HOME_TOP_URL, HomeTopBean.class);
 
@@ -145,9 +171,9 @@ public class HomePager extends BasePager {
         this.homeTopBean = homeTopBean;
         topics = homeTopBean.getData().getTopics();
 
-        if(homeTopBean != null) {
+        if (homeTopBean != null) {
             //设置顶部轮播图
-            new CarouselUtils(vp_top_image, mActivity).setViewPagerData(topics);
+            new CarouselUtils(vp_top_image, ll_top_points, mActivity).setViewPagerData(topics);
         }
     }
 
@@ -174,4 +200,5 @@ public class HomePager extends BasePager {
         if (EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().unregister(this);
     }
+
 }

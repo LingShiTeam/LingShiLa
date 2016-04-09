@@ -9,25 +9,24 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.home.bean.HomeTopBean;
 
 /**
- * Created by lanmang on 2016/4/9.
- * 轮播图工具类
+ * 轮播图工具类(轮播图自动切换)
  */
 public class CarouselUtils {
 
-    /**
-     * 轮播图自动切换
-     */
     private static final int MESSAGE_PAGE_NEXT = 1;
+    private final LinearLayout ll_top_points;
     private ImageOptions imageOption;
     private ViewPager viewPager;
     private Context context;
@@ -37,17 +36,28 @@ public class CarouselUtils {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MESSAGE_PAGE_NEXT:
-                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                    removeMessages(MESSAGE_PAGE_NEXT);
-                    sendEmptyMessageDelayed(MESSAGE_PAGE_NEXT, 2000);
+                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+                    //removeMessages(MESSAGE_PAGE_NEXT);
+                    handler.removeCallbacksAndMessages(null);
+                    sendEmptyMessageDelayed(MESSAGE_PAGE_NEXT, 3000);
                     break;
             }
         }
     };
+    // 顶部小圆点
+    private List<ImageView> topPoints;
 
-    public CarouselUtils(ViewPager viewPager, Context context) {
+    /**
+     * 构造方法
+     *
+     * @param viewPager
+     * @param ll_top_points
+     * @param context
+     */
+    public CarouselUtils(ViewPager viewPager, LinearLayout ll_top_points, Context context) {
         this.viewPager = viewPager;
         this.context = context;
+        this.ll_top_points = ll_top_points;
         imageOption = new ImageOptions.Builder()
                 //.setImageScaleType(ImageView.ScaleType.FIT_START)//等比例缩小到充满长/宽居中显示, 或原样显示
                 .setLoadingDrawableId(R.drawable.default_home_banner_640_270)
@@ -63,11 +73,37 @@ public class CarouselUtils {
         this.topics = topics;
         HomeTopViewPagerAdapter homeTopViewPagerAdapter = new HomeTopViewPagerAdapter();
         viewPager.setAdapter(homeTopViewPagerAdapter);
-        viewPager.setCurrentItem(3000000 / topics.size() * topics.size());
-        handler.sendEmptyMessageDelayed(MESSAGE_PAGE_NEXT, 2000);
+
+        // 设置顶部小圆点
+        setHeadPoint();
 
         //设置顶部轮播图监听
         viewPager.addOnPageChangeListener(new MyOnPageChangeListener());
+
+        viewPager.setCurrentItem(3000 * topics.size() % topPoints.size());
+        handler.sendEmptyMessageDelayed(MESSAGE_PAGE_NEXT, 3000);
+
+    }
+
+    /**
+     * 设置顶部小圆点
+     */
+    private void setHeadPoint() {
+        topPoints = new ArrayList<>();
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.leftMargin = 8;
+        params.rightMargin = 8;
+        ll_top_points.removeAllViews();
+        for (int i = 0; i < topics.size(); i++) {
+            ImageView imageView = new ImageView(context);
+            imageView.setBackgroundResource(R.drawable.top_point_selector);
+            topPoints.add(imageView);
+            // 将第一个原点的状态设置false
+            if (i == 0) {
+                imageView.setEnabled(false);
+            }
+            ll_top_points.addView(imageView, params);
+        }
     }
 
     /**
@@ -79,9 +115,14 @@ public class CarouselUtils {
 
         }
 
+        int preIndex = viewPager.getCurrentItem();
+
         @Override
         public void onPageSelected(int position) {
-
+            int index = position % topPoints.size();
+            topPoints.get(index).setEnabled(false);
+            topPoints.get(preIndex % topPoints.size()).setEnabled(true);
+            preIndex = position;
         }
 
         // 判断是否为拖拽状态
@@ -98,7 +139,7 @@ public class CarouselUtils {
             } else if (state == ViewPager.SCROLL_STATE_IDLE && isDrag) {
                 isDrag = false;
                 if (handler != null) {
-                    handler.sendEmptyMessageDelayed(MESSAGE_PAGE_NEXT, 2000);
+                    handler.sendEmptyMessageDelayed(MESSAGE_PAGE_NEXT, 3000);
                 }
             }
 
@@ -112,7 +153,7 @@ public class CarouselUtils {
 
         @Override
         public int getCount() {
-            return 6000000;
+            return Integer.MAX_VALUE;
         }
 
         @Override
@@ -123,9 +164,8 @@ public class CarouselUtils {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             position = position % topics.size();
-            ImageView imageView;
-            imageView = new ImageView(context);
-            x.image().bind(imageView, topics.get(position).getImg().getImg_url(),imageOption);
+            ImageView imageView = new ImageView(context);
+            x.image().bind(imageView, topics.get(position).getImg().getImg_url(), imageOption);
             container.addView(imageView);
             return imageView;
         }

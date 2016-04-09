@@ -14,12 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
 import atguigu.com.lingshixiaomiao.pager.HomePager;
 import atguigu.com.lingshixiaomiao.pager.MinePager;
@@ -193,5 +193,20 @@ public class MainActivity extends FragmentActivity {
             pager.unRegisterEventBus();
         }
         super.onDestroy();
+    }
+
+    private long endTime;
+    /**
+     * 按两次back键退出程序
+     */
+    @Override
+    public void onBackPressed() {
+        if(System.currentTimeMillis() - endTime > 2000) {
+            Toast.makeText(this, "再按一次back键退出", Toast.LENGTH_SHORT).show();
+            endTime = System.currentTimeMillis();
+        } else {
+            super.onBackPressed();
+        }
+
     }
 }

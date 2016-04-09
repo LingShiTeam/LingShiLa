@@ -1,11 +1,12 @@
 package atguigu.com.lingshixiaomiao.pager;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
 import atguigu.com.lingshixiaomiao.LogUtils;
-import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
 
 /**
@@ -22,7 +23,10 @@ public class SubjectPager extends BasePager {
 
     @Override
     public View initView() {
-        View view = View.inflate(mActivity, R.layout.subject_pager, null);
+        textView = new TextView(mActivity);
+        textView.setTextColor(Color.RED);
+        textView.setTextSize(30);
+        textView.setGravity(Gravity.CENTER);
         return textView;
     }
 
