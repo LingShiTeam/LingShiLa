@@ -15,6 +15,7 @@ import atguigu.com.lingshixiaomiao.R;
 
 /**
  * Created by Liu_haiwei on 2016/4/9.
+ * 自定义SwipeRefreshLayout
  */
 public class RefreshLayout extends SwipeRefreshLayout implements AbsListView.OnScrollListener {
 
