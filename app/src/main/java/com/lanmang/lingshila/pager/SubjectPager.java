@@ -1,13 +1,13 @@
 package com.lanmang.lingshila.pager;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
 
+import com.lanmang.lingshila.R;
 import com.lanmang.lingshila.base.BasePager;
 import com.lanmang.lingshila.utils.LogUtils;
+
+import org.xutils.x;
 
 /**
  * Created by lanmang on 2016/4/8.
@@ -15,7 +15,6 @@ import com.lanmang.lingshila.utils.LogUtils;
  */
 public class SubjectPager extends BasePager {
 
-    private TextView textView;
 
     public SubjectPager(Activity mActivity) {
         super(mActivity);
@@ -23,17 +22,16 @@ public class SubjectPager extends BasePager {
 
     @Override
     public View initView() {
-        textView = new TextView(mActivity);
-        textView.setTextColor(Color.RED);
-        textView.setTextSize(30);
-        textView.setGravity(Gravity.CENTER);
-        return textView;
+        View view = View.inflate(mActivity, R.layout.subject_pager, null);
+        x.view().inject(this, view);
+
+        return view;
     }
 
     @Override
     public void initData() {
         super.initData();
         LogUtils.loge("专题 数据加载了");
-        textView.setText("专题");
+        //textView.setText("专题");
     }
 }
