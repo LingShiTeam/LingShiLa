@@ -1,4 +1,4 @@
-package atguigu.com.lingshixiaomiao.pager.home.activity;
+package atguigu.com.lingshixiaomiao;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.home.utils.SPUtils;
 
 /**

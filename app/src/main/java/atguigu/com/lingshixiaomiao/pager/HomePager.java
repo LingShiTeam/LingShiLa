@@ -30,7 +30,7 @@ import atguigu.com.lingshixiaomiao.pager.home.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.Url;
 
 /**
- * 首页-1
+ * 首页
  */
 public class HomePager extends BasePager {
 

@@ -1,4 +1,4 @@
-package atguigu.com.lingshixiaomiao.pager.home.activity;
+package atguigu.com.lingshixiaomiao;
 
 import android.app.Activity;
 import android.os.Bundle;

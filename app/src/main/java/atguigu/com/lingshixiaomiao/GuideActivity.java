@@ -1,4 +1,4 @@
-package atguigu.com.lingshixiaomiao.pager.home.activity;
+package atguigu.com.lingshixiaomiao;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,7 +17,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.home.utils.DensityUtil;
 import atguigu.com.lingshixiaomiao.pager.home.utils.SPUtils;
 
