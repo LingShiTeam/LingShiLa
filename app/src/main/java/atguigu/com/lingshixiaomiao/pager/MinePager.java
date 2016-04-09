@@ -34,7 +34,9 @@ public class MinePager extends BasePager {
     @Override
     public void initData() {
         super.initData();
-        LogUtils.loge("我的小喵 数据加载了");
+        LogUtils.loge("lalalal");
+        LogUtils.loge("我的小喵 0哈哈哈 数据加载了 ");
+        LogUtils.loge("olaoloalo");
         textView.setText("我的小喵");
     }
 }
