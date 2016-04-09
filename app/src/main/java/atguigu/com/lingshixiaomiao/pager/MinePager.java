@@ -1,22 +1,22 @@
 package atguigu.com.lingshixiaomiao.pager;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.view.Gravity;
+import android.content.Intent;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
-import atguigu.com.lingshixiaomiao.base.BasePager;
 import atguigu.com.lingshixiaomiao.LogUtils;
-
+import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.base.BasePager;
+import atguigu.com.lingshixiaomiao.pager.mine.activity.SettingActivity;
 
 /**
  * Created by lanmang on 2016/4/8.
  * 我的小喵页面
  */
-public class MinePager extends BasePager {
+public class MinePager extends BasePager implements View.OnClickListener{
 
-    private TextView textView;
+    private ImageButton ib_mine_setting;
 
     public MinePager(Activity mActivity) {
         super(mActivity);
@@ -24,19 +24,34 @@ public class MinePager extends BasePager {
 
     @Override
     public View initView() {
-        textView = new TextView(mActivity);
-        textView.setTextColor(Color.RED);
-        textView.setTextSize(30);
-        textView.setGravity(Gravity.CENTER);
-        return textView;
+        View inflate = View.inflate(mActivity, R.layout.mine_pager, null);
+        findViewById(inflate);
+        return inflate;
+    }
+
+    private void findViewById(View v) {
+        ib_mine_setting = (ImageButton)v.findViewById(R.id.ib_mine_setting);
+
+        ib_mine_setting.setOnClickListener(this);
     }
 
     @Override
     public void initData() {
         super.initData();
-        LogUtils.loge("lalalal");
-        LogUtils.loge("我的小喵 0哈哈哈 数据加载了 ");
-        LogUtils.loge("olaoloalo");
-        textView.setText("我的小喵");
+        LogUtils.loge("我的小喵 数据加载了");
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case  R.id.ib_mine_setting:
+                startActivity(SettingActivity.class);
+                break;
+        }
+    }
+
+    private void startActivity(Class clazz) {
+        mActivity.startActivity(new Intent(mActivity, clazz));
     }
 }

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/bg_launcher">
+
+        <ImageButton
+            android:id="@+id/ib_mine_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:src="@drawable/btn_set_white" />
+
+        <RelativeLayout
+            android:id="@+id/rl_cart"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp">
+
+            <ImageView
+                android:id="@+id/iv_cart"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/btn_car_white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/cart_num"
+                android:gravity="center"
+                android:text="7"
+                android:textColor="#ffffff"
+                android:textSize="8sp" />
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_mine_header"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="30dp"
+            android:background="@drawable/user_bg">
+
+            <ImageButton
+                android:id="@+id/ib_mine_user_header"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:background="@drawable/default_photo_person" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fl_mine_header"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_mine_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="注册"
+                android:textColor="#fff" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="/"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/tv_mine_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="登录"
+                android:textColor="#fff" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="#eaeaea" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#f8f8f8" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="#eaeaea" />
+
+</LinearLayout>
+

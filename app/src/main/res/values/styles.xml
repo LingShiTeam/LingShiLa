@@ -8,6 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+      <!-- 主界面下方四个按钮的样式
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_weight="1"
+    android:background="@android:color/transparent"
+    android:button="@null"
+    android:drawablePadding="3dp"
+    android:textColor="@drawable/icon_textcolor_selector"
+    android:gravity="center"
+    android:textSize="12sp"
+    -->
     <style name="icon_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -17,6 +29,25 @@
         <item name="android:button">@null</item>
         <item name="android:drawablePadding">3dp</item>
         <item name="android:textColor">@drawable/icon_textcolor_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- 我的小喵页面 横向四个选项样式
+        android:clickable="true"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:textSize="12sp"
+    -->
+    <style name="mine_button_style">
+        <item name="android:clickable">true</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">5dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">12sp</item>
     </style>
