@@ -1,0 +1,177 @@
+package atguigu.com.lingshixiaomiao.pager;
+
+import android.app.Activity;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import atguigu.com.lingshixiaomiao.LogUtils;
+import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.base.BasePager;
+import atguigu.com.lingshixiaomiao.pager.home.adapter.MyAdapter;
+import atguigu.com.lingshixiaomiao.pager.home.bean.HomeTopBean;
+import atguigu.com.lingshixiaomiao.pager.home.utils.CarouselUtils;
+import atguigu.com.lingshixiaomiao.pager.home.utils.JsonUtils;
+import atguigu.com.lingshixiaomiao.pager.home.utils.Url;
+
+/**
+ * 首页
+ */
+public class HomePager extends BasePager {
+
+    private ImageButton ib_left_menu;
+    private TextView tv_search;
+    private RelativeLayout rl_cart;
+    private LinearLayout lv_left_menu;
+    private DrawerLayout dl_menu;
+    private ViewPager vp_top_image;
+    private SwipeRefreshLayout refreshlayout_home;
+    private RecyclerView recyclerview_home;
+
+    /**
+     * 顶部数据
+     */
+    private HomeTopBean homeTopBean;
+    // 顶部轮播图数据
+    private List<HomeTopBean.DataEntity.TopicsEntity> topics;
+
+    public HomePager(Activity mActivity, DrawerLayout dl_menu) {
+        super(mActivity);
+        this.dl_menu = dl_menu;
+    }
+
+    @Override
+    public View initView() {
+        View inflate = View.inflate(mActivity, R.layout.home_pager, null);
+        findViewById(inflate);
+        //addHeaderView();
+        setListener();
+        return inflate;
+    }
+
+    /**
+     * 加载顶部轮播图
+     */
+    private void addHeaderView() {
+        /*View headerView = View.inflate(mActivity, R.layout.home_top, null);
+        vp_top_image = (ViewPager) headerView.findViewById(R.id.vp_top_image);*/
+
+        refreshlayout_home.setOnRefreshListener(new MyOnRefreshListener());
+
+    }
+
+    class MyOnRefreshListener implements SwipeRefreshLayout.OnRefreshListener {
+
+        @Override
+        public void onRefresh() {
+
+        }
+    }
+
+    /**
+     * 设置监听
+     */
+    private void setListener() {
+        //设置按钮点击弹出侧滑菜单
+        ib_left_menu.setOnClickListener(new MyOnClickListener());
+
+    }
+
+    /**
+     * 通过id获取view
+     *
+     * @param parent
+     */
+    private void findViewById(View parent) {
+        ib_left_menu = (ImageButton) parent.findViewById(R.id.ib_left_menu);
+        tv_search = (TextView) parent.findViewById(R.id.tv_search);
+        rl_cart = (RelativeLayout) parent.findViewById(R.id.rl_cart);
+        lv_left_menu = (LinearLayout) parent.findViewById(R.id.lv_left_menu);
+        refreshlayout_home = (SwipeRefreshLayout) parent.findViewById(R.id.refreshlayout_home);
+        recyclerview_home = (RecyclerView) parent.findViewById(R.id.recyclerview_home);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        List<String> data = new ArrayList<>();
+        for (int i = 'A'; i <= 'Z'; i++) {
+            data.add("" + (char) i);
+        }
+
+        MyAdapter adapter = new MyAdapter(mActivity, data);
+        LayoutInflater layoutInflater = mActivity.getLayoutInflater();
+        View headerView = layoutInflater.inflate(R.layout.home_top, null);
+
+        vp_top_image = (ViewPager) headerView.findViewById(R.id.vp_top_image);
+
+        adapter.addHeadView(headerView);
+        // 设置布局管理器
+        recyclerview_home.setLayoutManager(linearLayoutManager);
+        recyclerview_home.setAdapter(adapter);
+    }
+
+    @Override
+    public void initData() {
+        super.initData();
+        LogUtils.loge("首页 开始加载首页数据");
+        //通过JsonUtils工具类解析url, 并通过EventBus返回数据
+        new JsonUtils().loadData(Url.HOME_TOP_URL, HomeTopBean.class);
+
+    }
+
+    /**
+     * 使用EventBus接收解析后的数据
+     *
+     * @param homeTopBean
+     */
+    @Subscribe
+    public void onEventMainThread(HomeTopBean homeTopBean) {
+        LogUtils.loge("数据解析成功 : " + homeTopBean.toString());
+        this.homeTopBean = homeTopBean;
+        topics = homeTopBean.getData().getTopics();
+
+        if(homeTopBean != null) {
+            //设置顶部轮播图
+            new CarouselUtils(vp_top_image, mActivity).setViewPagerData(topics);
+        }
+    }
+
+    /**
+     * 点击按钮弹出左侧菜单
+     */
+    private class MyOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            dl_menu.openDrawer(Gravity.LEFT);
+        }
+    }
+
+    @Override
+    public void registerEventBus() {
+        //注册EventBus
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void unRegisterEventBus() {
+        //解注册EventBus
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
+    }
+}
