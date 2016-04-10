@@ -16,7 +16,7 @@ import atguigu.com.lingshixiaomiao.R;
  */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-    private static final int TYPE_HEADER = 0, TYPE_ITEM = 1;
+    private static final int TYPE_HEADER = 0, TYPE_ITEM = 1, TYPE_BRAND = 2;
     private final Context context;
     private List<String> data;
     //private MyOnClickListener myOnClickListener;
@@ -92,6 +92,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public void onClick(View view, int position);
     }
 */
+
     /**
      * 自定义的ViewHolder类,用于初始化item中的控件
      */
