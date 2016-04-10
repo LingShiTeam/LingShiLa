@@ -6,6 +6,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,6 @@ import atguigu.com.lingshixiaomiao.pager.home.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.NetWorkUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.SPUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.Url;
-import atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout;
 
 /**
  * 首页
@@ -45,7 +45,7 @@ public class HomePager extends BasePager {
     private LinearLayout lv_left_menu;
     private DrawerLayout dl_menu;
     private ViewPager vp_top_image;
-    private RefreshLayout refreshlayout_home;
+    private SwipeRefreshLayout refreshlayout_home;
     private RecyclerView recyclerview_home;
 
     /**
@@ -55,6 +55,8 @@ public class HomePager extends BasePager {
     // 顶部轮播图数据
     private List<HomeTopBean.DataEntity.TopicsEntity> topics;
     private LinearLayout ll_top_points;
+    private MyAdapter recyclerViewAdapter;
+    private LinearLayoutManager linearLayoutManager;
 
     public HomePager(Activity mActivity, DrawerLayout dl_menu) {
         super(mActivity);
@@ -71,18 +73,48 @@ public class HomePager extends BasePager {
     }
 
     /**
-     * 加载顶部轮播图
+     * 加载顶部轮播图---加载更新
      */
     private void addHeaderView() {
+        // 设置颜色
+        refreshlayout_home.setColorSchemeColors(R.color.color1, R.color.color2, R.color.color3);
+        // 第一次进入页面的时候显示加载进度条
+        refreshlayout_home.setProgressViewOffset(false, 0, (int) TypedValue
+                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, mActivity.getResources()
+                        .getDisplayMetrics()));
 
         refreshlayout_home.setOnRefreshListener(new MyOnRefreshListener());
-        refreshlayout_home.setOnLoadListener(new RefreshLayout.OnLoadListener() {
+        /*refreshlayout_home.setOnLoadListener(new RefreshLayout.OnLoadListener() {
             @Override
             public void onLoad() {
                 LogUtils.loge("TAG", "已加载更多");
             }
-        });
+        });*/
+        // 滚动监听
+        recyclerview_home.addOnScrollListener(new MyOnScrollListener());
+    }
 
+    class MyOnScrollListener extends RecyclerView.OnScrollListener {
+
+        private int lastVisibleItem;
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            LogUtils.loge("TAG", newState + "");
+            if (newState == RecyclerView.SCROLL_STATE_IDLE
+                    && lastVisibleItem  + 1 == recyclerViewAdapter.getItemCount()) {
+                refreshlayout_home.setRefreshing(true);
+                // 此处在现实项目中，请换成网络请求数据代码，sendRequest .....
+                //handler.sendEmptyMessageDelayed(0, 3000);
+            }
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+        }
     }
 
     class MyOnRefreshListener implements SwipeRefreshLayout.OnRefreshListener {
@@ -94,7 +126,7 @@ public class HomePager extends BasePager {
                 public void run() {
                     refreshlayout_home.setRefreshing(false);
                 }
-            },2000);
+            }, 2000);
         }
     }
 
@@ -117,10 +149,10 @@ public class HomePager extends BasePager {
         tv_search = (TextView) parent.findViewById(R.id.tv_search);
         rl_cart = (RelativeLayout) parent.findViewById(R.id.rl_cart);
         lv_left_menu = (LinearLayout) parent.findViewById(R.id.lv_left_menu);
-        refreshlayout_home = (RefreshLayout) parent.findViewById(R.id.refreshlayout_home);
+        refreshlayout_home = (SwipeRefreshLayout) parent.findViewById(R.id.refreshlayout_home);
         recyclerview_home = (RecyclerView) parent.findViewById(R.id.recyclerview_home);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
+        linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         List<String> data = new ArrayList<>();
@@ -128,17 +160,17 @@ public class HomePager extends BasePager {
             data.add("" + (char) i);
         }
 
-        MyAdapter adapter = new MyAdapter(mActivity, data);
+        recyclerViewAdapter = new MyAdapter(mActivity, data);
         LayoutInflater layoutInflater = mActivity.getLayoutInflater();
         View headerView = layoutInflater.inflate(R.layout.home_top, null);
 
         vp_top_image = (ViewPager) headerView.findViewById(R.id.vp_top_image);
         ll_top_points = (LinearLayout) headerView.findViewById(R.id.ll_top_points);
 
-        adapter.addHeadView(headerView);
+        recyclerViewAdapter.addHeadView(headerView);
         // 设置布局管理器
         recyclerview_home.setLayoutManager(linearLayoutManager);
-        recyclerview_home.setAdapter(adapter);
+        recyclerview_home.setAdapter(recyclerViewAdapter);
     }
 
     @Override

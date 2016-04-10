@@ -7,7 +7,7 @@
 
     <include layout="@layout/home_title"/>
 
-    <atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refreshlayout_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,6 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
             
-    </atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>
