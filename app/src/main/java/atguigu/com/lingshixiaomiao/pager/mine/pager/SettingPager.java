@@ -25,6 +25,7 @@ import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.UpdateBean;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.CacheClearUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.CacheUtils;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.MineUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.PushUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.UpdateUtils;
@@ -207,13 +208,13 @@ public class SettingPager extends ContentBasePager implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_mine_setting_about://关于零食小喵
-                position = 11;
+                position = Constants.ABOUT_PAGER;
                 break;
             case R.id.ll_mine_setting_address://管理地址
-                position = 12;
+                position = Constants.ADDRESS_PAGER;
                 break;
             case R.id.ll_mine_setting_private://个人资料
-                position = 13;
+                position = Constants.USER_PAGER;
                 break;
         }
         startActivity(MineContentActivity.class);

@@ -19,4 +19,13 @@ public class Url {
      */
     public static final String MINE_UPDATE_NEW = "http://api.ds.lingshi.cccwei.com/?cid=759713&uid=181772&tms=20160411155013&sig=33b8feee2b028997&wssig=7cc0d4f326673cf5&os_type=3&version=22&channel_name=feibo&srv=1001";
 
+    /**
+     * 登录请求地址
+     */
+    public static final String[] LOGIN_URLS = {"http://api.ds.lingshi.cccwei.com/?cid=760294&uid=0&tms=20160411213335&sig=4802a06ac4102cd5&wssig=b6bbe12f8bf0bc6e&os_type=3&version=22&channel_name=feibo&srv=2102&mobi_num=","&pwd=","&opt=0"};
+
+    /**
+     * 注册地址
+     */
+    public static final String REGISTER_URL = "http://testapi.ds.lingshi.cccwei.com/api/Tpl/default/Login/register.html";
 }
