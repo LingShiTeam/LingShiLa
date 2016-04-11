@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -26,7 +27,7 @@ import atguigu.com.lingshixiaomiao.pager.home.bean.HomeTopBean;
 public class CarouselUtils {
 
     private static final int MESSAGE_PAGE_NEXT = 1;
-    private final LinearLayout ll_top_points;
+    private LinearLayout ll_top_points;
     private ImageOptions imageOption;
     private ViewPager viewPager;
     private Context context;
@@ -46,18 +47,34 @@ public class CarouselUtils {
     };
     // 顶部小圆点
     private List<ImageView> topPoints;
+    private TextView home_item_title_left;
+    private TextView home_item_title_right;
+    private HomeTopBean homeTopBean;
+    // 第一个
+    ImageView item_home_promotion_img;
+    ImageView item_goods_empty;
+    TextView item_home_promotion_discount;
+    TextView item_home_promotion_desc;
+    TextView item_home_promotion_tag_time;
+    // 第二个
+    ImageView btn_lover;
+    ImageView btn_movie;
+    ImageView btn_tea;
+    ImageView btn_beer;
+
+    TextView home_item_title_left2;
+    TextView home_item_title_right2;
 
     /**
      * 构造方法
-     *
-     * @param viewPager
-     * @param ll_top_points
+     * @param headerView
      * @param context
      */
-    public CarouselUtils(ViewPager viewPager, LinearLayout ll_top_points, Context context) {
-        this.viewPager = viewPager;
+    public CarouselUtils(View headerView, Context context) {
         this.context = context;
-        this.ll_top_points = ll_top_points;
+        // headview子控件
+        initHeadView(headerView);
+
         imageOption = new ImageOptions.Builder()
                 //.setImageScaleType(ImageView.ScaleType.FIT_START)//等比例缩小到充满长/宽居中显示, 或原样显示
                 .setLoadingDrawableId(R.drawable.default_home_banner_640_270)
@@ -67,10 +84,36 @@ public class CarouselUtils {
     }
 
     /**
+     * headview子控件
+     * @param headerView
+     */
+    private void initHeadView(View headerView) {
+        // 轮播图
+        viewPager = (ViewPager) headerView.findViewById(R.id.vp_top_image);
+        ll_top_points = (LinearLayout) headerView.findViewById(R.id.ll_top_points);
+        home_item_title_left = (TextView) headerView.findViewById(R.id.home_item_title_left);
+        home_item_title_right = (TextView) headerView.findViewById(R.id.home_item_title_right);
+        // 第一个视图
+        item_home_promotion_img = (ImageView) headerView.findViewById(R.id.item_home_promotion_img);
+        item_goods_empty = (ImageView) headerView.findViewById(R.id.item_goods_empty);
+        item_home_promotion_discount = (TextView) headerView.findViewById(R.id.item_home_promotion_discount);
+        item_home_promotion_desc = (TextView) headerView.findViewById(R.id.item_home_promotion_desc);
+        item_home_promotion_tag_time = (TextView) headerView.findViewById(R.id.item_home_promotion_tag_time);
+        // 第二个视图
+        btn_lover = (ImageView) headerView.findViewById(R.id.btn_lover);
+        btn_movie = (ImageView) headerView.findViewById(R.id.btn_movie);
+        btn_tea = (ImageView) headerView.findViewById(R.id.btn_tea);
+        btn_beer = (ImageView) headerView.findViewById(R.id.btn_beer);
+        home_item_title_left2 = (TextView) headerView.findViewById(R.id.home_item_title_left);
+        home_item_title_right2 = (TextView) headerView.findViewById(R.id.home_item_title_right);
+    }
+
+    /**
      * 设置顶部轮播图数据
      */
-    public void setViewPagerData(List<HomeTopBean.DataEntity.TopicsEntity> topics) {
-        this.topics = topics;
+    public void setViewPagerData(HomeTopBean homeTopBean) {
+        this.homeTopBean = homeTopBean;
+        topics = homeTopBean.getData().getTopics();
         HomeTopViewPagerAdapter homeTopViewPagerAdapter = new HomeTopViewPagerAdapter();
         viewPager.setAdapter(homeTopViewPagerAdapter);
 
@@ -147,7 +190,7 @@ public class CarouselUtils {
     }
 
     /**
-     * Created by lanmang on 2016/4/8.
+     * viewpager的适配器
      */
     private class HomeTopViewPagerAdapter extends PagerAdapter {
 
@@ -165,7 +208,26 @@ public class CarouselUtils {
         public Object instantiateItem(ViewGroup container, int position) {
             position = position % topics.size();
             ImageView imageView = new ImageView(context);
-            x.image().bind(imageView, topics.get(position).getImg().getImg_url(), imageOption);
+            // 轮播图
+            HomeTopBean.DataEntity.TopicsEntity topicsEntity = topics.get(position);
+            x.image().bind(imageView, topicsEntity.getImg().getImg_url(), imageOption);
+            home_item_title_left.setText(homeTopBean.getData().getBrands_title_big());
+            home_item_title_right.setText(homeTopBean.getData().getBrands_title_sml());
+
+            // 第一个
+            List<HomeTopBean.DataEntity.BrandsEntity> brands = homeTopBean.getData().getBrands();
+            x.image().bind(item_home_promotion_img, brands.get(0).getImg().getImg_url());
+            item_home_promotion_discount.setText(brands.get(0).getDiscount());
+            item_home_promotion_desc.setText(brands.get(0).getTitle());
+            // 第二个
+            List<HomeTopBean.DataEntity.SpecialsEntity> specials = homeTopBean.getData().getSpecials();
+            x.image().bind(btn_lover, specials.get(0).getImg().getImg_url());
+            x.image().bind(btn_movie, specials.get(1).getImg().getImg_url());
+            x.image().bind(btn_tea, specials.get(2).getImg().getImg_url());
+            x.image().bind(btn_beer, specials.get(3).getImg().getImg_url());
+            home_item_title_left2.setText(homeTopBean.getData().getNew_title_big());
+            home_item_title_right2.setText(homeTopBean.getData().getNew_title_sml());
+
             container.addView(imageView);
             return imageView;
         }

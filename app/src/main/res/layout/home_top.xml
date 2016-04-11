@@ -1,22 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_top_image"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"/>
+        android:layout_height="wrap_content">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_top_image"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"/>
+
+        <LinearLayout
+            android:id="@+id/ll_top_points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/vp_top_image"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="10.0dip"
+        android:background="@color/c5"/>
 
     <LinearLayout
-        android:id="@+id/ll_top_points"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/vp_top_image"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal">
+        android:id="@+id/today_title"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_vertical"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="@dimen/both_sides_new_distance">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="-1.0dip"
+            android:background="@drawable/icon_dot"/>
+
+        <TextView
+            android:id="@+id/home_item_title_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7.0dip"
+            android:text="品牌5折团"
+            android:textColor="@color/c2"
+            android:textSize="@dimen/s2"/>
+
+        <TextView
+            android:id="@+id/home_item_title_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="7.0dip"
+            android:text="独立潮牌为你而生 5折优惠"
+            android:textColor="@color/c3"
+            android:textSize="@dimen/s5"/>
     </LinearLayout>
 
-</RelativeLayout>
+    <View
+        style="@style/FineLineC4Style"
+        android:layout_gravity="bottom"/>
+
+    <include layout="@layout/home_listview_item1"/>
+    <include layout="@layout/home_listview_item2"/>
+
+
+</LinearLayout>

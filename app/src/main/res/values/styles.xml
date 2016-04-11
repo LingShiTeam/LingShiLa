@@ -51,5 +51,11 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">12sp</item>
     </style>
+    <!--首页小标题属性-->
+    <style name="FineLineC4Style">
+        <item name="android:background">@color/c4</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/fine_line_height</item>
+    </style>
 
 </resources>

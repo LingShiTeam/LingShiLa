@@ -28,7 +28,6 @@ public class JsonUtils<T> {
      */
     public void loadData(String url, Class<T> clazz) {
         this.clazz = clazz;
-
         x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -60,11 +59,13 @@ public class JsonUtils<T> {
 
     public T parseJson(String json) {
         t = (T) new Gson().fromJson(json, clazz);
+        LogUtils.loge(clazz.getSimpleName());
         sendEventBus();
         return t;
     }
 
     private void sendEventBus() {
+
         EventBus.getDefault().post(t);
     }
 }

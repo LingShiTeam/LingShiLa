@@ -31,10 +31,10 @@ public abstract class BasePager {
         if (!isInitData){ // 屏蔽二次加载数据
             isInitData = true;
             initData();
-
+            registerEventBus();
         }
 
-        registerEventBus();
+        //registerEventBus();
 
     }
 
