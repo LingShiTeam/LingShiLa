@@ -20,7 +20,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_margin="5dp"
-            android:background="@android:color/holo_red_light"/>
+            android:background="@android:color/holo_red_light" />
 
         <TextView
             android:id="@+id/tv_scale_item_discount"
@@ -49,15 +49,6 @@
             android:text="[韩福10.2]泡菜味即食海苔"
             android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/tv_scale_item_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="38dp"
-            android:text="仅剩:2天04小时58分41秒5"
-            android:textColor="@android:color/holo_red_light"
-            android:textSize="11sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -88,9 +79,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:background="@android:color/holo_red_light"
+                android:background="@android:color/darker_gray"
                 android:clickable="true"
-                android:text="加入购物车"
+                android:text="即将开始"
                 android:textColor="@android:color/white"
                 android:textSize="12sp" />
         </RelativeLayout>
@@ -108,25 +99,11 @@
                 android:id="@+id/tv_scale_item_percentage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="已抢77%"
-                android:textSize="11sp" />
+                android:text="10:00点准时开抢"
+                android:textColor="@android:color/holo_blue_bright"
+                android:textSize="12sp" />
 
-            <ProgressBar
-                android:id="@+id/pb_scale_item_progress"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/tv_scale_item_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="已抢776件"
-                android:textSize="11sp" />
         </LinearLayout>
     </RelativeLayout>
 

@@ -10,6 +10,7 @@ import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.AboutPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.AddressPager;
+import atguigu.com.lingshixiaomiao.pager.mine.pager.PushPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.SettingPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.UserPager;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
@@ -49,6 +50,10 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
             break;
             case 13:
                 pager = new UserPager(this);
+                break;
+            case 2:
+                Bundle bundle = getIntent().getExtras();
+                pager = new PushPager(this, bundle);
                 break;
         }
         loadViews();

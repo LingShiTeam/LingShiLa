@@ -14,7 +14,5 @@ public class Url {
             "&sig=75e64a9fb98b465a&wssig=9cba2288d7b023d9&os_type=3&version=22&channel_name=feibo&srv=2301" +
             "&special_type=1&since_id=9333&pg_cur=2&pg_size";
 
-    public static String SCALE_BEGIN_URL_0 = "http://api.ds.lingshi.cccwei.com/?cid=760653&uid=0&tms=20160410110138" +
-            "&sig=1770aade9aa31cd6&wssig=d0a0736144e657df&os_type=3&version=22&channel_name=feibo" +
-            "&srv=2301&special_type=0&since_id=0&pg_cur=1&pg_size=20";
+    public static String SCALE_BEGIN_URL_0 = "http://api.ds.lingshi.cccwei.com/?cid=760653&uid=0&tms=20160411113229&sig=e73d97c736e07213&wssig=b69f16314e9ac9cf&os_type=3&version=22&channel_name=feibo&srv=2301&special_type=0&since_id=0&pg_cur=1&pg_size=20";
 }

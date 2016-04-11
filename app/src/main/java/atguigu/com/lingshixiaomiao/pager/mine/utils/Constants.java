@@ -10,5 +10,9 @@ public class Constants {
      */
     public static final boolean isLog = true;
 
+    /**
+     * 服务电话
+     */
     public static final String serviceNum = "18686823149";
+
 }

@@ -3,6 +3,7 @@ package atguigu.com.lingshixiaomiao.pager.scale.detailpager;
 import android.app.Activity;
 import android.graphics.Paint;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -23,6 +24,7 @@ import java.util.List;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.scale.base.ScaleBasePager;
 import atguigu.com.lingshixiaomiao.pager.scale.bean.ScallingBean;
+import atguigu.com.lingshixiaomiao.pager.scale.utils.TimeUtil;
 import atguigu.com.lingshixiaomiao.pager.scale.utils.Url;
 
 /**
@@ -129,6 +131,7 @@ public class ScallingPager extends ScaleBasePager {
                 holder.tv_scale_item_discount = (TextView) convertView.findViewById(R.id.tv_scale_item_discount);
                 holder.tv_scale_item_name = (TextView) convertView.findViewById(R.id.tv_scale_item_name);
                 holder.tv_scale_item_time = (TextView) convertView.findViewById(R.id.tv_scale_item_time);
+                holder.tv_scale_item_time.setTag(true);
                 holder.tv_scale_item_currentprice = (TextView) convertView.findViewById(R.id.tv_scale_item_currentprice);
                 holder.tv_scale_item_formerlyprice = (TextView) convertView.findViewById(R.id.tv_scale_item_formerlyprice);
                 holder.tv_scale_item_toshopping = (TextView) convertView.findViewById(R.id.tv_scale_item_toshopping);
@@ -145,13 +148,24 @@ public class ScallingPager extends ScaleBasePager {
             holder.tv_scale_item_discount.setText(itemsEntity.getTag().getTitle());
             holder.tv_scale_item_name.setText(itemsEntity.getTitle());
 
-            holder.tv_scale_item_time.setText(String.valueOf(itemsEntity.getTime()));
+            //获取url时间戳
+            long urlTime = itemsEntity.getTime() * 1000;
+
+            //计算出剩余时间
+            long leftTime =System.currentTimeMillis()- urlTime;
+            Log.e("TAG", "剩余时间：" + leftTime);
+
+            //将当前的item的tv视图加入集合
             timeTvs.add(holder.tv_scale_item_time);
-            new CountDownTimer(itemsEntity.getTime(), 100) {
+
+            //启动计时器
+            new CountDownTimer(leftTime, 1000) {
 
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    timeTvs.get(position).setText(String.valueOf((int) millisUntilFinished));
+                    String leftDate = TimeUtil.getLeftDate(millisUntilFinished);
+                    Log.e("TAG", "onTick() :" + leftDate);
+                    timeTvs.get(position).setText(leftDate);
                 }
 
                 @Override

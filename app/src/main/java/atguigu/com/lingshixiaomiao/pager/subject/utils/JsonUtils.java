@@ -1,4 +1,4 @@
-package atguigu.com.lingshixiaomiao.pager.mine.utils;
+package atguigu.com.lingshixiaomiao.pager.subject.utils;
 
 import com.google.gson.Gson;
 
@@ -10,55 +10,66 @@ import org.xutils.x;
 import atguigu.com.lingshixiaomiao.LogUtils;
 
 /**
- * Created by lanmang on 2016/4/8.
- * 解析json的工具类
+ * Created by CheungJhonny on 2016/4/11.
+ * 解析数据的工具类
  */
 public class JsonUtils<T> {
 
-    private Class clazz;
+    private Class aClass;
     private T t;
 
     /**
-     * 联网获取数据
-     * http://api.ds.lingshi.cccwei.com/?cid=760294&uid=0&tms=20160406223600
-     * &sig=5ad479a0b6bcaff9&wssig=a62fcd9fb5171bca&os_type=3&version=18&channel_name=feibo&srv=2201
-     * @param url
-     * @param clazz
+     *解析数据
+     * @param url 传入的数据
+     * @param aClass  数据类xin
      */
-    public void loadData(String url, Class<T> clazz) {
-        this.clazz = clazz;
+    public void loadData(String url, Class<T> aClass) {
+        this.aClass = aClass;
 
         x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
+
             @Override
             public void onSuccess(String result) {
-                LogUtils.loge("onSuccess");
+                LogUtils.loge("subject_onSuccess");
                 LogUtils.loge(result);
-                parseJson(result);
+                if (result != null) {
+                    //保存首页的数据
+                    parseJaon(result);
+                }
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                LogUtils.loge("onError");
+                LogUtils.loge("subject_onError");
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
-                LogUtils.loge("onCancelled");
+                LogUtils.loge("subject_onCancelled");
             }
 
             @Override
             public void onFinished() {
-                LogUtils.loge("onFinished");
+                LogUtils.loge("subject_onFinished");
             }
         });
     }
 
-    private void parseJson(String json) {
-        t = (T) new Gson().fromJson(json, clazz);
+    private T parseJaon(String json) {
+        t = (T) new Gson().fromJson(json, aClass);
+
+        LogUtils.loge(aClass.getSimpleName());
         sendEventBus();
+        return t;
     }
 
+    /**
+     * 发送消息
+     */
     private void sendEventBus() {
         EventBus.getDefault().post(t);
+
     }
+
+
 }
