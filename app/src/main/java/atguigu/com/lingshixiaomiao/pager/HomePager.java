@@ -1,6 +1,7 @@
 package atguigu.com.lingshixiaomiao.pager;
 
 import android.app.Activity;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
@@ -8,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -41,7 +43,7 @@ import atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout;
 /**
  * 首页
  */
-public class HomePager extends BasePager {
+public class HomePager extends BasePager implements View.OnClickListener {
 
     private ImageButton ib_left_menu;
     private TextView tv_search;
@@ -63,6 +65,12 @@ public class HomePager extends BasePager {
     // 分页数据
     private HomePagerBean homePagerBean;
     private List<HomePagerBean.DataEntity.ItemsEntity> pagerData;
+    // 置顶按钮
+    private ImageView iv_home_tiptop;
+    private RelativeLayout loading_dialog;
+    private ImageView widget_loading_pb;
+    // 加载动画
+    private AnimationDrawable ad;
 
     public HomePager(Activity mActivity, DrawerLayout dl_menu) {
         super(mActivity);
@@ -73,17 +81,18 @@ public class HomePager extends BasePager {
     public View initView() {
         View inflate = View.inflate(mActivity, R.layout.home_pager, null);
         findViewById(inflate);
-        //addHeaderView();
         setListener();
         return inflate;
     }
+
     // home当前数据页
     int pagerIndex = 1;
+
     /**
      * 请求数据
      * http://api.ds.lingshi.cccwei.com/?cid=760294&uid=0&tms=20160406224555&sig" +
-     "=77fe35c8027c2e4a&wssig=e4fe9113b21617de&os_type=3&version=18&channel_name=
-     feibo&srv=2206&since_id=0&pg_cur=1&pg_size=20";
+     * "=77fe35c8027c2e4a&wssig=e4fe9113b21617de&os_type=3&version=18&channel_name=
+     * feibo&srv=2206&since_id=0&pg_cur=1&pg_size=20";
      */
     private void getDataFromNet() {
 
@@ -141,6 +150,21 @@ public class HomePager extends BasePager {
     }
 
     /**
+     * 点击监听
+     *
+     * @param v
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            // 置顶
+            case R.id.iv_home_tiptop:
+                listview_home.setSelection(0);
+                break;
+        }
+    }
+
+    /**
      * 上拉加载更多
      */
     class MyOnRefreshListener implements SwipeRefreshLayout.OnRefreshListener {
@@ -172,7 +196,7 @@ public class HomePager extends BasePager {
 
         @Override
         public void onLoad() {
-            if(!NetWorkUtils.isNetworkConnected()) {
+            if (!NetWorkUtils.isNetworkConnected()) {
                 Toast.makeText(mActivity, "没有网络...", Toast.LENGTH_SHORT).show();
                 refreshlayout_home.setLoading(false);
                 return;
@@ -199,6 +223,9 @@ public class HomePager extends BasePager {
         // 上拉加载更多
         refreshlayout_home.setOnLoadListener(new MyOnLoadListener());
 
+        // 置顶按钮
+        iv_home_tiptop.setOnClickListener(this);
+
     }
 
 
@@ -214,8 +241,12 @@ public class HomePager extends BasePager {
         lv_left_menu = (LinearLayout) parent.findViewById(R.id.lv_left_menu);
         refreshlayout_home = (RefreshLayout) parent.findViewById(R.id.refreshlayout_home);
         listview_home = (ListView) parent.findViewById(R.id.listview_home);
+        iv_home_tiptop = (ImageView) parent.findViewById(R.id.iv_home_tiptop);
 
-        // 显示主界面
+        loading_dialog = (RelativeLayout) parent.findViewById(R.id.loading_dialog);
+        widget_loading_pb = (ImageView) parent.findViewById(R.id.widget_loading_pb);
+
+        // 设置主界面listview
         setListView();
     }
 
@@ -230,13 +261,16 @@ public class HomePager extends BasePager {
 
         ll_top_points = (LinearLayout) headerView.findViewById(R.id.ll_top_points);
 
-
     }
 
     @Override
     public void initData() {
         super.initData();
         LogUtils.loge("首页 开始加载首页数据");
+
+        // 显示加载的dialog
+        ad = (AnimationDrawable) widget_loading_pb.getBackground();
+        ad.start();
 
         pagerData = new ArrayList<>();
 
@@ -264,7 +298,7 @@ public class HomePager extends BasePager {
      */
     private void showListView() {
         if (adapter == null) {
-            adapter = new ListViewAdapter(mActivity, pagerData);
+            adapter = new ListViewAdapter(mActivity, pagerData, iv_home_tiptop);
         }
         listview_home.setAdapter(adapter);
     }
@@ -277,6 +311,11 @@ public class HomePager extends BasePager {
     @Subscribe
     public void onEventMainThread(HomeTopBean homeTopBean) {
         LogUtils.loge("数据解析成功 : " + homeTopBean.toString());
+
+        // 取消加载显示的dialog
+        ad.stop();
+        loading_dialog.setVisibility(View.GONE);
+
         this.homeTopBean = homeTopBean;
         topics = homeTopBean.getData().getTopics();
 
