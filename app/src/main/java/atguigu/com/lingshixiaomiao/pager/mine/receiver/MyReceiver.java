@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -58,7 +59,7 @@ public class MyReceiver extends BroadcastReceiver {
 
             Intent i = new Intent(context, MineContentActivity.class);
             i.putExtras(bundle);
-            i.putExtra("pager", 2);
+            i.putExtra("pager", Constants.WEB_PAGER);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(i);

@@ -10,9 +10,11 @@ import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.AboutPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.AddressPager;
-import atguigu.com.lingshixiaomiao.pager.mine.pager.PushPager;
+import atguigu.com.lingshixiaomiao.pager.mine.pager.LoginPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.SettingPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.UserPager;
+import atguigu.com.lingshixiaomiao.pager.mine.pager.WebPager;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
@@ -38,22 +40,28 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
 
     private void loadPagerView() {
         int position = getIntent().getIntExtra("pager", 0);
+        Bundle bundle = getIntent().getExtras();;
         switch (position) {
-            case 0 :
-                pager = new SettingPager(this);
+            case Constants.SETTING_PAGER:
+                pager = new SettingPager(this);//设置界面
                 break;
-            case 11:
-                pager = new AboutPager(this);
+            case Constants.ABOUT_PAGER:
+                pager = new AboutPager(this);//关于零食小喵界面
                 break;
-            case 12:
-                pager = new AddressPager(this);
-            break;
-            case 13:
-                pager = new UserPager(this);
+            case Constants.ADDRESS_PAGER:
+                pager = new AddressPager(this);//管理收货地址界面
                 break;
-            case 2:
-                Bundle bundle = getIntent().getExtras();
-                pager = new PushPager(this, bundle);
+            case Constants.USER_PAGER:
+                pager = new UserPager(this);//用户信息界面
+                break;
+            case Constants.WEB_PAGER:
+                pager = new WebPager(this, bundle, true);//推送界面
+                break;
+            case Constants.LOGIN_PAGER:
+                pager = new LoginPager(this);//登录界面
+                break;
+            case Constants.WEBVIEW_PAGER:
+                pager = new WebPager(this, bundle, false);//普通界面
                 break;
         }
         loadViews();

@@ -88,4 +88,15 @@
         <item name="android:maxLines">1</item>
     </style>
 
+    <!--登录界面样式-->
+    <style name="ThreeIconParentLayoutStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/login_three_btn_magin</item>
+        <item name="android:layout_marginRight">@dimen/login_three_btn_magin</item>
+    </style>
+    <!--登录界面样式-->
+
 </resources>
