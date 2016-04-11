@@ -16,6 +16,7 @@ public class SPUtils {
 
     public static final String FIRST_SPLASH = "firstsplash";
     public static final String HOME_TOP_DATA = "home_top_data";
+    public static final String HOME_PAGE_DATA = "home_page_data";
 
     /**
      * 保存数据(boolean)

@@ -9,4 +9,6 @@ public class Constants {
      * 是否打印日志
      */
     public static final boolean isLog = true;
+
+    public static final String serviceNum = "18686823149";
 }

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="horizontal">
 
     <ImageButton
         android:id="@+id/ib_left_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_margin="10dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/icon_order" />
+        android:src="@drawable/icon_to_left_drawer"
+        android:padding="10dp"/>
 
-    <TextView
+    <EditText
         android:id="@+id/tv_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,10 +22,15 @@
         android:background="@drawable/bg_search_custom"
         android:drawableLeft="@drawable/icon_search"
         android:drawablePadding="5dp"
-        android:gravity="left|center_vertical"
-        android:text="请输入商品名称或关键字"
-        android:textSize="12sp" />
-
+        android:paddingLeft="10dp"
+        android:inputType="none"
+        android:singleLine="true"
+        android:editable="false"
+        android:gravity="center_vertical"
+        android:imeOptions="actionSearch"
+        android:hint="请输入商品名称或关键字"
+        android:layout_gravity="center_vertical"
+        android:textSize="12sp"/>
     <RelativeLayout
         android:id="@+id/rl_cart"
         android:layout_width="wrap_content"
@@ -36,7 +41,7 @@
             android:id="@+id/iv_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/btn_cart_normal" />
+            android:src="@drawable/btn_car"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,10 +49,10 @@
             android:layout_alignRight="@id/iv_cart"
             android:background="@drawable/cart_num"
             android:gravity="center"
-            android:padding="1dp"
             android:text="23"
+            android:padding="2dp"
             android:textColor="#ffffff"
-            android:textSize="7sp" />
+            android:textSize="7sp"/>
 
     </RelativeLayout>
 

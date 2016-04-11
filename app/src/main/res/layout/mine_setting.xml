@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#f8f8f8" />
+
+    <include layout="@layout/mine_setting_item_1" />
+
+    <include layout="@layout/mine_setting_item_2" />
+
+    <include layout="@layout/mine_setting_item_3" />
+
+    <include layout="@layout/mine_setting_item_4" />
+
+    <include layout="@layout/mine_setting_item_5" />
+
+    <include layout="@layout/mine_setting_item_6" />
+
+</LinearLayout>

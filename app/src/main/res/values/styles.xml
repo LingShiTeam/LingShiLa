@@ -8,18 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-      <!-- 主界面下方四个按钮的样式
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_weight="1"
-    android:background="@android:color/transparent"
-    android:button="@null"
-    android:drawablePadding="3dp"
-    android:textColor="@drawable/icon_textcolor_selector"
-    android:gravity="center"
-    android:textSize="12sp"
-    -->
+    <!-- 主界面下方四个按钮的样式
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_weight="1"
+  android:background="@android:color/transparent"
+  android:button="@null"
+  android:drawablePadding="3dp"
+  android:textColor="@drawable/icon_textcolor_selector"
+  android:gravity="center"
+  android:textSize="12sp"
+  -->
     <style name="icon_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -50,6 +50,29 @@
         <item name="android:drawablePadding">5dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">12sp</item>
+    </style>
+    <!--首页小标题属性-->
+    <style name="FineLineC4Style">
+        <item name="android:background">@color/c4</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/fine_line_height</item>
+    </style>
+
+    //滑动退出activity --mine
+
+    <style name="AppBackTheme" parent="@android:style/Theme.Holo.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    //alertdialog去除边框
+    <style name="dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/black</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 
     <style name="Widget.TabPageIndicator" parent="Widget">
