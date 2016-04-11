@@ -241,6 +241,7 @@ public class CarouselUtils {
                     public void onFinish() {
                         // 显示过期提示图片
                         item_goods_empty.setVisibility(View.VISIBLE);
+                        flag = true;
                     }
                 }.start();
             }
