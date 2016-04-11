@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="true"
+    android:id="@+id/ll_setting_version"
     android:orientation="vertical">
 
     <View
@@ -15,21 +17,22 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_margin="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_margin="10dp"
             android:layout_toRightOf="@id/iv_mine_icon"
             android:text="检查新版本" />
 
-        <ImageView
-            android:id="@+id/mine_arrow_right"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+        <TextView
+            android:id="@+id/tv_mine_setting_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:src="@drawable/icon_arrow_right" />
+            android:text="当前版本:vxxx"
+            android:textSize="10sp" />
 
     </RelativeLayout>
 

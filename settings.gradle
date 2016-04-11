@@ -1,1 +1,1 @@
-include ':app', ':xutils_library' , ':viewpagerindicator_library' , ':RefreshListView', ':demo'
+include ':app', ':xutils_library' , ':RefreshListView', ':demo'

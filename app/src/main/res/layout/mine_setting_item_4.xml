@@ -2,6 +2,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:clickable="true"
+    android:id="@+id/ll_setting_clear_cache"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -22,14 +24,15 @@
             android:layout_toRightOf="@id/iv_mine_icon"
             android:text="清除缓存" />
 
-        <ImageView
-            android:id="@+id/mine_arrow_right"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+        <TextView
+            android:id="@+id/tv_mine_setting_clear_cache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:src="@drawable/icon_arrow_right" />
+            android:text="xxx.xxMB"
+            android:textSize="10sp" />
 
     </RelativeLayout>
 

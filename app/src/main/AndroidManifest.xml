@@ -42,12 +42,17 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".GuideActivity">
+        <activity android:name=".GuideActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name=".MainActivity"
-                  >
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".pager.mine.activity.SettingActivity"/>
+
+        <activity android:name=".pager.mine.activity.MineContentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBackTheme"/>
+
     </application>
 
 </manifest>
