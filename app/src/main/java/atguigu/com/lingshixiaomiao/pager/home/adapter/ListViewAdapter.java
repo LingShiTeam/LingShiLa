@@ -13,7 +13,6 @@ import java.util.List;
 
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.home.bean.HomePagerBean;
-import atguigu.com.lingshixiaomiao.pager.home.bean.HomeTopBean;
 
 /**
  * Created by Liu_haiwei on 2016/4/10.
@@ -21,15 +20,12 @@ import atguigu.com.lingshixiaomiao.pager.home.bean.HomeTopBean;
  */
 public class ListViewAdapter extends BaseAdapter {
 
-    private final HomeTopBean homeTopBean;
-
     private final Activity mActivity;
     private final List<HomePagerBean.DataEntity.ItemsEntity> data;
 
-    public ListViewAdapter(Activity mActivity, List<HomePagerBean.DataEntity.ItemsEntity> data, HomeTopBean homeTopBean) {
+    public ListViewAdapter(Activity mActivity, List<HomePagerBean.DataEntity.ItemsEntity> data) {
         this.mActivity = mActivity;
         this.data = data;
-        this.homeTopBean = homeTopBean;
     }
 
     @Override

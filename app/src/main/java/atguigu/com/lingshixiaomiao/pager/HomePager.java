@@ -1,7 +1,6 @@
 package atguigu.com.lingshixiaomiao.pager;
 
 import android.app.Activity;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
@@ -49,7 +48,6 @@ public class HomePager extends BasePager {
     private RelativeLayout rl_cart;
     private LinearLayout lv_left_menu;
     private DrawerLayout dl_menu;
-    private ViewPager vp_top_image;
     private RefreshLayout refreshlayout_home;
 
     /**
@@ -75,48 +73,34 @@ public class HomePager extends BasePager {
     public View initView() {
         View inflate = View.inflate(mActivity, R.layout.home_pager, null);
         findViewById(inflate);
-        addHeaderView();
+        //addHeaderView();
         setListener();
         return inflate;
     }
-
-    /**
-     * 加载顶部轮播图---加载更新
-     */
-    private void addHeaderView() {
-        // 设置颜色--不起作用
-        //refreshlayout_home.setColorSchemeColors(R.color.color1, R.color.color2, R.color.color3);
-        // 第一次进入页面的时候显示加载进度条
-        refreshlayout_home.setProgressViewOffset(false, 0, (int) TypedValue
-                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, mActivity.getResources()
-                        .getDisplayMetrics()));
-
-        refreshlayout_home.setOnRefreshListener(new MyOnRefreshListener());
-        refreshlayout_home.setOnLoadListener(new RefreshLayout.OnLoadListener() {
-            @Override
-            public void onLoad() {
-                //refreshlayout_home.setLoading(true);
-                //请求数据
-                getDataFromNet();
-            }
-        });
-    }
-
+    // home当前数据页
+    int pagerIndex = 1;
     /**
      * 请求数据
+     * http://api.ds.lingshi.cccwei.com/?cid=760294&uid=0&tms=20160406224555&sig" +
+     "=77fe35c8027c2e4a&wssig=e4fe9113b21617de&os_type=3&version=18&channel_name=
+     feibo&srv=2206&since_id=0&pg_cur=1&pg_size=20";
      */
     private void getDataFromNet() {
-        RequestParams request = new RequestParams(Url.HOME_TOP_PAGE);
+
+        RequestParams request = new RequestParams(Url.HOME_TOP_PAGE + "&pg_cur=" + pagerIndex + "&pg_size=20");
         x.http().get(request, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 if (result != null) {
                     // 解析json数据
                     parsedHomePageJson(result);
+                    // 保存数据
+                    SPUtils.putString(mActivity, SPUtils.HOME_PAGE_DATA, result);
                 } else {
                     Toast.makeText(mActivity, "没有更多数据!", Toast.LENGTH_SHORT).show();
                 }
 
+                pagerIndex++;
             }
 
             @Override
@@ -135,9 +119,10 @@ public class HomePager extends BasePager {
 
             @Override
             public void onFinished() {
-                LogUtils.loge("result", "加载完成!");
+                LogUtils.loge("onFinished", "加载完成!");
                 // 取消加载
                 refreshlayout_home.setLoading(false);
+                LogUtils.loge("onFinished :", "pagerIndex = " + pagerIndex);
             }
         });
     }
@@ -151,7 +136,7 @@ public class HomePager extends BasePager {
         homePagerBean = new Gson().fromJson(json, HomePagerBean.class);
         LogUtils.loge("TAG-homePagerBean", homePagerBean.toString());
         pagerData.addAll(homePagerBean.getData().getItems());
-        LogUtils.loge("TAG", pagerData.size()+ "");
+        LogUtils.loge("TAG", pagerData.size() + "");
 
     }
 
@@ -162,6 +147,11 @@ public class HomePager extends BasePager {
 
         @Override
         public void onRefresh() {
+            if (!NetWorkUtils.isNetworkConnected()) {
+                Toast.makeText(mActivity, "没有网络...", Toast.LENGTH_SHORT).show();
+                refreshlayout_home.setRefreshing(false);
+                return;
+            }
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
             }
@@ -176,13 +166,41 @@ public class HomePager extends BasePager {
     }
 
     /**
+     * 上拉加载更多
+     */
+    class MyOnLoadListener implements RefreshLayout.OnLoadListener {
+
+        @Override
+        public void onLoad() {
+            if(!NetWorkUtils.isNetworkConnected()) {
+                Toast.makeText(mActivity, "没有网络...", Toast.LENGTH_SHORT).show();
+                refreshlayout_home.setLoading(false);
+                return;
+            }
+            //请求数据
+            getDataFromNet();
+        }
+    }
+
+    /**
      * 设置监听
      */
     private void setListener() {
         //设置按钮点击弹出侧滑菜单
         ib_left_menu.setOnClickListener(new MyOnClickListener());
+        // 设置颜色--不起作用
+        //refreshlayout_home.setColorSchemeColors(R.color.color1, R.color.color2, R.color.color3);
+        // 第一次进入页面的时候显示加载进度条
+        refreshlayout_home.setProgressViewOffset(false, 0, (int) TypedValue
+                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, mActivity.getResources()
+                        .getDisplayMetrics()));
+        // 下拉刷新
+        refreshlayout_home.setOnRefreshListener(new MyOnRefreshListener());
+        // 上拉加载更多
+        refreshlayout_home.setOnLoadListener(new MyOnLoadListener());
 
     }
+
 
     /**
      * 通过id获取view
@@ -210,7 +228,6 @@ public class HomePager extends BasePager {
         headerView = layoutInflater.inflate(R.layout.home_top, null);
         listview_home.addHeaderView(headerView);
 
-        vp_top_image = (ViewPager) headerView.findViewById(R.id.vp_top_image);
         ll_top_points = (LinearLayout) headerView.findViewById(R.id.ll_top_points);
 
 
@@ -230,20 +247,26 @@ public class HomePager extends BasePager {
             //设置顶部轮播图
             new CarouselUtils(headerView, mActivity).setViewPagerData(homeTopBean);
         }
+
+        String homePageData = SPUtils.getString(mActivity, SPUtils.HOME_PAGE_DATA);
+        if (homePageData != null && !NetWorkUtils.isNetworkConnected()) {
+            parsedHomePageJson(homePageData);
+            showListView();
+        }
+
         //通过JsonUtils工具类解析url, 并通过EventBus返回数据
         new JsonUtils().loadData(Url.HOME_TOP_URL, HomeTopBean.class);
 
     }
 
     /**
-     * 使用EventBus接收解析后的数据--HomePagerBean
-     *
-     * @param homePagerBean
+     * 显示listView列表
      */
-    @Subscribe
-    public void onEventMainThread(HomePagerBean homePagerBean) {
-        LogUtils.loge("分页数据解析成功 : " + homeTopBean.toString());
-        this.homePagerBean = homePagerBean;
+    private void showListView() {
+        if (adapter == null) {
+            adapter = new ListViewAdapter(mActivity, pagerData);
+        }
+        listview_home.setAdapter(adapter);
     }
 
     /**
@@ -261,10 +284,8 @@ public class HomePager extends BasePager {
 
             //设置顶部轮播图
             new CarouselUtils(headerView, mActivity).setViewPagerData(homeTopBean);
-            if (adapter == null) {
-                adapter = new ListViewAdapter(mActivity, pagerData, homeTopBean);
-            }
-            listview_home.setAdapter(adapter);
+            // 显示ListView列表
+            showListView();
         }
     }
 
@@ -278,16 +299,20 @@ public class HomePager extends BasePager {
         }
     }
 
+    /**
+     * 注册EventBus
+     */
     @Override
     public void registerEventBus() {
-        //注册EventBus
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
     }
 
+    /**
+     * 解注册EventBus
+     */
     @Override
     public void unRegisterEventBus() {
-        //解注册EventBus
         if (EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().unregister(this);
     }
