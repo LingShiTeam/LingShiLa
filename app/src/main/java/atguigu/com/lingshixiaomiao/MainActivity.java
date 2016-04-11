@@ -196,12 +196,13 @@ public class MainActivity extends FragmentActivity {
     }
 
     private long endTime;
+
     /**
      * 按两次back键退出程序
      */
     @Override
     public void onBackPressed() {
-        if(System.currentTimeMillis() - endTime > 2000) {
+        if (System.currentTimeMillis() - endTime > 2000) {
             Toast.makeText(this, "再按一次back键退出", Toast.LENGTH_SHORT).show();
             endTime = System.currentTimeMillis();
         } else {

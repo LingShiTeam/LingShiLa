@@ -9,19 +9,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/ib_mine_setting_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/setting_top_back_selector" />
+            <ImageButton
+                android:id="@+id/ib_mine_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/setting_top_back_selector" />
 
         <TextView
+            android:id="@+id/tv_mine_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:text="设置"
+            android:text="标题"
             android:textSize="20sp" />
 
     </RelativeLayout>
@@ -31,21 +32,11 @@
         android:layout_height="0.1dp"
         android:background="#eaeaea" />
 
-    <View
+    <FrameLayout
+        android:id="@+id/fl_mine_view"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="#f8f8f8" />
+        android:layout_height="match_parent">
 
-    <include layout="@layout/mine_setting_item_1" />
-
-    <include layout="@layout/mine_setting_item_2" />
-
-    <include layout="@layout/mine_setting_item_3" />
-
-    <include layout="@layout/mine_setting_item_4" />
-
-    <include layout="@layout/mine_setting_item_5" />
-
-    <include layout="@layout/mine_setting_item_6" />
+    </FrameLayout>
 
 </LinearLayout>
