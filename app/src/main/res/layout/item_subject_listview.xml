@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="3dp"
+    android:paddingLeft="7dp"
+    android:paddingRight="7dp"
+    android:paddingTop="7dp">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_image"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/item_subject_img"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_project612_306" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/rl_image"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_title2x"
+        android:gravity="bottom">
+
+        <TextView
+            android:id="@+id/item_subject_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="10dp"
+            android:shadowDx="1"
+            android:shadowDy="0"
+            android:shadowRadius="1.0"
+            android:singleLine="true"
+            android:text="标题"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bg_heart"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="2dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="2dp"
+        android:paddingRight="2dp"
+        >
+
+        <TextView
+            android:id="@+id/item_subject_collect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/icon_heart_white"
+            android:gravity="center"
+            android:text="1234"
+            android:textColor="#ffffff"
+            android:textSize="10sp"
+
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
