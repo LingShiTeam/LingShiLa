@@ -233,7 +233,6 @@ public class HomePager extends BasePager {
         //通过JsonUtils工具类解析url, 并通过EventBus返回数据
         new JsonUtils().loadData(Url.HOME_TOP_URL, HomeTopBean.class);
 
-        //new JsonUtils().loadData(Url.HOME_TOP_PAGE, HomePagerBean.class);
     }
 
     /**
