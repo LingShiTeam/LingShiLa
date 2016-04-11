@@ -221,7 +221,7 @@ public class CarouselUtils {
             home_item_title_right.setText(homeTopBean.getData().getBrands_title_sml());
 
             // 第一个
-            List<HomeTopBean.DataEntity.BrandsEntity> brands = homeTopBean.getData().getBrands();
+            final List<HomeTopBean.DataEntity.BrandsEntity> brands = homeTopBean.getData().getBrands();
             x.image().bind(item_home_promotion_img, brands.get(0).getImg().getImg_url());
             item_home_promotion_discount.setText(brands.get(0).getDiscount());
             item_home_promotion_desc.setText(brands.get(0).getTitle());
@@ -232,7 +232,9 @@ public class CarouselUtils {
                 new CountDownTimer(brands.get(0).getTime() * 1000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
-                        item_home_promotion_tag_time.setText("剩余时间:" + DataUtils.formatTime(millisUntilFinished / 1000));
+                        long lsatTime = brands.get(0).getTime() - System.currentTimeMillis()/1000;
+                        item_home_promotion_tag_time.setText("剩余时间:" + DataUtils.formatTime(lsatTime));
+
                     }
 
                     @Override

@@ -100,6 +100,16 @@ public class DataUtils {
         return "";
     }
 
+    public static String getFormatData(String timeStr) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd HH:mm:ss 准时开始");
+
+        String sd = sdf.format(new Date(Long.parseLong(timeStr)));
+
+        return sd;
+    }
+
+
     /**
      * 根据指定格式，获取现在时间
      */

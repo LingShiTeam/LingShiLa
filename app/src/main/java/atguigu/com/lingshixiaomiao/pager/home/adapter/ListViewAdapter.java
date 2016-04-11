@@ -2,6 +2,7 @@ package atguigu.com.lingshixiaomiao.pager.home.adapter;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -60,6 +61,8 @@ public class ListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        Log.e("tag", position + "");
+
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -73,8 +76,8 @@ public class ListViewAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        
-        if(position >= 10) {
+
+        if (position >= 10) {
             iv_home_tiptop.setVisibility(View.VISIBLE);
         } else {
             iv_home_tiptop.setVisibility(View.GONE);
@@ -82,7 +85,7 @@ public class ListViewAdapter extends BaseAdapter {
 
         HomePagerBean.DataEntity.ItemsEntity itemsEntity = data.get(position);
 
-        x.image().bind(holder.item_home_item_img, itemsEntity.getImg().getImg_url(),imageOption);
+        x.image().bind(holder.item_home_item_img, itemsEntity.getImg().getImg_url(), imageOption);
         holder.item_home_item_desc.setText(itemsEntity.getTitle());
         holder.item_home_item_price.setText("¥" + itemsEntity.getPrice().getCurrent());
         return convertView;

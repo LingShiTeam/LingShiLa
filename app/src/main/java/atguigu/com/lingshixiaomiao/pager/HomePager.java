@@ -160,6 +160,9 @@ public class HomePager extends BasePager implements View.OnClickListener {
             // 置顶
             case R.id.iv_home_tiptop:
                 listview_home.setSelection(0);
+
+                break;
+            default:
                 break;
         }
     }
@@ -178,16 +181,12 @@ public class HomePager extends BasePager implements View.OnClickListener {
             }
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
+                refreshlayout_home.setRefreshing(false);
             }
 
-            refreshlayout_home.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    refreshlayout_home.setRefreshing(false);
-                }
-            }, 2000);
         }
     }
+
 
     /**
      * 上拉加载更多
@@ -222,7 +221,6 @@ public class HomePager extends BasePager implements View.OnClickListener {
         refreshlayout_home.setOnRefreshListener(new MyOnRefreshListener());
         // 上拉加载更多
         refreshlayout_home.setOnLoadListener(new MyOnLoadListener());
-
         // 置顶按钮
         iv_home_tiptop.setOnClickListener(this);
 
