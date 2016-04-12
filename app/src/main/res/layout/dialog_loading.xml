@@ -30,4 +30,13 @@
             android:text="   给力加载中..."
             android:textColor="#ff605454"/>
     </RelativeLayout>
+
+    <ImageView
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_loading_fail2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/widget_loading"/>
+
+
 </RelativeLayout>

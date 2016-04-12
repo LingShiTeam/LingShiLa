@@ -1,6 +1,7 @@
 package atguigu.com.lingshixiaomiao.pager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -30,6 +31,7 @@ import java.util.List;
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
+import atguigu.com.lingshixiaomiao.pager.home.activity.SearchActivity;
 import atguigu.com.lingshixiaomiao.pager.home.adapter.ListViewAdapter;
 import atguigu.com.lingshixiaomiao.pager.home.bean.HomePagerBean;
 import atguigu.com.lingshixiaomiao.pager.home.bean.HomeTopBean;
@@ -46,7 +48,7 @@ import atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout;
 public class HomePager extends BasePager implements View.OnClickListener {
 
     private ImageButton ib_left_menu;
-    private TextView tv_search;
+    private TextView et_search;
     private RelativeLayout rl_cart;
     private LinearLayout lv_left_menu;
     private DrawerLayout dl_menu;
@@ -157,10 +159,14 @@ public class HomePager extends BasePager implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            // 置顶
+            // 置顶按钮点击监听
             case R.id.iv_home_tiptop:
                 listview_home.setSelection(0);
-
+                break;
+            // 搜索框点击监听
+            case R.id.et_search:
+                Intent intent = new Intent(mActivity, SearchActivity.class);
+                mActivity.startActivity(intent);
                 break;
             default:
                 break;
@@ -224,6 +230,10 @@ public class HomePager extends BasePager implements View.OnClickListener {
         // 置顶按钮
         iv_home_tiptop.setOnClickListener(this);
 
+        // 搜索框点击监听
+        et_search.setOnClickListener(this);
+
+
     }
 
 
@@ -234,7 +244,7 @@ public class HomePager extends BasePager implements View.OnClickListener {
      */
     private void findViewById(View parent) {
         ib_left_menu = (ImageButton) parent.findViewById(R.id.ib_left_menu);
-        tv_search = (TextView) parent.findViewById(R.id.tv_search);
+        et_search = (TextView) parent.findViewById(R.id.et_search);
         rl_cart = (RelativeLayout) parent.findViewById(R.id.rl_cart);
         lv_left_menu = (LinearLayout) parent.findViewById(R.id.lv_left_menu);
         refreshlayout_home = (RefreshLayout) parent.findViewById(R.id.refreshlayout_home);
