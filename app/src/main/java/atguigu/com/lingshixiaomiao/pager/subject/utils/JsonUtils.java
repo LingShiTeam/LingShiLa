@@ -30,7 +30,7 @@ public class JsonUtils<T> {
 
             @Override
             public void onSuccess(String result) {
-                LogUtils.loge("subject_onSuccess");
+                LogUtils.loge("subject_onSuccess 专题页面");
                 LogUtils.loge(result);
                 if (result != null) {
                     //保存首页的数据
@@ -50,7 +50,7 @@ public class JsonUtils<T> {
 
             @Override
             public void onFinished() {
-                LogUtils.loge("subject_onFinished");
+                LogUtils.loge("subject_onFinished" + "专题页面");
             }
         });
     }

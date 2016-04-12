@@ -2,24 +2,27 @@ package atguigu.com.lingshixiaomiao.pager;
 
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
 import atguigu.com.lingshixiaomiao.pager.subject.adapter.SubjectListAdapter;
 import atguigu.com.lingshixiaomiao.pager.subject.adapter.SubjectTopAdapter;
+import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectListBean;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectTopBean;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.Url;
@@ -33,7 +36,6 @@ import atguigu.com.lingshixiaomiao.pager.subject.view.NoscrollGridView;
 public class SubjectPager extends BasePager {
 
 
-    private JsonUtils jsonUtils;
     @ViewInject(R.id.listview_subject)
     private ListView listView;
 
@@ -64,6 +66,15 @@ public class SubjectPager extends BasePager {
      * gridview 的数据
      */
     private List<SubjectTopBean.DataBean.ItemsBean> itemsBeens;
+    /**
+     * 下部listview对应的尸体类
+     */
+    private SubjectListBean subjectListBean;
+
+    /**
+     * 下部listview的数据集合
+     */
+    private List<SubjectListBean.DataBean.ItemsBean> itemsListbeen;
 
 
 
@@ -89,6 +100,7 @@ public class SubjectPager extends BasePager {
 
         listView.addHeaderView(topView);
 
+        registerEventBus();
         return view;
 
     }
@@ -109,14 +121,16 @@ public class SubjectPager extends BasePager {
         getDataFormNet();
 
 
+        new JsonUtils().loadData(Url.SBUJECT_LISTVIEW, SubjectListBean.class);
+        //获取下部listview的数据
 
-        List<String> listBeans = new ArrayList<String>();
-        for (int i = 0; i < 20; i++) {
-            String listBean = "list" + i;
-            listBeans.add(listBean);
-        }
-        listAdapter = new SubjectListAdapter(mActivity, listBeans);
-        listView.setAdapter(listAdapter);
+//        List<String> listBeans = new ArrayList<String>();
+//        for (int i = 0; i < 20; i++) {
+//            String listBean = "list" + i;
+//            listBeans.add(listBean);
+//        }
+//        listAdapter = new SubjectListAdapter(mActivity, listBeans);
+//        listView.setAdapter(listAdapter);
 
     }
 
@@ -176,23 +190,50 @@ public class SubjectPager extends BasePager {
         return new Gson().fromJson(json, SubjectTopBean.class);
     }
 
+    /*
+      注册Eventbus*/
+     
+    @Override
+    public void registerEventBus() {
+        if (!EventBus.getDefault().isRegistered(this)) {//判断是否注册
+            EventBus.getDefault().register(this);
+        }
+    }
 
-//    /**
-//     * 注册Eventbus
-//     */
-//    @Override
-//    public void registerEventBus() {
-//        if (!EventBus.getDefault().isRegistered(this)) {//判断是否注册
-//            EventBus.getDefault().register(this);
-//        }
-//    }
-//
-//
-//    @Override
-//    public void unRegisterEventBus() {
-//        if (EventBus.getDefault().isRegistered(this)) {
-//            EventBus.getDefault().unregister(this);
-//
-//        }
-//    }
+
+    @Override
+    public void unRegisterEventBus() {
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+
+        }
+    }
+    
+
+
+    @Subscribe
+    public void onEventMainThread(SubjectListBean subjectListBean) {
+        this.subjectListBean = subjectListBean;
+
+        loadAdapter();
+        Log.d("TAG", "subjectListBean == null:" + (subjectListBean == null));
+    }
+
+    /**
+     * 加载 数据中
+     */
+    private void loadAdapter() {
+
+        itemsListbeen = subjectListBean.getData().getItems();
+       // Log.d("TAG","专题页面"+ "itemsListbeen.size():" + itemsListbeen.size());
+
+        if (listAdapter == null) {
+            listAdapter = new SubjectListAdapter(mActivity, itemsListbeen);
+            Log.d("TAG","SubjectPager"+  "走到这里");
+        }
+            listView.setAdapter(listAdapter);
+
+    }
+
+
 }
