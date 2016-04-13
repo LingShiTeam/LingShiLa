@@ -80,7 +80,7 @@
     <dimen name="invalid_cause_margin_left">10.0dip</dimen>
     <dimen name="invalid_cause_margin_top">18.0dip</dimen>
     <dimen name="invalid_img_margin_left">32.0dip</dimen>
-    <dimen name="login_three_btn_magin">24.0dip</dimen>
+    <dimen name="login_three_btn_magin">24dp</dimen>
     <dimen name="logistic_info_item_both_size">15.0dip</dimen>
     <dimen name="module_distance">20.0dip</dimen>
     <dimen name="person_avatar_margin_top">35.0dip</dimen>

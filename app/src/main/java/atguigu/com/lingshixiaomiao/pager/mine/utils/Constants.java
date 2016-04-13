@@ -10,5 +10,18 @@ public class Constants {
      */
     public static final boolean isLog = true;
 
+    /**
+     * 服务电话
+     */
     public static final String serviceNum = "18686823149";
+
+    public static final int SETTING_PAGER = 0;//设置界面
+    public static final int ABOUT_PAGER = 1;//关于零食小喵界面
+    public static final int ADDRESS_PAGER = 2;//管理收货地址界面
+    public static final int USER_PAGER = 3;//用户信息界面
+    public static final int WEB_PAGER = 4;//WebView界面
+    public static final int LOGIN_PAGER = 5;//登录界面
+    public static final int WEBVIEW_PAGER = 6;//普通WebView界面
+
+    public static final String SUCCESS = "1000";
 }

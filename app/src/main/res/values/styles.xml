@@ -58,7 +58,7 @@
         <item name="android:layout_height">@dimen/fine_line_height</item>
     </style>
 
-    //滑动退出activity --mine
+    // 滑动退出activity --mine
 
     <style name="AppBackTheme" parent="@android:style/Theme.Holo.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
@@ -87,5 +87,16 @@
         <item name="android:textColor">@drawable/vpi__tab_textcolor_indicator</item>
         <item name="android:maxLines">1</item>
     </style>
+
+    <!--登录界面样式-->
+    <style name="ThreeIconParentLayoutStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/login_three_btn_magin</item>
+        <item name="android:layout_marginRight">@dimen/login_three_btn_magin</item>
+    </style>
+    <!--登录界面样式-->
 
 </resources>

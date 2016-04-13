@@ -53,7 +53,7 @@ public class JsonUtils<T> {
         });
     }
 
-    public void parseJson(String json) {
+    private void parseJson(String json) {
         t = (T) new Gson().fromJson(json, clazz);
         sendEventBus();
     }

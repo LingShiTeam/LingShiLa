@@ -15,7 +15,7 @@
         android:padding="10dp"/>
 
     <EditText
-        android:id="@+id/tv_search"
+        android:id="@+id/et_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
