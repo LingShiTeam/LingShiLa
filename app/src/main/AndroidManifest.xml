@@ -78,7 +78,6 @@
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults"></activity>
-        <activity android:name=".pager.mine.activity.SettingActivity" />
         <activity
             android:name=".GuideActivity"
             android:screenOrientation="portrait"></activity>

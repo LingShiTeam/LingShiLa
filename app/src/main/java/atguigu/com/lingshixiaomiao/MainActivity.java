@@ -16,6 +16,9 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,11 @@ import atguigu.com.lingshixiaomiao.pager.HomePager;
 import atguigu.com.lingshixiaomiao.pager.MinePager;
 import atguigu.com.lingshixiaomiao.pager.SalePager;
 import atguigu.com.lingshixiaomiao.pager.SubjectPager;
+import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.CacheUtils;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
 
 /**
  * 主页面
@@ -53,7 +61,11 @@ public class MainActivity extends FragmentActivity {
         rg_main.check(R.id.rb_main_home);
         //锁定左侧菜单
         dl_menu.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
+        //判断是否自动登录
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+        checkIsLogin();
     }
 
     /**
@@ -192,6 +204,9 @@ public class MainActivity extends FragmentActivity {
             BasePager pager = pagers.get(i);
             pager.unRegisterEventBus();
         }
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         super.onDestroy();
     }
 
@@ -210,4 +225,26 @@ public class MainActivity extends FragmentActivity {
         }
 
     }
+
+    /**
+     * 判断是否保存用户登录信息,已经保存则直接登录并加载用户信息
+     */
+    public void checkIsLogin(){
+        String login = CacheUtils.getCache(CacheUtils.getSmallFile(this, "login"));
+        LogUtils.loge("login auto = " + login);
+        new JsonUtils().parseJson(login, LoginBean.class);
+    }
+
+    /**
+     * 获取自动登录信息
+     * @param loginBean
+     */
+    @Subscribe
+    public void onEventMainThread(LoginBean loginBean) {
+        LogUtils.loge("接收到自动登录信息 = " + loginBean);
+        if(Constants.SUCCESS.equals(loginBean.getRs_code())){
+            LoginUtils.getInstance().loginRequestSuccess(loginBean);
+        }
+    }
+
 }

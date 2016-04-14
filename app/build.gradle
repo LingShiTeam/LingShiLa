@@ -31,4 +31,6 @@ dependencies {
     compile 'me.imid.swipebacklayout.lib:library:1.0.0'
     compile project(':viewpagerindicator_library')
     compile files('lib/jpush-android-2.1.0.jar')
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.edmodo:cropper:1.0.1'
 }

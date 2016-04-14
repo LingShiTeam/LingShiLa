@@ -1,5 +1,7 @@
 package atguigu.com.lingshixiaomiao.pager.mine.utils;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -17,6 +19,7 @@ public class JsonUtils<T> {
 
     private Class clazz;
     private T t;
+    private String json;
 
     /**
      * 联网获取数据
@@ -27,12 +30,12 @@ public class JsonUtils<T> {
      */
     public void loadData(String url, Class<T> clazz) {
         this.clazz = clazz;
-
         x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 LogUtils.loge("onSuccess");
                 LogUtils.loge(result);
+                json = result;
                 parseJson(result);
             }
 
@@ -54,11 +57,25 @@ public class JsonUtils<T> {
     }
 
     private void parseJson(String json) {
+        if (TextUtils.isEmpty(json)) {
+            return;
+        }
         t = (T) new Gson().fromJson(json, clazz);
-        sendEventBus();
+        LogUtils.loge("测试T = " + t.toString());
+        sendDataByEventBus();
     }
 
-    private void sendEventBus() {
+    public T parseJson(String json, Class<T> clazz) {
+        this.clazz = clazz;
+        parseJson(json);
+        return t;
+    }
+
+    private void sendDataByEventBus() {
         EventBus.getDefault().post(t);
+    }
+
+    public String getJson() {
+        return json;
     }
 }
