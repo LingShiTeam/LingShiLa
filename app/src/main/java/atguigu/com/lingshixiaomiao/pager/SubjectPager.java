@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -18,13 +19,16 @@ import org.xutils.x;
 
 import java.util.List;
 
+import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
 import atguigu.com.lingshixiaomiao.pager.subject.adapter.SubjectListAdapter;
 import atguigu.com.lingshixiaomiao.pager.subject.adapter.SubjectTopAdapter;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectListBean;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectTopBean;
+import atguigu.com.lingshixiaomiao.pager.subject.utils.CacheUtils;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.JsonUtils;
+import atguigu.com.lingshixiaomiao.pager.subject.utils.SubjectNetUtils;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.Url;
 import atguigu.com.lingshixiaomiao.pager.subject.view.NoscrollGridView;
 
@@ -118,6 +122,15 @@ public class SubjectPager extends BasePager {
 
 
         //联网获取数据
+        //这里需要判断网络状态
+        if (!SubjectNetUtils.isNetworkConnected()) {
+            Toast.makeText(mActivity, "请检查网络", Toast.LENGTH_SHORT).show();
+        }
+        if (CacheUtils.getString(mActivity,CacheUtils.SUBJECT_TOP_DATA) != ""){
+            processData(CacheUtils.getString(mActivity,CacheUtils.SUBJECT_TOP_DATA));
+
+        }
+
         getDataFormNet();
 
 
@@ -147,6 +160,12 @@ public class SubjectPager extends BasePager {
             public void onSuccess(String result) {
                 if (result != null) {
                     processData(result);
+                    //缓存数据
+                    CacheUtils.putString(mActivity, CacheUtils.SUBJECT_TOP_DATA, result);
+
+                    Log.d("TAG", "subjectlistview的数据解析成功" + result);
+                } else {
+                    Toast.makeText(mActivity, "未找到数据,请检查网络", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -175,6 +194,9 @@ public class SubjectPager extends BasePager {
      */
     private void processData(String json) {
         topBeans = (SubjectTopBean) parseJson(json);
+
+        LogUtils.loge("topBeans = " +topBeans);
+
         itemsBeens = topBeans.getData().getItems();
 
         subjectTopAdapter = new SubjectTopAdapter(mActivity, itemsBeens);
@@ -214,7 +236,7 @@ public class SubjectPager extends BasePager {
     @Subscribe
     public void onEventMainThread(SubjectListBean subjectListBean) {
         this.subjectListBean = subjectListBean;
-
+        LogUtils.loge("subjectListBean = " + subjectListBean);
         loadAdapter();
         Log.d("TAG", "subjectListBean == null:" + (subjectListBean == null));
     }

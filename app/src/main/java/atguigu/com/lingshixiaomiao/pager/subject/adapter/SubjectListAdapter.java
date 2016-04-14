@@ -1,16 +1,19 @@
 package atguigu.com.lingshixiaomiao.pager.subject.adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.List;
 
+import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectListBean;
 
@@ -23,15 +26,15 @@ public class SubjectListAdapter extends BaseAdapter {
     private final List<SubjectListBean.DataBean.ItemsBean> listBeans;
 
 
-//    private ImageOptions imageOptions = new ImageOptions.Builder()
-//            // 如果ImageView的大小不是定义为wrap_content, 不要crop.
-//            .setCrop(false)
-//            // 加载中或错误图片的ScaleType
-//            .setPlaceholderScaleType(ImageView.ScaleType.FIT_XY)
-//            .setImageScaleType(ImageView.ScaleType.FIT_XY)
-//            .setLoadingDrawableId(R.drawable.default_project612_306)
-//            .setFailureDrawableId(R.drawable.default_project612_306)
-//            .build();
+    private ImageOptions imageOptions = new ImageOptions.Builder()
+            // 如果ImageView的大小不是定义为wrap_content, 不要crop.
+            .setCrop(false)
+            // 加载中或错误图片的ScaleType
+            .setPlaceholderScaleType(ImageView.ScaleType.FIT_XY)
+            .setImageScaleType(ImageView.ScaleType.FIT_XY)
+            .setLoadingDrawableId(R.drawable.default_project612_306)
+            .setFailureDrawableId(R.drawable.default_project612_306)
+            .build();
 
 
     public SubjectListAdapter(Activity activity, List<SubjectListBean.DataBean.ItemsBean> listBeans) {
@@ -74,9 +77,12 @@ public class SubjectListAdapter extends BaseAdapter {
         }
 
         holder.item_subject_title.setText(listBeans.get(position).getTitle());
-
         holder.item_subject_collect.setText(listBeans.get(position).getHotindex() + "");
-        x.image().bind(holder.item_subject_img, listBeans.get(position).getImg().getImg_url());
+        String url = listBeans.get(position).getImg().getImg_url();
+        Log.d("SubjectListAdapter", "url != null:" + (url != null));
+
+        LogUtils.loge("imageUrl = " + url);
+        x.image().bind(holder.item_subject_img, url);
         return convertView;
     }
 

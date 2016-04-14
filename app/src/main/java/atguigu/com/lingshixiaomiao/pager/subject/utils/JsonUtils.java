@@ -1,5 +1,7 @@
 package atguigu.com.lingshixiaomiao.pager.subject.utils;
 
+import android.app.Application;
+
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -8,6 +10,7 @@ import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import atguigu.com.lingshixiaomiao.LogUtils;
+import atguigu.com.lingshixiaomiao.application.MyApplication;
 
 /**
  * Created by CheungJhonny on 2016/4/11.
@@ -34,8 +37,9 @@ public class JsonUtils<T> {
                 LogUtils.loge(result);
                 if (result != null) {
                     //保存首页的数据
-                    parseJaon(result);
+                    CacheUtils.putString(MyApplication.getContext(), CacheUtils.SUBJECT_LIST_DATA, result);
                 }
+                    parseJaon(result);
             }
 
             @Override
