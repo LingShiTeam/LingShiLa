@@ -211,7 +211,7 @@ public class SearchActivity extends SwipeBackActivity implements View.OnClickLis
 
                     adapter.notifyDataSetChanged();
                     LogUtils.loge("TAG", searchText);
-                    // 联网请求数据
+                    // 联网请求网络数据
                     if (NetWorkUtils.isNetworkConnected()) {
                         loading_dialog.setVisibility(View.VISIBLE);
                         ad = (AnimationDrawable) widget_loading_pb.getBackground();
