@@ -2,6 +2,7 @@ package atguigu.com.lingshixiaomiao.pager.home.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
@@ -67,6 +68,7 @@ public class CarouselUtils {
 
     /**
      * 构造方法
+     *
      * @param headerView
      * @param context
      */
@@ -85,6 +87,7 @@ public class CarouselUtils {
 
     /**
      * headview子控件
+     *
      * @param headerView
      */
     private void initHeadView(View headerView) {
@@ -189,6 +192,9 @@ public class CarouselUtils {
         }
     }
 
+
+    private boolean flag = true;
+
     /**
      * viewpager的适配器
      */
@@ -215,10 +221,32 @@ public class CarouselUtils {
             home_item_title_right.setText(homeTopBean.getData().getBrands_title_sml());
 
             // 第一个
-            List<HomeTopBean.DataEntity.BrandsEntity> brands = homeTopBean.getData().getBrands();
+            final List<HomeTopBean.DataEntity.BrandsEntity> brands = homeTopBean.getData().getBrands();
             x.image().bind(item_home_promotion_img, brands.get(0).getImg().getImg_url());
             item_home_promotion_discount.setText(brands.get(0).getDiscount());
             item_home_promotion_desc.setText(brands.get(0).getTitle());
+
+            if (flag) {
+                flag = false;
+                // 倒计时
+                new CountDownTimer(brands.get(0).getTime() * 1000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        long lsatTime = brands.get(0).getTime() - System.currentTimeMillis()/1000;
+                        item_home_promotion_tag_time.setText("剩余时间:" + DataUtils.formatTime(lsatTime));
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        // 显示过期提示图片
+                        item_goods_empty.setVisibility(View.VISIBLE);
+                        flag = true;
+                    }
+                }.start();
+            }
+
+
             // 第二个
             List<HomeTopBean.DataEntity.SpecialsEntity> specials = homeTopBean.getData().getSpecials();
             x.image().bind(btn_lover, specials.get(0).getImg().getImg_url());

@@ -5,32 +5,69 @@
               android:background="@color/white"
               android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/ib_left_menu"
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:background="@android:color/transparent"
-        android:src="@drawable/icon_to_left_drawer"
-        android:padding="10dp"/>
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/tv_search"
-        android:layout_width="wrap_content"
+        <ImageButton
+            android:id="@+id/ib_left_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:src="@drawable/icon_to_left_drawer"/>
+
+        <ImageView
+            android:id="@+id/iv_search_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:src="@drawable/btn_header_back"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/bg_search_custom"
-        android:drawableLeft="@drawable/icon_search"
-        android:drawablePadding="5dp"
-        android:paddingLeft="10dp"
-        android:inputType="none"
-        android:singleLine="true"
-        android:editable="false"
-        android:gravity="center_vertical"
-        android:imeOptions="actionSearch"
-        android:hint="请输入商品名称或关键字"
         android:layout_gravity="center_vertical"
-        android:textSize="12sp"/>
+        android:layout_weight="1">
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/bg_search_custom"
+            android:drawableLeft="@drawable/icon_search"
+            android:drawablePadding="5dp"
+            android:editable="false"
+            android:gravity="center_vertical"
+            android:hint="请输入商品名称或关键字"
+            android:imeOptions="actionSearch"
+            android:inputType="none"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_shopname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+
+
     <RelativeLayout
         android:id="@+id/rl_cart"
         android:layout_width="wrap_content"
@@ -44,13 +81,14 @@
             android:src="@drawable/btn_car"/>
 
         <TextView
+            android:id="@+id/tv_shopcount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignRight="@id/iv_cart"
             android:background="@drawable/cart_num"
             android:gravity="center"
-            android:text="23"
             android:padding="2dp"
+            android:text="23"
             android:textColor="#ffffff"
             android:textSize="7sp"/>
 

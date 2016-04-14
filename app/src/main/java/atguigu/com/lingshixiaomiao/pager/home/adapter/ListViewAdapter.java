@@ -1,12 +1,15 @@
 package atguigu.com.lingshixiaomiao.pager.home.adapter;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.List;
@@ -22,10 +25,21 @@ public class ListViewAdapter extends BaseAdapter {
 
     private final Activity mActivity;
     private final List<HomePagerBean.DataEntity.ItemsEntity> data;
+    // 置顶按钮
+    private final ImageView iv_home_tiptop;
+    private ImageOptions imageOption;
 
-    public ListViewAdapter(Activity mActivity, List<HomePagerBean.DataEntity.ItemsEntity> data) {
+    public ListViewAdapter(Activity mActivity, List<HomePagerBean.DataEntity.ItemsEntity> data, ImageView iv_home_tiptop) {
         this.mActivity = mActivity;
         this.data = data;
+        this.iv_home_tiptop = iv_home_tiptop;
+        // xUtils的默认图片设置
+        imageOption = new ImageOptions.Builder()
+                //.setImageScaleType(ImageView.ScaleType.FIT_START)//等比例缩小到充满长/宽居中显示, 或原样显示
+                .setLoadingDrawableId(R.drawable.default_home_banner_640_270)
+                .setFailureDrawableId(R.drawable.default_home_banner_640_270)
+                .setConfig(Bitmap.Config.ARGB_4444)
+                .build();
     }
 
     @Override
@@ -47,6 +61,8 @@ public class ListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        Log.e("tag", position + "");
+
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -61,9 +77,15 @@ public class ListViewAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        if (position >= 10) {
+            iv_home_tiptop.setVisibility(View.VISIBLE);
+        } else {
+            iv_home_tiptop.setVisibility(View.GONE);
+        }
+
         HomePagerBean.DataEntity.ItemsEntity itemsEntity = data.get(position);
 
-        x.image().bind(holder.item_home_item_img,itemsEntity.getImg().getImg_url());
+        x.image().bind(holder.item_home_item_img, itemsEntity.getImg().getImg_url(), imageOption);
         holder.item_home_item_desc.setText(itemsEntity.getTitle());
         holder.item_home_item_price.setText("¥" + itemsEntity.getPrice().getCurrent());
         return convertView;

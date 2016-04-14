@@ -77,7 +77,7 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"/>
         <activity
             android:name=".GuideActivity"
             android:screenOrientation="portrait"></activity>
@@ -203,6 +203,14 @@
 
         <!-- 极光推送 -->
 
+        <activity
+            android:name=".pager.home.activity.SearchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBackTheme">
+        </activity>
+        <activity android:name=".pager.home.activity.SearchResultActivity"
+            android:theme="@style/AppBackTheme">
+        </activity>
     </application>
 
 </manifest>

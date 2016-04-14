@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/home_title"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+
+        <GridView
+            android:id="@+id/search_result_gridview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:numColumns="2"
+            android:paddingBottom="@dimen/half_both_sides_distance"/>
+
+
+        <RelativeLayout
+            android:id="@+id/search_no_result"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_white"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/widget_no_data_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawablePadding="13.0dip"
+                android:drawableTop="@drawable/ic_search_no_data"
+                android:text="@string/tip1"
+                android:textColor="@color/color_four"
+                android:textSize="@dimen/size_three"/>
+
+            <TextView
+                android:id="@+id/widget_no_data_view2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/widget_no_data_view"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="13.0dip"
+                android:text="@string/tip2"
+                android:textColor="@color/color_four"
+                android:textSize="@dimen/size_three"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
