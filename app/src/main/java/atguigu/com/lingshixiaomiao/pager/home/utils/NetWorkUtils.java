@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.io.UnsupportedEncodingException;
+
 import atguigu.com.lingshixiaomiao.application.MyApplication;
 
 /**
@@ -47,4 +49,25 @@ public class NetWorkUtils {
         }
         return false;
     }*/
+
+    /**
+     * 把中文字符转换为带百分号的浏览器编码
+     * @param word   中文字符
+     * @param encoding  字符编码
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    public static String toBrowserCode(String word, String encoding)
+            throws UnsupportedEncodingException {
+        byte[] textByte = word.getBytes(encoding);
+        StringBuilder strBuilder = new StringBuilder();
+
+        for (int j = 0; j < textByte.length; j++) {
+            // 转换为16进制字符
+            String hexStr = Integer.toHexString(textByte[j] & 0xff);
+            strBuilder.append("%" + hexStr.toUpperCase());
+        }
+
+        return strBuilder.toString();
+    }
 }

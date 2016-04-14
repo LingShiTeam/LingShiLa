@@ -202,9 +202,13 @@
 
         <!-- 极光推送 -->
 
-        <activity android:name=".pager.home.activity.SearchActivity"
-            android:theme="@style/AppBackTheme"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".pager.home.activity.SearchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBackTheme">
+        </activity>
+        <activity android:name=".pager.home.activity.SearchResultActivity"
+            android:theme="@style/AppBackTheme">
         </activity>
     </application>
 
