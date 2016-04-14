@@ -6,7 +6,9 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -126,6 +128,29 @@ public class SearchActivity extends SwipeBackActivity implements View.OnClickLis
         tv_search.setOnClickListener(this);
         // 清空历史搜索记录
         btn_clear_history.setOnClickListener(this);
+        // listview的item监听
+        listview_search_history.setOnItemClickListener(new MyOnItemClickListener());
+    }
+
+    /**
+     * listview的item监听
+     */
+    class MyOnItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Log.e("TAG", "点击了" + position);
+            SearchHistory history = historyLists.get(position);
+            // 联网请求网络数据
+            if (NetWorkUtils.isNetworkConnected()) {
+                loading_dialog.setVisibility(View.VISIBLE);
+                ad = (AnimationDrawable) widget_loading_pb.getBackground();
+                ad.start();
+                searchFromNet(history.getRecord());
+            } else {
+                Toast.makeText(SearchActivity.this, "网络不可用,请检查网络", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     /**
