@@ -3,6 +3,7 @@ package atguigu.com.lingshixiaomiao.pager.scale.detailpager;
 import android.app.Activity;
 import android.graphics.Paint;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import atguigu.com.lingshixiaomiao.pager.home.utils.NetWorkUtils;
 import atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout;
 import atguigu.com.lingshixiaomiao.pager.scale.base.ScaleBasePager;
 import atguigu.com.lingshixiaomiao.pager.scale.bean.ScaleBeginBean;
+import atguigu.com.lingshixiaomiao.pager.scale.utils.CacheUtil;
 import atguigu.com.lingshixiaomiao.pager.scale.utils.TimeUtil;
 import atguigu.com.lingshixiaomiao.pager.scale.utils.Url;
 
@@ -72,6 +74,12 @@ public class ScaleBeginPager extends ScaleBasePager {
     public void initData() {
         super.initData();
 
+        String savedJson = CacheUtil.getString(mActivity, Url.SCALE_BEGIN_URL_0);
+
+        if (!TextUtils.isEmpty(savedJson)) {
+            processData(savedJson);
+        }
+
         getDataFromNet();
     }
 
@@ -82,6 +90,9 @@ public class ScaleBeginPager extends ScaleBasePager {
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
+
+                CacheUtil.putString(mActivity, Url.SCALE_BEGIN_URL_0, result);
+
                 processData(result);
             }
 

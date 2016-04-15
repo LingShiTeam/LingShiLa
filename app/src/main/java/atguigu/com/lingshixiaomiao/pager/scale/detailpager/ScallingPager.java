@@ -1,12 +1,14 @@
 package atguigu.com.lingshixiaomiao.pager.scale.detailpager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.CountDownTimer;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -26,8 +28,10 @@ import java.util.List;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.home.utils.NetWorkUtils;
 import atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout;
+import atguigu.com.lingshixiaomiao.pager.scale.SnackInfomationActivity;
 import atguigu.com.lingshixiaomiao.pager.scale.base.ScaleBasePager;
 import atguigu.com.lingshixiaomiao.pager.scale.bean.ScallingBean;
+import atguigu.com.lingshixiaomiao.pager.scale.utils.CacheUtil;
 import atguigu.com.lingshixiaomiao.pager.scale.utils.TimeUtil;
 import atguigu.com.lingshixiaomiao.pager.scale.utils.Url;
 
@@ -70,12 +74,31 @@ public class ScallingPager extends ScaleBasePager {
         // 上拉加载更多
         rl_scalling.setOnLoadListener(new MyOnLoadListener());
 
+        lv_scalling.setOnItemClickListener(new MyOnItemClickListener());
+
         return rootView;
+    }
+
+    class MyOnItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent intent = new Intent(mActivity, SnackInfomationActivity.class);
+            intent.putExtra("snack_id", itemsEntities.get(position).getId());
+            mActivity.startActivity(intent);
+        }
     }
 
     @Override
     public void initData() {
+
         super.initData();
+
+        String savedJson = CacheUtil.getString(mActivity, Url.SCALLING_URL_0);
+
+        if (!TextUtils.isEmpty(savedJson)) {
+            processData(savedJson);
+        }
 
         getDataFromNet();
     }
@@ -92,12 +115,15 @@ public class ScallingPager extends ScaleBasePager {
             @Override
             public void onSuccess(String result) {
 
+                CacheUtil.putString(mActivity, Url.SCALLING_URL_0, result);
+
                 processData(result);
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
 
+                Toast.makeText(mActivity, "网络请求失败", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -198,9 +224,6 @@ public class ScallingPager extends ScaleBasePager {
 
             //计算出剩余时间
             long leftTime = urlTime - System.currentTimeMillis();
-            Log.e("TAG", "urlTime:" + urlTime);
-            Log.e("TAG", "currentTimeMillis:" + System.currentTimeMillis());
-            Log.e("TAG", "leftTime:" + leftTime);
 
             //先判断计时器是否已经置空，如果没有，就取消计时，并置空
             if (timer != null) {

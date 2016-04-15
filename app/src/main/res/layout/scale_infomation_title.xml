@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="特卖"
+        android:text="美味详情"
         android:textSize="25sp" />
 
     <ImageView
@@ -23,11 +23,5 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_margin="5dp"
-        android:src="@drawable/btn_cart_pressed" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/darker_gray" />
+        android:src="@drawable/btn_share_normal2x" />
 </RelativeLayout>
