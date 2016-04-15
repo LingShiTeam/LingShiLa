@@ -4,9 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/lv_scale_begin"
+    <atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout
+        android:id="@+id/rl_scale_begin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/lv_scale_begin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+    </atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout>
+
 
 </LinearLayout>

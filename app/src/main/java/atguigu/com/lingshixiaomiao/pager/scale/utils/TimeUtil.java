@@ -15,7 +15,7 @@ public class TimeUtil {
      */
     public static String getLeftDate(long time) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("仅剩：dd天HH小时mm分ss秒");
+        SimpleDateFormat sdf = new SimpleDateFormat("仅剩：dd天HH小时mm分ss秒S");
 
         String sd = sdf.format(new Date(time));
 
