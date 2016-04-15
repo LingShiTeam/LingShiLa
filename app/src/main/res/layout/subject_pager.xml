@@ -33,7 +33,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="10dp">
+        android:paddingTop="7dp">
 
         <ListView
             android:id="@+id/listview_subject"

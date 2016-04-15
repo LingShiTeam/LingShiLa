@@ -16,14 +16,33 @@ import java.util.List;
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectListBean;
+import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectTopBean;
+import atguigu.com.lingshixiaomiao.pager.subject.view.NoscrollGridView;
 
 /**
  * Created by CheungJhonny on 2016/4/11.
  */
 public class SubjectListAdapter extends BaseAdapter {
+    /**
+     * 根据position 来显示item的不同类型
+     */
+    private static final int TYPE_ITEM_GRIDVIEW = 0; //position= 0 时候item的类型
+    private static final int TYEP_ITEM_LISTVIEW = 1; //position != 0 时 item的类型
 
     private final Activity activity;
+    /**
+     * listview 的数据对象
+     */
     private final List<SubjectListBean.DataBean.ItemsBean> listBeans;
+    /**
+     * 上部 gridview的集合数据
+     */
+    private final List<SubjectTopBean.DataBean.ItemsBean> itemsBeens;
+
+
+
+    //GridView
+    private SubjectTopAdapter subjectTopAdapter;
 
 
     private ImageOptions imageOptions = new ImageOptions.Builder()
@@ -35,17 +54,21 @@ public class SubjectListAdapter extends BaseAdapter {
             .setLoadingDrawableId(R.drawable.default_project612_306)
             .setFailureDrawableId(R.drawable.default_project612_306)
             .build();
+    private NoscrollGridView gridview_top;
 
 
-    public SubjectListAdapter(Activity activity, List<SubjectListBean.DataBean.ItemsBean> listBeans) {
+    public SubjectListAdapter(Activity activity, List<SubjectListBean.DataBean.ItemsBean> listBeans,
+                              List<SubjectTopBean.DataBean.ItemsBean> itemsBeens) {
 
         this.activity = activity;
         this.listBeans = listBeans;
+        this.itemsBeens = itemsBeens;
+
     }
 
     @Override
     public int getCount() {
-        return listBeans.size();
+        return listBeans.size() + 1;
     }
 
     @Override
@@ -59,30 +82,79 @@ public class SubjectListAdapter extends BaseAdapter {
     }
 
     @Override
+    public int getItemViewType(int position) {
+       return position == 0 ? TYPE_ITEM_GRIDVIEW : TYEP_ITEM_LISTVIEW;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder = null;
+        int type = getItemViewType(position);
         if (convertView == null) {
-            convertView = View.inflate(activity, R.layout.item_subject_listview, null);
             holder = new ViewHolder();
+            switch (type) {
+                case TYPE_ITEM_GRIDVIEW:
+                    convertView = View.inflate(activity, R.layout.subject_pager_topgridview, null);
+                    gridview_top = (NoscrollGridView) convertView.findViewById(R.id.gridview_top);
+                    convertView.setTag(true);
+                    break;
 
-            holder.item_subject_img = (ImageView) convertView.findViewById(R.id.item_subject_img);
-            holder.item_subject_title = (TextView) convertView.findViewById(R.id.item_subject_title);
-            holder.item_subject_collect = (TextView) convertView.findViewById(R.id.item_subject_collect);
+                case TYEP_ITEM_LISTVIEW:
+                    convertView = View.inflate(activity, R.layout.item_subject_listview, null);
+                    //holder = new ViewHolder();
+                    holder.item_subject_img = (ImageView) convertView.findViewById(R.id.item_subject_img);
+                    holder.item_subject_title = (TextView) convertView.findViewById(R.id.item_subject_title);
+                    holder.item_subject_collect = (TextView) convertView.findViewById(R.id.item_subject_collect);
+                    convertView.setTag(holder);
+                    break;
+            }
 
-            convertView.setTag(holder);
+
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            if (position != 0) {
+                Object tag = convertView.getTag();
+
+                if (tag instanceof Boolean) {
+                    holder = new ViewHolder();
+                    convertView = View.inflate(activity, R.layout.item_subject_listview, null);
+                    //holder = new ViewHolder();
+                    holder.item_subject_img = (ImageView) convertView.findViewById(R.id.item_subject_img);
+                    holder.item_subject_title = (TextView) convertView.findViewById(R.id.item_subject_title);
+                    holder.item_subject_collect = (TextView) convertView.findViewById(R.id.item_subject_collect);
+                    convertView.setTag(holder);
+                }else{
+                    holder = (ViewHolder) convertView.getTag();
+                }
+
+            }else{
+                convertView = View.inflate(activity, R.layout.subject_pager_topgridview, null);
+                gridview_top = (NoscrollGridView) convertView.findViewById(R.id.gridview_top);
+            }
 
         }
 
-        holder.item_subject_title.setText(listBeans.get(position).getTitle());
-        holder.item_subject_collect.setText(listBeans.get(position).getHotindex() + "");
-        String url = listBeans.get(position).getImg().getImg_url();
-        Log.d("SubjectListAdapter", "url != null:" + (url != null));
 
-        LogUtils.loge("imageUrl = " + url);
-        x.image().bind(holder.item_subject_img, url);
+        switch (type) {
+            case TYPE_ITEM_GRIDVIEW:
+
+                subjectTopAdapter = new SubjectTopAdapter(activity, itemsBeens);
+                gridview_top.setAdapter(subjectTopAdapter);
+                break;
+            case TYEP_ITEM_LISTVIEW:
+                holder.item_subject_title.setText(listBeans.get(position - 1).getTitle());
+                holder.item_subject_collect.setText(listBeans.get(position - 1).getHotindex() + "");
+                String url = listBeans.get(position - 1).getImg().getImg_url();
+                Log.d("SubjectListAdapter", "url != null:" + (url != null));
+
+                LogUtils.loge("imageUrl = " + url);
+                x.image().bind(holder.item_subject_img, url);
+
+                break;
+        }
+
+
+
         return convertView;
     }
 

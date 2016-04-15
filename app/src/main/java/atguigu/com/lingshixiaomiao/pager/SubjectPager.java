@@ -23,14 +23,12 @@ import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
 import atguigu.com.lingshixiaomiao.pager.subject.adapter.SubjectListAdapter;
-import atguigu.com.lingshixiaomiao.pager.subject.adapter.SubjectTopAdapter;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectListBean;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectTopBean;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.CacheUtils;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.SubjectNetUtils;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.Url;
-import atguigu.com.lingshixiaomiao.pager.subject.view.NoscrollGridView;
 
 
 /**
@@ -46,15 +44,15 @@ public class SubjectPager extends BasePager {
     @ViewInject(R.id.iv_cart)
     private ImageView iv_cart;
 
+//
+//    @ViewInject(R.id.gridview_top)
+//    private NoscrollGridView gridView_top;
 
-    @ViewInject(R.id.gridview_top)
-    private NoscrollGridView gridView_top;
 
-
-    /**
-     * 上部gridview的适配器
-     */
-    private SubjectTopAdapter subjectTopAdapter;
+//    /**
+//     * 上部gridview的适配器
+//     */
+//    private SubjectTopAdapter subjectTopAdapter;
     /**
      * 下部listview的适配器
      */
@@ -98,11 +96,11 @@ public class SubjectPager extends BasePager {
         //iv_cart = (ImageView) view.findViewById(R.id.iv_cart);
         x.view().inject(this, view);
 
-        View topView = View.inflate(mActivity, R.layout.subject_pager_topgridview, null);
+        //View topView = View.inflate(mActivity, R.layout.subject_pager_topgridview, null);
         //gridView_top = (NoscrollGridView) topView.findViewById(R.id.gridview_top);
-        x.view().inject(this, topView);
+        //x.view().inject(this, topView);
 
-        listView.addHeaderView(topView);
+       // listView.addHeaderView(topView);
 
         registerEventBus();
         return view;
@@ -112,14 +110,6 @@ public class SubjectPager extends BasePager {
     @Override
     public void initData() {
         super.initData();
-
-
-//        List<String> beans = new ArrayList<String>();
-//        for (int i = 0 ; i<4;i++) {
-//            String bean = "grid" + i;
-//            beans.add(bean);
-//        }
-
 
         //联网获取数据
         //这里需要判断网络状态
@@ -199,8 +189,8 @@ public class SubjectPager extends BasePager {
 
         itemsBeens = topBeans.getData().getItems();
 
-        subjectTopAdapter = new SubjectTopAdapter(mActivity, itemsBeens);
-        gridView_top.setAdapter(subjectTopAdapter);
+//        subjectTopAdapter = new SubjectTopAdapter(mActivity, itemsBeens);
+//        gridView_top.setAdapter(subjectTopAdapter);
     }
 
     /**
@@ -250,7 +240,7 @@ public class SubjectPager extends BasePager {
        // Log.d("TAG","专题页面"+ "itemsListbeen.size():" + itemsListbeen.size());
 
         if (listAdapter == null) {
-            listAdapter = new SubjectListAdapter(mActivity, itemsListbeen);
+            listAdapter = new SubjectListAdapter(mActivity, itemsListbeen,itemsBeens);
             Log.d("TAG","SubjectPager"+  "走到这里");
         }
             listView.setAdapter(listAdapter);
