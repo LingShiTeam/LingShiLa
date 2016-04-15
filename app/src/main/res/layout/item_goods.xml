@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_goods"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="250dp">
+
+        <ImageView
+            android:id="@+id/item_goods_img"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/default_class_296_296"/>
+
+        <ImageView
+            android:id="@+id/item_collect_goods_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4.0dip"
+            android:paddingBottom="10.0dip"
+            android:paddingLeft="5.0dip"
+            android:paddingRight="10.0dip"
+            android:paddingTop="5.0dip"
+            android:src="@drawable/ic_collect_select"
+            android:visibility="gone"/>
+
+
+        <ImageView
+            android:id="@id/item_goods_empty"
+            android:layout_width="@dimen/sell_empty"
+            android:layout_height="@dimen/sell_empty"
+            android:layout_centerInParent="true"
+            android:src="@drawable/icon_sold"
+            android:visibility="visible"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/item_goods_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/both_sides_new_distance"
+        android:ellipsize="end"
+        android:lineSpacingExtra="@dimen/both_sides_new_distance"
+        android:maxLines="2"
+        android:minLines="2"
+        android:text="进口零食 黄冠曲奇饼干 丹麦风味曲奇"
+        android:textColor="@color/c2"
+        android:textSize="@dimen/s8"/>
+
+    <View style="@style/FineLineMarginStyle"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10.0dip"
+        android:layout_marginLeft="@dimen/both_sides_new_distance"
+        android:layout_marginRight="@dimen/both_sides_new_distance"
+        android:layout_marginTop="10.0dip"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/item_goods_cur_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥100"
+            android:textColor="@color/c1"
+            android:textSize="@dimen/s3"/>
+
+        <TextView
+            android:id="@+id/item_goods_ori_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/item_goods_cur_price"
+            android:layout_alignBottom="@id/item_goods_cur_price"
+            android:layout_marginLeft="7.0dip"
+            android:layout_toRightOf="@id/item_goods_cur_price"
+            android:text="原价:￥105"
+            android:textColor="@color/c3"
+            android:textSize="@dimen/s5"/>
+
+        <ImageView
+            android:id="@+id/add_to_cart_2x"
+            android:layout_width="25.0dip"
+            android:layout_height="25.0dip"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/icon_add_to_cart_2x"
+            android:clickable="true"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/add_to_cart_unable_2x"
+            android:layout_width="25.0dip"
+            android:layout_height="25.0dip"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/icon_add_to_cart_unable_2x"
+            android:clickable="false"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@id/item_home_promotion_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/bg_sales"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:text="3.4折"
+            android:textColor="@color/c6"
+            android:textSize="@dimen/s5"
+            android:visibility="gone"/>
+    </RelativeLayout>
+</LinearLayout>

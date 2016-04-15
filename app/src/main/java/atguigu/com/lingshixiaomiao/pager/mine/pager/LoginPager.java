@@ -1,6 +1,8 @@
 package atguigu.com.lingshixiaomiao.pager.mine.pager;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -16,10 +18,13 @@ import org.greenrobot.eventbus.Subscribe;
 
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.CacheUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.PhoneUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Url;
 
@@ -40,6 +45,7 @@ public class LoginPager extends ContentBasePager implements View.OnClickListener
 
     private boolean isOpenEye = false;
     private LoginBean.DataEntity data;
+    private JsonUtils jsonUtils;
 
     /**
      * 构造方法
@@ -95,7 +101,7 @@ public class LoginPager extends ContentBasePager implements View.OnClickListener
         int length = password.length();
         if (phoneNumber && length >= 6 && length <= 16) {
             btn_mine_login.setEnabled(true);
-        }else{
+        } else {
             btn_mine_login.setEnabled(false);
         }
     }
@@ -113,18 +119,28 @@ public class LoginPager extends ContentBasePager implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        Intent intent = new Intent(mActivity, MineContentActivity.class);
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.iv_mine_login_eye:
                 setEye();
                 break;
             case R.id.btn_mine_login:
-               login();
+                login();
                 break;
             case R.id.tv_mine_login_forget_password:
-
+                bundle.putString("title", "重置密码");
+                bundle.putString("url", Url.FORGET_PASSWORD_URL);
+                intent.putExtras(bundle);
+                intent.putExtra("pager", Constants.WEBVIEW_PAGER);
+                mActivity.startActivity(intent);
                 break;
             case R.id.tv_mine_login_mobile_register:
-
+                bundle.putString("title", "注册");
+                bundle.putString("url", Url.REGISTER_URL);
+                intent.putExtras(bundle);
+                intent.putExtra("pager", Constants.WEBVIEW_PAGER);
+                mActivity.startActivity(intent);
                 break;
             case R.id.iv_mine_three_qq:
 
@@ -146,11 +162,13 @@ public class LoginPager extends ContentBasePager implements View.OnClickListener
         String password = et_mine_login_password.getText().toString();
         String url = Url.LOGIN_URLS[0] + number + Url.LOGIN_URLS[1] + password + Url.LOGIN_URLS[2];
         LogUtils.loge("登录 url = " + url);
-        new JsonUtils<LoginBean>().loadData(url, LoginBean.class);
+        jsonUtils = new JsonUtils();
+        jsonUtils.loadData(url, LoginBean.class);
     }
 
     /**
      * 获取登陆返回信息
+     *
      * @param loginBean
      */
     @Subscribe
@@ -158,17 +176,12 @@ public class LoginPager extends ContentBasePager implements View.OnClickListener
         String rs_code = loginBean.getRs_code();
         if (Constants.SUCCESS.equals(rs_code)) {
             data = loginBean.getData();
-            loginSuccess();
-        }else {
+            CacheUtils.setCache(CacheUtils.getSmallFile(mActivity, "login"), jsonUtils.getJson());
+            LoginUtils.getInstance().loginRequestSuccess(loginBean);
+            mActivity.finish();
+        } else {
             Toast.makeText(mActivity, loginBean.getRs_msg(), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    /**
-     * 登录成功,进入用户账户
-     */
-    private void loginSuccess() {
-        Toast.makeText(mActivity, "开始进入用户界面", Toast.LENGTH_SHORT).show();
     }
 
     @Override

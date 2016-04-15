@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -22,11 +23,13 @@ public class HistoryAdapter extends BaseAdapter {
     private final Context context;
     private final List<SearchHistory> lists;
     private final SearchHistoryDao dao;
+    private final ListView listView;
 
-    public HistoryAdapter(Context context, List<SearchHistory> lists, SearchHistoryDao dao) {
+    public HistoryAdapter(Context context, List<SearchHistory> lists, SearchHistoryDao dao, ListView listView) {
         this.context = context;
         this.lists = lists;
         this.dao = dao;
+        this.listView = listView;
     }
 
     @Override
@@ -90,6 +93,11 @@ public class HistoryAdapter extends BaseAdapter {
             if (lists != null && dao != null) {
                 dao.delete(lists.get(position));
                 lists.remove(position);
+                if(lists.size() == 0) {
+                   if(listView.isShown()) {
+                       listView.setVisibility(View.GONE);
+                   }
+                }
             }
             notifyDataSetChanged();
         }
