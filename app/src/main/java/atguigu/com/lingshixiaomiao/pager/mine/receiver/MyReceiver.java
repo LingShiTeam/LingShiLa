@@ -59,7 +59,7 @@ public class MyReceiver extends BroadcastReceiver {
 
             Intent i = new Intent(context, MineContentActivity.class);
             i.putExtras(bundle);
-            i.putExtra("pager", Constants.WEB_PAGER);
+            i.putExtra("pager", Constants.PUSH_PAGER);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(i);

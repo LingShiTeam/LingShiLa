@@ -16,10 +16,12 @@ public abstract class ContentBasePager extends BasePager {
      */
 
     public String title;
+    public String complete;
 
     public ContentBasePager(Activity mActivity) {
         super(mActivity);
         title = setTitle();
+        complete = setComplete();
     }
 
     @Override
@@ -27,8 +29,17 @@ public abstract class ContentBasePager extends BasePager {
 
     public abstract String setTitle();
 
+    public String setComplete(){
+        return "";
+    }
+
     @Override
     public void initData() {
         super.initData();
     }
+
+    public void complete(){
+
+    }
+
 }

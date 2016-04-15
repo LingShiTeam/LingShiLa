@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="#eaeaea" />
+
+    <EditText
+        android:id="@+id/rt_mine_change_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="20dp"
+        android:background="@null"
+        android:hint="请输入新的昵称" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="#eaeaea" />
+
+    <Button
+        android:id="@+id/btn_mine_change_nickname_complete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/mine_setting_out_selector"
+        android:padding="10dp"
+        android:text="完成"
+        android:textColor="#f00" />
+
+</LinearLayout>

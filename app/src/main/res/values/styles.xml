@@ -59,7 +59,6 @@
     </style>
 
     // 滑动退出activity --mine
-
     <style name="AppBackTheme" parent="@android:style/Theme.Holo.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
     </style>
@@ -97,6 +96,14 @@
         <item name="android:layout_marginLeft">@dimen/login_three_btn_magin</item>
         <item name="android:layout_marginRight">@dimen/login_three_btn_magin</item>
     </style>
-    <!--登录界面样式-->
+
+    <!-- 搜索结果界面item线条样式-->
+    <style name="FineLineMarginStyle">
+        <item name="android:background">@color/c4</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/fine_line_height</item>
+        <item name="android:layout_marginLeft">@dimen/both_sides_new_distance</item>
+        <item name="android:layout_marginRight">@dimen/both_sides_new_distance</item>
+    </style>
 
 </resources>

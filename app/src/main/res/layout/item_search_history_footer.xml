@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/btn_clear_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/btn_cart_delete"
+        android:drawablePadding="5.0dip"
+        android:paddingBottom="18.0dip"
+        android:paddingTop="18.0dip"
+        android:text="清空搜索记录"
+        android:textColor="@color/c8"
+        android:textSize="@dimen/s8"/>
+</LinearLayout>

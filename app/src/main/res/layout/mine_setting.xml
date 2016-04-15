@@ -21,4 +21,14 @@
 
     <include layout="@layout/mine_setting_item_6" />
 
+    <Button
+        android:visibility="gone"
+        android:id="@+id/btn_mine_setting_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:background="@drawable/mine_setting_out_selector"
+        android:padding="10dp"
+        android:text="退出登录" />
+
 </LinearLayout>
