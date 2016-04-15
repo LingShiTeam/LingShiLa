@@ -207,8 +207,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppBackTheme">
         </activity>
-        <activity android:name=".pager.home.activity.SearchResultActivity"
+        <activity
+            android:name=".pager.home.activity.SearchResultActivity"
             android:theme="@style/AppBackTheme">
+        </activity>
+        <activity android:name=".pager.home.activity.LeftMenuItemActivity"
+                  android:theme="@style/Theme.PageIndicatorDefaults">
         </activity>
     </application>
 

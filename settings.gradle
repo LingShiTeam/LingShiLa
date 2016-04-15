@@ -1,1 +1,1 @@
-include ':app', ':demo', ':viewpagerindicator_library', ':xutils_library',':MyDaoGenerator'
+include ':app', ':demo', ':xutils_library', ':MyDaoGenerator', ':viewpagerindicator_library'

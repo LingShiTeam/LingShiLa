@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,11 +32,15 @@ import java.util.List;
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
+import atguigu.com.lingshixiaomiao.pager.home.activity.LeftMenuItemActivity;
 import atguigu.com.lingshixiaomiao.pager.home.activity.SearchActivity;
+import atguigu.com.lingshixiaomiao.pager.home.adapter.LeftMenuAdapter;
 import atguigu.com.lingshixiaomiao.pager.home.adapter.ListViewAdapter;
+import atguigu.com.lingshixiaomiao.pager.home.bean.HomeBean;
 import atguigu.com.lingshixiaomiao.pager.home.bean.HomePagerBean;
 import atguigu.com.lingshixiaomiao.pager.home.bean.HomeTopBean;
 import atguigu.com.lingshixiaomiao.pager.home.utils.CarouselUtils;
+import atguigu.com.lingshixiaomiao.pager.home.utils.CarouselUtilsHome;
 import atguigu.com.lingshixiaomiao.pager.home.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.NetWorkUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.SPUtils;
@@ -50,7 +55,6 @@ public class HomePager extends BasePager implements View.OnClickListener {
     private ImageButton ib_left_menu;
     private TextView et_search;
     private RelativeLayout rl_cart;
-    private LinearLayout lv_left_menu;
     private DrawerLayout dl_menu;
     private RefreshLayout refreshlayout_home;
 
@@ -73,6 +77,20 @@ public class HomePager extends BasePager implements View.OnClickListener {
     private ImageView widget_loading_pb;
     // 加载动画
     private AnimationDrawable ad;
+    // 首页主数据
+    private HomeBean homeBean;
+    private List<HomeBean.DataEntity.TopicsEntity> hometopics;
+    private ImageView drawerleft_image_avatar;
+    private LinearLayout drawerleft_framelayout_login;
+    private TextView drawerleft_nick_name;
+    private TextView drawerleft_to_person_page;
+    private TextView drawerleft_to_myorder_page;
+    private LinearLayout drawerleft_framelayout_unlogin;
+    private TextView drawerleft_to_login_page;
+    private TextView drawerleft_to_registe_page;
+    private ListView left_drawer_list;
+    private LeftMenuAdapter menuAdapter;
+    private View menuView;
 
     public HomePager(Activity mActivity, DrawerLayout dl_menu) {
         super(mActivity);
@@ -233,9 +251,7 @@ public class HomePager extends BasePager implements View.OnClickListener {
         // 搜索框点击监听
         et_search.setOnClickListener(this);
 
-
     }
-
 
     /**
      * 通过id获取view
@@ -246,7 +262,6 @@ public class HomePager extends BasePager implements View.OnClickListener {
         ib_left_menu = (ImageButton) parent.findViewById(R.id.ib_left_menu);
         et_search = (TextView) parent.findViewById(R.id.et_search);
         rl_cart = (RelativeLayout) parent.findViewById(R.id.rl_cart);
-        lv_left_menu = (LinearLayout) parent.findViewById(R.id.lv_left_menu);
         refreshlayout_home = (RefreshLayout) parent.findViewById(R.id.refreshlayout_home);
         listview_home = (ListView) parent.findViewById(R.id.listview_home);
         iv_home_tiptop = (ImageView) parent.findViewById(R.id.iv_home_tiptop);
@@ -268,7 +283,6 @@ public class HomePager extends BasePager implements View.OnClickListener {
         listview_home.addHeaderView(headerView);
 
         ll_top_points = (LinearLayout) headerView.findViewById(R.id.ll_top_points);
-
     }
 
     @Override
@@ -285,9 +299,11 @@ public class HomePager extends BasePager implements View.OnClickListener {
         //获取保存的首页数据
         String homeData = SPUtils.getString(mActivity, SPUtils.HOME_TOP_DATA);
         if (homeData != null && !NetWorkUtils.isNetworkConnected()) {
-            homeTopBean = new Gson().fromJson(homeData, HomeTopBean.class);
+            //homeTopBean = new Gson().fromJson(homeData, HomeTopBean.class);
+            homeBean = new Gson().fromJson(homeData, HomeBean.class);
             //设置顶部轮播图
-            new CarouselUtils(headerView, mActivity).setViewPagerData(homeTopBean);
+            //new CarouselUtils(headerView, mActivity).setViewPagerData(homeTopBean);
+            new CarouselUtilsHome(headerView, mActivity).setViewPagerData(homeBean);
         }
 
         String homePageData = SPUtils.getString(mActivity, SPUtils.HOME_PAGE_DATA);
@@ -297,8 +313,8 @@ public class HomePager extends BasePager implements View.OnClickListener {
         }
 
         //通过JsonUtils工具类解析url, 并通过EventBus返回数据
-        new JsonUtils().loadData(Url.HOME_TOP_URL, HomeTopBean.class);
-
+        //new JsonUtils().loadData(Url.HOME_TOP_URL, HomeTopBean.class);
+        new JsonUtils().loadData(Url.HOME_DATA_BASE, HomeBean.class);
     }
 
     /**
@@ -336,6 +352,25 @@ public class HomePager extends BasePager implements View.OnClickListener {
         }
     }
 
+    @Subscribe
+    public void onEventMainThread(HomeBean homeBean) {
+        LogUtils.loge("数据解析成功 : " + homeBean.toString());
+
+        // 取消加载显示的dialog
+        ad.stop();
+        loading_dialog.setVisibility(View.GONE);
+
+        this.homeBean = homeBean;
+        hometopics = homeBean.getData().getTopics();
+
+        if (homeBean != null) {
+            //设置顶部轮播图
+            new CarouselUtilsHome(headerView, mActivity).setViewPagerData(homeBean);
+            // 显示ListView列表
+            showListView();
+        }
+    }
+
     /**
      * 点击按钮弹出左侧菜单
      */
@@ -343,6 +378,68 @@ public class HomePager extends BasePager implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             dl_menu.openDrawer(Gravity.LEFT);
+            // 显示侧滑菜单数据
+            if(homeBean != null && ib_left_menu.isShown()) {
+
+                if(menuAdapter == null) {
+                    menuView = dl_menu.getRootView();
+                    initMenuView(menuView);
+                }
+
+                if(menuAdapter == null) {
+                    menuAdapter = new LeftMenuAdapter(mActivity,homeBean);
+                }
+
+                // 判断是否已经登录
+                drawerleft_to_login_page.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        LogUtils.loge("TAG","跳转到登录界面");
+                    }
+                });
+
+                left_drawer_list.setAdapter(menuAdapter);
+            }
+        }
+    }
+
+    /**
+     * 初始化侧滑菜单布局控件
+     * @param menuView
+     */
+    private void initMenuView(View menuView) {
+        left_drawer_list = (ListView) menuView.findViewById(R.id.left_drawer_list);
+        drawerleft_image_avatar = (ImageView) menuView.findViewById(R.id.drawerleft_image_avatar);
+        drawerleft_framelayout_login = (LinearLayout) menuView.findViewById(R.id.drawerleft_framelayout_login);
+        drawerleft_nick_name = (TextView) menuView.findViewById(R.id.drawerleft_nick_name);
+        drawerleft_to_person_page = (TextView) menuView.findViewById(R.id.drawerleft_to_person_page);
+        drawerleft_to_myorder_page = (TextView) menuView.findViewById(R.id.drawerleft_to_myorder_page);
+        drawerleft_framelayout_unlogin = (LinearLayout) menuView.findViewById(R.id.drawerleft_framelayout_unlogin);
+        drawerleft_to_login_page = (TextView) menuView.findViewById(R.id.drawerleft_to_login_page);
+        drawerleft_to_registe_page = (TextView) menuView.findViewById(R.id.drawerleft_to_registe_page);
+        // 设置侧滑菜单点击监听
+        setLeftMenuListener();
+
+    }
+
+    /**
+     * 设置侧滑菜单点击监听
+     */
+    private void setLeftMenuListener() {
+        // 侧滑菜单的item的点击监听
+        left_drawer_list.setOnItemClickListener(new LeftMenuOnItemClickListener());
+    }
+
+    class LeftMenuOnItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            LogUtils.loge("TAG", "点击了LeftMenu的第" + position + "项");
+            Intent intent = new Intent(mActivity, LeftMenuItemActivity.class);
+            intent.putExtra("itembeanTitle", homeBean.getData().getClassifies().get(position).getTitle());
+            intent.putExtra("itembeanID", homeBean.getData().getClassifies().get(position).getId());
+            mActivity.startActivity(intent);
+            dl_menu.closeDrawers();
         }
     }
 
