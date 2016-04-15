@@ -14,14 +14,6 @@
             android:layout_height="115dp"
             android:layout_margin="5dp" />
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_margin="5dp"
-            android:background="@android:color/holo_red_light"/>
-
         <TextView
             android:id="@+id/tv_scale_item_discount"
             android:layout_width="wrap_content"
@@ -30,6 +22,8 @@
             android:layout_alignParentRight="true"
             android:layout_margin="5dp"
             android:text="4.6折"
+            android:padding="2dp"
+            android:background="@drawable/scale_scalling_bg"
             android:textColor="@android:color/white" />
     </RelativeLayout>
 
@@ -88,11 +82,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:background="@android:color/holo_red_light"
+                android:background="@drawable/scale_scalling_bg_2"
                 android:clickable="true"
                 android:text="加入购物车"
                 android:textColor="@android:color/white"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:padding="3dp"
+                android:layout_marginRight="3dp"/>
+
         </RelativeLayout>
 
         <LinearLayout

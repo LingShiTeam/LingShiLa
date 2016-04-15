@@ -5,13 +5,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
@@ -26,6 +26,7 @@ import atguigu.com.lingshixiaomiao.pager.mine.bean.UpdateBean;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.CacheClearUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.CacheUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.MineUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.PushUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.UpdateUtils;
@@ -41,6 +42,7 @@ public class SettingPager extends ContentBasePager implements View.OnClickListen
     private LinearLayout ll_mine_setting_private;
     private LinearLayout ll_setting_clear_cache;
     private CheckBox cb_mine_setting_push;
+    private Button btn_mine_setting_out;
 
     /**
      * 构造方法
@@ -65,6 +67,7 @@ public class SettingPager extends ContentBasePager implements View.OnClickListen
         ll_mine_setting_address = (LinearLayout) v.findViewById(R.id.ll_mine_setting_address);
         ll_mine_setting_private = (LinearLayout) v.findViewById(R.id.ll_mine_setting_private);
         cb_mine_setting_push = (CheckBox) v.findViewById(R.id.cb_mine_setting_push);
+        btn_mine_setting_out = (Button)v.findViewById(R.id.btn_mine_setting_out);
         //设置当前版本
         setVersion();
 
@@ -97,6 +100,13 @@ public class SettingPager extends ContentBasePager implements View.OnClickListen
                 showClearCacheDialog();
             }
         });
+        //点击退出登录
+        btn_mine_setting_out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showOutDialog();
+            }
+        });
         //是否打开推送
         cb_mine_setting_push.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -113,6 +123,28 @@ public class SettingPager extends ContentBasePager implements View.OnClickListen
         });
     }
 
+    /**
+     * 显示退出对话框
+     */
+    private void showOutDialog() {
+        new AlertDialog.Builder(mActivity)
+                .setMessage("要退出零食小喵么?")
+                .setNegativeButton("再逛一会儿", null)
+                .setPositiveButton("下次再来", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mActivity.finish();
+                        LoginUtils.getInstance().setLogin(false);
+                        CacheUtils.setCache(CacheUtils.getSmallFile(mActivity, "login"), "");
+                    }
+                })
+                .show();
+    }
+
+    /**
+     * 检测更新
+     * @param updateBean
+     */
     @Subscribe
     public void onEventMainThread(UpdateBean updateBean) {
         LogUtils.loge("更新 = " + updateBean);
@@ -121,21 +153,6 @@ public class SettingPager extends ContentBasePager implements View.OnClickListen
             new UpdateUtils(mActivity).showUpdateDialog(updateBean);
         }else if("1004".equals(rs_code)){
             Toast.makeText(mActivity, "您的小喵已经是最新版本了哦~", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    @Override
-    public void registerEventBus() {
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-    }
-
-    @Override
-    public void unRegisterEventBus() {
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
         }
     }
 
@@ -200,6 +217,17 @@ public class SettingPager extends ContentBasePager implements View.OnClickListen
         loadCacheSize();
         //获取是否开启推送
         cb_mine_setting_push.setChecked(PushUtils.isPush(mActivity));
+        //判断是否登陆,并显示推出按钮
+        showOutButton();
+    }
+
+    private void showOutButton() {
+        boolean login = LoginUtils.getInstance().isLogin();
+        if(login) {
+            btn_mine_setting_out.setVisibility(View.VISIBLE);
+        }else{
+            btn_mine_setting_out.setVisibility(View.GONE);
+        }
     }
 
     private int position;
@@ -211,13 +239,21 @@ public class SettingPager extends ContentBasePager implements View.OnClickListen
                 position = Constants.ABOUT_PAGER;
                 break;
             case R.id.ll_mine_setting_address://管理地址
-                position = Constants.ADDRESS_PAGER;
+                isLogin(Constants.ADDRESS_PAGER);
                 break;
             case R.id.ll_mine_setting_private://个人资料
-                position = Constants.USER_PAGER;
+                isLogin(Constants.USER_PAGER);
                 break;
         }
         startActivity(MineContentActivity.class);
+    }
+
+    private void isLogin(int position) {
+        if (LoginUtils.getInstance().isLogin()) {
+            this.position = position;
+        }else{
+            this.position = Constants.LOGIN_PAGER;
+        }
     }
 
     private void startActivity(Class clazz) {

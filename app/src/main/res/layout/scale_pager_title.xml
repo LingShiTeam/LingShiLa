@@ -24,4 +24,10 @@
         android:layout_centerVertical="true"
         android:layout_margin="5dp"
         android:src="@drawable/btn_cart_pressed" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/darker_gray" />
 </RelativeLayout>
