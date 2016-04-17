@@ -8,6 +8,14 @@ import java.util.List;
  */
 public class SubjectListBean {
 
+    @Override
+    public String toString() {
+        return "SubjectListBean{" +
+                "rs_code='" + rs_code + '\'' +
+                ", data=" + data +
+                ", rs_msg='" + rs_msg + '\'' +
+                '}';
+    }
 
     /**
      * rs_code : 1000
@@ -49,6 +57,15 @@ public class SubjectListBean {
     }
 
     public static class DataBean {
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "count=" + count +
+                    ", items=" + items +
+                    '}';
+        }
+
         private int count;
         /**
          * id : 573
@@ -78,6 +95,19 @@ public class SubjectListBean {
         }
 
         public static class ItemsBean {
+
+            @Override
+            public String toString() {
+                return "ItemsBean{" +
+                        "id=" + id +
+                        ", desc='" + desc + '\'' +
+                        ", title='" + title + '\'' +
+                        ", img=" + img +
+                        ", hotindex=" + hotindex +
+                        ", share_num=" + share_num +
+                        '}';
+            }
+
             private int id;
             private String desc;
             private String title;
@@ -140,6 +170,16 @@ public class SubjectListBean {
             }
 
             public static class ImgBean {
+
+                @Override
+                public String toString() {
+                    return "ImgBean{" +
+                            "img_url='" + img_url + '\'' +
+                            ", img_w=" + img_w +
+                            ", img_h=" + img_h +
+                            '}';
+                }
+
                 private String img_url;
                 private int img_w;
                 private int img_h;
