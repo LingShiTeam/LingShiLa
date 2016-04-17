@@ -1,11 +1,13 @@
 package atguigu.com.lingshixiaomiao.pager.mine.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.AboutPager;
@@ -76,7 +78,9 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
                 pager = new WebPager(this, bundle, false);//普通界面
                 break;
             case Constants.EDITADDRESS_PAGER:
-                pager = new EditAddressPager(this, bundle);//普通界面
+                tv_mine_title_complete.setVisibility(View.VISIBLE);
+                boolean isEdit = getIntent().getBooleanExtra("edit", false);
+                pager = new EditAddressPager(this, bundle, isEdit);//编辑地址页面
                 break;
         }
         loadViews();
@@ -124,5 +128,25 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //处理扫描结果（在界面上显示）
+        if (resultCode == Constants.RESULT_OK) {
+            Bundle bundle = data.getExtras();
+            String scanResult = bundle.getString("result");
+            LogUtils.loge("scanResult = " + scanResult);
+
+            Intent intent = new Intent(this, MineContentActivity.class);
+            bundle = new Bundle();
+            bundle.putString("title", "扫描结果");
+            bundle.putString("url", scanResult);
+            intent.putExtras(bundle);
+            intent.putExtra("pager", Constants.WEBVIEW_PAGER);
+            startActivity(intent);
+
+        }
     }
 }

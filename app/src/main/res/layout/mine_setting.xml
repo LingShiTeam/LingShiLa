@@ -21,6 +21,8 @@
 
     <include layout="@layout/mine_setting_item_6" />
 
+    <include layout="@layout/mine_setting_item_7" />
+
     <Button
         android:visibility="gone"
         android:id="@+id/btn_mine_setting_out"

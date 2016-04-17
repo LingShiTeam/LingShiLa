@@ -46,7 +46,7 @@ public class SnackInfomationActivity extends Activity {
 
         /*添加一个对象，让js可以访问该对象的方法，该对象中可以调用js的方法
          注意java调用js时，addJavascripeInterface()是不必须的*/
-        
+
 
         //获取当前食物的id
         int snack_id = getIntent().getIntExtra("snack_id", 0);

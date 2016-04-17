@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zxing.activity.CaptureActivity;
+
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
@@ -40,6 +42,7 @@ public class SettingPager extends ContentBasePager implements View.OnClickListen
     private LinearLayout ll_mine_setting_address;
     private LinearLayout ll_setting_version;
     private LinearLayout ll_mine_setting_private;
+    private LinearLayout ll_mine_setting_erweima;
     private LinearLayout ll_setting_clear_cache;
     private CheckBox cb_mine_setting_push;
     private Button btn_mine_setting_out;
@@ -62,6 +65,7 @@ public class SettingPager extends ContentBasePager implements View.OnClickListen
 
     private void findViewById(View v) {
         ll_mine_setting_about = (LinearLayout) v.findViewById(R.id.ll_mine_setting_about);
+        ll_mine_setting_erweima = (LinearLayout) v.findViewById(R.id.ll_mine_setting_erweima);
         ll_setting_version = (LinearLayout) v.findViewById(R.id.ll_setting_version);
         ll_setting_clear_cache = (LinearLayout) v.findViewById(R.id.ll_setting_clear_cache);
         ll_mine_setting_address = (LinearLayout) v.findViewById(R.id.ll_mine_setting_address);
@@ -121,7 +125,19 @@ public class SettingPager extends ContentBasePager implements View.OnClickListen
                 application.setJpush();
             }
         });
+
+        //二维码扫描
+        ll_mine_setting_erweima.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //跳转到拍照界面扫描二维码
+                Intent intent = new Intent(mActivity, CaptureActivity.class);
+                mActivity.startActivityForResult(intent, Constants.PHOTO_PIC);
+            }
+        });
     }
+
+
 
     /**
      * 显示退出对话框

@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <!--parent="Theme.AppCompat.Light.DarkActionBar"-->
 
     <!-- 主界面下方四个按钮的样式
   android:layout_width="wrap_content"
@@ -58,12 +59,12 @@
         <item name="android:layout_height">@dimen/fine_line_height</item>
     </style>
 
-    // 滑动退出activity --mine
+     <!--滑动退出activity &#45;&#45;mine-->
     <style name="AppBackTheme" parent="@android:style/Theme.Holo.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    //alertdialog去除边框
+    <!--alertdialog去除边框-->
     <style name="dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>

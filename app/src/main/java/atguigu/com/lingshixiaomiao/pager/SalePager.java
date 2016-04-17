@@ -71,6 +71,7 @@ public class SalePager extends BasePager {
      * 从网络获取listview的数据
      */
     private void getDataFromNet() {
+
     }
 
     /**
