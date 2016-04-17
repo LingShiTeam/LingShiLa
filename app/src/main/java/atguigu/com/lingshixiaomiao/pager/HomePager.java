@@ -335,8 +335,8 @@ public class HomePager extends BasePager implements View.OnClickListener {
     @Subscribe
     public void onEventMainThread(HomeTopBean homeTopBean) {
         LogUtils.loge("数据解析成功 : " + homeTopBean.toString());
-
         // 取消加载显示的dialog
+
         ad.stop();
         loading_dialog.setVisibility(View.GONE);
 

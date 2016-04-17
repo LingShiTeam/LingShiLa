@@ -21,6 +21,7 @@ import java.util.List;
 
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.pager.home.TabBasePager;
 import atguigu.com.lingshixiaomiao.pager.home.adapter.MenuPagerAdapter;
 import atguigu.com.lingshixiaomiao.pager.home.bean.MenuTabTitleBean;
 import atguigu.com.lingshixiaomiao.pager.home.utils.JsonUtils;
@@ -47,6 +48,8 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
     private LinearLayout linearlayout;
     private ImageView widget_loading_pb;
     private AnimationDrawable background;
+    private List<TabBasePager> pagers;
+    private int itembeanID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,12 +93,23 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
         registerEventBus();
         // TAB标签
         tabTitleLists = new ArrayList<>();
+        tabTitleLists.add("全部");
+
         // TAB标签ID
         tabIDLists = new ArrayList<>();
         // 从菜单列表中传递过来的数据
-        int itembeanID = getIntent().getIntExtra("itembeanID", 0);
+        itembeanID = getIntent().getIntExtra("itembeanID", 0);
         itembeanTitle = getIntent().getStringExtra("itembeanTitle");
         LogUtils.loge("TAG", "itembeanID = " + itembeanID + "itembeanTitle = " + itembeanTitle);
+
+        /**
+         * http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160415140544&sig=c98893f7c3cd52ff&wssig=3334a64360e583c4&os_type=" +
+         "3&version=20&channel_name=wandoujia&srv=2406&pg_cur=1&pg_size=20&sub_id=0&parent_id=;//32&since_id=0
+         */
+        pagers = new ArrayList<>();
+        String tabUrl = Url.MENU_ITEM_TAB_DES_MAIM + itembeanID + "since_id=0";
+        pagers.add(new TabPager1(this, tabUrl));
+
         /**
          * 请求TAB标签的链接
          * http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160415145826&sig=9f18131c921e2758&wssig=
@@ -127,21 +141,52 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
     @Subscribe
     public void onEventMainThread(MenuTabTitleBean menuTabTitleBean) {
         LogUtils.loge("数据解析成功TAB : " + menuTabTitleBean.toString());
-        background.stop();
-        widget_loading_pb.setVisibility(View.GONE);
+        stopLoading();
         linearlayout.setVisibility(View.VISIBLE);
+
         // 准备数据
         for (int i = 0; i < menuTabTitleBean.getData().getCount(); i++) {
             tabTitleLists.add(menuTabTitleBean.getData().getItems().get(i).getTitle());
             tabIDLists.add(menuTabTitleBean.getData().getItems().get(i).getId() + "");
+            /**
+             * http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160415140544&sig=c98893f7c3cd52ff&wssig=3334a64360e583c4&os_type=" +
+             "3&version=20&channel_name=wandoujia&srv=2406&pg_cur=1&pg_size=20&sub_id=;//0&parent_id=32&since_id=0
+             */
+            String tabUrl = Url.MENU_ITEM_TAB_DES + menuTabTitleBean.getData().getItems().get(i).getId() + "&parent_id=" + itembeanID + "&since_id=0";
+            pagers.add(new TabPager1(this, tabUrl));
         }
+
         // 显示数据
         if (adapter == null) {
-            adapter = new MenuPagerAdapter(LeftMenuItemActivity.this, tabTitleLists);
+            adapter = new MenuPagerAdapter(LeftMenuItemActivity.this, tabTitleLists, pagers);
         }
         vp_leftmenu_detail.setAdapter(adapter);
         tab_indicator.setViewPager(vp_leftmenu_detail);
+        tab_indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                // 屏蔽ViewPager的预加载
+                pagers.get(position).initData();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    /**
+     * 停止加载动画
+     */
+    private void stopLoading() {
+        background.stop();
+        widget_loading_pb.setVisibility(View.GONE);
     }
 
     /**
@@ -169,6 +214,7 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
 
     /**
      * 点击的回调监听
+     *
      * @param v
      */
     @Override

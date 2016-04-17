@@ -85,6 +85,8 @@
             android:name=".pager.mine.activity.MineContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppBackTheme"/>
+        <activity android:name=".pager.home.activity.LeftMenuItemActivity"
+            android:theme="@style/Theme.PageIndicatorDefaults"/>
 
         <!-- 极光推送 -->
         <!-- Rich push 核心功能 since 2.0.6 -->
