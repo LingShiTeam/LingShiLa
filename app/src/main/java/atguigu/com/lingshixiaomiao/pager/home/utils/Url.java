@@ -31,4 +31,16 @@ public class Url {
      */
     public static final String MENU_ITEM_TAB_TITLE = "http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160415145826&sig=9f18131c921e2758&wssig=" +
             "b1aae3295371e0f1&os_type=3&version=20&channel_name=wandoujia&srv=2402&classify_id=";
+    /**
+     * 侧滑菜单栏详情页面全部
+     */
+    public static final String MENU_ITEM_TAB_DES_MAIM = "http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160415140544&sig=c98893f7c3cd52ff&wssig=3334a64360e583c4&os_type=" +
+            "3&version=20&channel_name=wandoujia&srv=2406&pg_cur=1&pg_size=20&sub_id=0&parent_id=";//32&since_id=0"
+
+    /**
+     * 侧滑菜单栏详情页面
+     */
+    public static final String MENU_ITEM_TAB_DES = "http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160415140544&sig=c98893f7c3cd52ff&wssig=3334a64360e583c4&os_type=" +
+            "3&version=20&channel_name=wandoujia&srv=2406&pg_cur=1&pg_size=20&sub_id=";//0&parent_id=32&since_id=0";
+
 }
