@@ -36,6 +36,7 @@
             android:layout_gravity="center"
             android:layout_marginRight="7dp"
             android:layout_weight="1"
+            android:background="@drawable/scale_scalling_bg"
             android:gravity="center"
             android:text="加入购物车"
             android:textColor="@android:color/white"

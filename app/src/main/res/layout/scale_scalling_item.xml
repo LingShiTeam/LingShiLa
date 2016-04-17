@@ -81,6 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:background="@drawable/scale_scalling_bg_2"
                 android:clickable="true"
                 android:text="加入购物车"
                 android:textColor="@android:color/white"
