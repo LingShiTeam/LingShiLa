@@ -29,4 +29,6 @@ public class Constants {
 
     public static final int DEFAULT_ADDRESS = 1;//默认地址类型
 
+    public static final int PHOTO_PIC = 1;
+    public static final int RESULT_OK = -1;
 }

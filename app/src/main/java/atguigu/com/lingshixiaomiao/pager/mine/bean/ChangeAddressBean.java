@@ -5,13 +5,26 @@ package atguigu.com.lingshixiaomiao.pager.mine.bean;
  */
 public class ChangeAddressBean {
 
+    @Override
+    public String toString() {
+        return "ChangeAddressBean{" +
+                "rs_code='" + rs_code + '\'' +
+                ", data=" + data +
+                ", rs_msg='" + rs_msg + '\'' +
+                '}';
+    }
+
     /**
      * rs_code : 1000
-     * data : {}
+     * data : {"id":24850}
      * rs_msg : success
      */
 
     private String rs_code;
+    /**
+     * id : 24850
+     */
+
     private DataEntity data;
     private String rs_msg;
 
@@ -40,5 +53,22 @@ public class ChangeAddressBean {
     }
 
     public static class DataEntity {
+
+        @Override
+        public String toString() {
+            return "DataEntity{" +
+                    "id=" + id +
+                    '}';
+        }
+
+        private int id;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
     }
 }
