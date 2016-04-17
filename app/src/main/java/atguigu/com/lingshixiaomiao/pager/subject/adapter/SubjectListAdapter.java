@@ -1,6 +1,7 @@
 package atguigu.com.lingshixiaomiao.pager.subject.adapter;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.xutils.common.util.DensityUtil;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
@@ -44,16 +46,20 @@ public class SubjectListAdapter extends BaseAdapter {
     //GridView
     private SubjectTopAdapter subjectTopAdapter;
 
-
     private ImageOptions imageOptions = new ImageOptions.Builder()
+            //.setSize(DensityUtil.dip2px(120), DensityUtil.dip2px(70))
+            .setRadius(DensityUtil.dip2px(5))
             // 如果ImageView的大小不是定义为wrap_content, 不要crop.
             .setCrop(false)
             // 加载中或错误图片的ScaleType
-            .setPlaceholderScaleType(ImageView.ScaleType.FIT_XY)
-            .setImageScaleType(ImageView.ScaleType.FIT_XY)
-            .setLoadingDrawableId(R.drawable.default_project612_306)
-            .setFailureDrawableId(R.drawable.default_project612_306)
+            .setPlaceholderScaleType(ImageView.ScaleType.CENTER_CROP)
+            .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+            .setConfig(Bitmap.Config.ARGB_4444)
+           // .setLoadingDrawableId(R.drawable.default_project612_306)
+           // .setFailureDrawableId(R.drawable.de)
             .build();
+
+
     private NoscrollGridView gridview_top;
 
 
@@ -130,6 +136,7 @@ public class SubjectListAdapter extends BaseAdapter {
             }else{
                 convertView = View.inflate(activity, R.layout.subject_pager_topgridview, null);
                 gridview_top = (NoscrollGridView) convertView.findViewById(R.id.gridview_top);
+                convertView.setTag(true);
             }
 
         }
@@ -142,18 +149,18 @@ public class SubjectListAdapter extends BaseAdapter {
                 gridview_top.setAdapter(subjectTopAdapter);
                 break;
             case TYEP_ITEM_LISTVIEW:
-                holder.item_subject_title.setText(listBeans.get(position - 1).getTitle());
-                holder.item_subject_collect.setText(listBeans.get(position - 1).getHotindex() + "");
-                String url = listBeans.get(position - 1).getImg().getImg_url();
-                Log.d("SubjectListAdapter", "url != null:" + (url != null));
 
-                LogUtils.loge("imageUrl = " + url);
-                x.image().bind(holder.item_subject_img, url);
+                    holder.item_subject_title.setText(listBeans.get(position-1).getTitle());
+
+                    holder.item_subject_collect.setText(listBeans.get(position - 1).getHotindex() + "");
+                    String url = listBeans.get(position - 1).getImg().getImg_url();
+                    Log.d("SubjectListAdapter", "url != null:" + (url != null));
+
+                    LogUtils.loge("imageUrl = " + url);
+                    x.image().bind(holder.item_subject_img, url,imageOptions);
 
                 break;
         }
-
-
 
         return convertView;
     }

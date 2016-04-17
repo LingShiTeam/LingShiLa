@@ -1,7 +1,5 @@
 package atguigu.com.lingshixiaomiao.pager.subject.utils;
 
-import android.app.Application;
-
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,9 +20,10 @@ public class JsonUtils<T> {
     private T t;
 
     /**
-     *解析数据
-     * @param url 传入的数据
-     * @param aClass  数据类xin
+     * 解析数据
+     *
+     * @param url    传入的数据
+     * @param aClass 数据类xin
      */
     public void loadData(String url, Class<T> aClass) {
         this.aClass = aClass;
@@ -39,7 +38,7 @@ public class JsonUtils<T> {
                     //保存首页的数据
                     CacheUtils.putString(MyApplication.getContext(), CacheUtils.SUBJECT_LIST_DATA, result);
                 }
-                    parseJaon(result);
+                parseJson(result);
             }
 
             @Override
@@ -59,7 +58,7 @@ public class JsonUtils<T> {
         });
     }
 
-    private T parseJaon(String json) {
+    private T parseJson(String json) {
         t = (T) new Gson().fromJson(json, aClass);
 
         LogUtils.loge(aClass.getSimpleName());
