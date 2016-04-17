@@ -23,7 +23,6 @@
             android:layout_margin="5dp"
             android:text="4.6折"
             android:padding="2dp"
-            android:background="@drawable/scale_scalling_bg"
             android:textColor="@android:color/white" />
     </RelativeLayout>
 
