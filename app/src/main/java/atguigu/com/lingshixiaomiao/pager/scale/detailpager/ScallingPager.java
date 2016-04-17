@@ -96,6 +96,7 @@ public class ScallingPager extends ScaleBasePager {
 
     @Override
     public void initData() {
+
         super.initData();
 
         String savedJson = CacheUtil.getString(mActivity, Url.SCALLING_URL_0);
@@ -177,10 +178,6 @@ public class ScallingPager extends ScaleBasePager {
      */
     private class MyLvAdapter extends BaseAdapter {
 
-        MyLvAdapter() {
-            timeTvs = new ArrayList<>();
-        }
-
         @Override
         public int getCount() {
             return itemsEntities.size();
@@ -190,6 +187,7 @@ public class ScallingPager extends ScaleBasePager {
         public View getView(final int position, View convertView, ViewGroup parent) {
 
             Holder holder;
+
             if (convertView == null) {
 
                 holder = new Holder();
@@ -245,6 +243,7 @@ public class ScallingPager extends ScaleBasePager {
 
                 @Override
                 public void onTick(long millisUntilFinished) {
+
                     String leftDate = TimeUtil.getLeftDate(millisUntilFinished);
                     textView.setText(leftDate);
                 }
@@ -276,6 +275,7 @@ public class ScallingPager extends ScaleBasePager {
             holder.pb_scale_item_progress.setMax(100);
             holder.pb_scale_item_progress.setProgress(itemsEntity.getSpecial_percentage());
             holder.tv_scale_item_count.setText("已抢" + String.valueOf(itemsEntity.getSpecial_num()) + "件");
+
             return convertView;
         }
 
