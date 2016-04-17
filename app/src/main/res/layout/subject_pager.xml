@@ -16,10 +16,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="7dp"
             android:text="专题"
             android:textColor="#000000"
-            android:textSize="17sp" />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/iv_cart"
@@ -30,11 +30,18 @@
             android:src="@drawable/btn_cart_normal" />
     </LinearLayout>
 
-    <ListView
-        android:paddingTop="10dp"
-        android:id="@+id/listview_subject"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="match_parent"
+        android:paddingTop="7dp">
+
+        <ListView
+            android:id="@+id/listview_subject"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
+
+
+    </RelativeLayout>
 
 </LinearLayout>
