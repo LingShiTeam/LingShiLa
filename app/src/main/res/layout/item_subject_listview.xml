@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/item_subject_img"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="180dp"
         />
 
     <TextView

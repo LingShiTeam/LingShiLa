@@ -1,11 +1,14 @@
 package atguigu.com.lingshixiaomiao.pager.subject.adapter;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import org.xutils.common.util.DensityUtil;
+import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.List;
@@ -21,6 +24,19 @@ public class SubjectTopAdapter extends BaseAdapter {
 
     private List<SubjectTopBean.DataBean.ItemsBean> ItemsBeans;
     private Activity activity;
+
+    private ImageOptions imageOptions = new ImageOptions.Builder()
+            //.setSize(DensityUtil.dip2px(120), DensityUtil.dip2px(70))
+            .setRadius(DensityUtil.dip2px(5))
+            // 如果ImageView的大小不是定义为wrap_content, 不要crop.
+            .setCrop(false)
+            // 加载中或错误图片的ScaleType
+            //.setPlaceholderScaleType(ImageView.ScaleType.CENTER_INSIDE)
+            .setImageScaleType(ImageView.ScaleType.CENTER_INSIDE)
+            .setConfig(Bitmap.Config.ARGB_4444)
+            //.setLoadingDrawableId(R.drawable.default_projects_small300_150)
+            //.setFailureDrawableId(R.drawable.default_projects_small300_150)
+            .build();
 
     public SubjectTopAdapter(Activity activity, List<SubjectTopBean.DataBean.ItemsBean> ItemsBeans) {
         this.activity = activity;

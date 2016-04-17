@@ -2,9 +2,11 @@ package atguigu.com.lingshixiaomiao.pager;
 
 
 import android.app.Activity;
+import android.graphics.drawable.AnimationDrawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ import java.util.List;
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
+import atguigu.com.lingshixiaomiao.pager.scale.utils.CacheUtil;
 import atguigu.com.lingshixiaomiao.pager.subject.adapter.SubjectListAdapter;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectListBean;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectTopBean;
@@ -44,15 +47,14 @@ public class SubjectPager extends BasePager {
     @ViewInject(R.id.iv_cart)
     private ImageView iv_cart;
 
-//
-//    @ViewInject(R.id.gridview_top)
-//    private NoscrollGridView gridView_top;
-
-
-//    /**
-//     * 上部gridview的适配器
-//     */
-//    private SubjectTopAdapter subjectTopAdapter;
+    /**
+     * 加载中的页面显示的布局
+     */
+    private LinearLayout ll_subject_loading;
+    /**
+     * 需要加载的动画
+     */
+    private ImageView subject_loading;
     /**
      * 下部listview的适配器
      */
@@ -78,7 +80,10 @@ public class SubjectPager extends BasePager {
      */
     private List<SubjectListBean.DataBean.ItemsBean> itemsListbeen;
 
-
+    /**
+     * 数据加载中的动画
+     */
+    private AnimationDrawable loadingAnim;
 
     /**
      * 构造方法
@@ -96,11 +101,11 @@ public class SubjectPager extends BasePager {
         //iv_cart = (ImageView) view.findViewById(R.id.iv_cart);
         x.view().inject(this, view);
 
-        //View topView = View.inflate(mActivity, R.layout.subject_pager_topgridview, null);
-        //gridView_top = (NoscrollGridView) topView.findViewById(R.id.gridview_top);
-        //x.view().inject(this, topView);
+        ll_subject_loading = (LinearLayout) view.findViewById(R.id.ll_subject_loading);
+        subject_loading = (ImageView) view.findViewById(R.id.subject_loading);
 
-       // listView.addHeaderView(topView);
+
+        // loadingAnim = (AnimationDrawable) mActivity.getResources().getDrawable(R.drawable.ic_page_loading);
 
         registerEventBus();
         return view;
@@ -111,30 +116,44 @@ public class SubjectPager extends BasePager {
     public void initData() {
         super.initData();
 
+        //显示数据加载中的动画
+        loadingAnim = (AnimationDrawable) subject_loading.getBackground();
+        if (loadingAnim != null && !loadingAnim.isRunning()) {
+            loadingAnim.start();
+        }
+
         //联网获取数据
         //这里需要判断网络状态
         if (!SubjectNetUtils.isNetworkConnected()) {
             Toast.makeText(mActivity, "请检查网络", Toast.LENGTH_SHORT).show();
-        }
-        if (CacheUtils.getString(mActivity,CacheUtils.SUBJECT_TOP_DATA) != ""){
-            processData(CacheUtils.getString(mActivity,CacheUtils.SUBJECT_TOP_DATA));
 
         }
+        if (CacheUtils.getString(mActivity, CacheUtils.SUBJECT_TOP_DATA) != "") {
+            processData(CacheUtils.getString(mActivity, CacheUtils.SUBJECT_TOP_DATA));
+
+        }
+
+        if (CacheUtil.getString(mActivity, CacheUtils.SUBJECT_LIST_DATA) != "") {
+            String listJson = CacheUtils.getString(mActivity, CacheUtils.SUBJECT_LIST_DATA);
+            subjectListBean = (SubjectListBean) parseListJson(listJson);
+            //subjectListBean = new JsonUtils<SubjectListBean>().parseJson(listJson);
+            loadAdapter();
+        }
+
 
         getDataFormNet();
 
-
         new JsonUtils().loadData(Url.SBUJECT_LISTVIEW, SubjectListBean.class);
-        //获取下部listview的数据
 
-//        List<String> listBeans = new ArrayList<String>();
-//        for (int i = 0; i < 20; i++) {
-//            String listBean = "list" + i;
-//            listBeans.add(listBean);
-//        }
-//        listAdapter = new SubjectListAdapter(mActivity, listBeans);
-//        listView.setAdapter(listAdapter);
+    }
 
+    /**
+     * listview json 数据的解析
+     *
+     * @param json
+     */
+    private SubjectListBean parseListJson(String json) {
+        return new Gson().fromJson(json, SubjectListBean.class);
     }
 
 
@@ -180,12 +199,13 @@ public class SubjectPager extends BasePager {
 
     /**
      * 解析数据
+     *
      * @param json
      */
     private void processData(String json) {
         topBeans = (SubjectTopBean) parseJson(json);
 
-        LogUtils.loge("topBeans = " +topBeans);
+        LogUtils.loge("topBeans = " + topBeans);
 
         itemsBeens = topBeans.getData().getItems();
 
@@ -195,16 +215,16 @@ public class SubjectPager extends BasePager {
 
     /**
      * 使用 json解析
+     *
      * @param json
      */
     private Object parseJson(String json) {
-
         return new Gson().fromJson(json, SubjectTopBean.class);
     }
 
     /*
       注册Eventbus*/
-     
+
     @Override
     public void registerEventBus() {
         if (!EventBus.getDefault().isRegistered(this)) {//判断是否注册
@@ -220,7 +240,6 @@ public class SubjectPager extends BasePager {
 
         }
     }
-    
 
 
     @Subscribe
@@ -237,14 +256,21 @@ public class SubjectPager extends BasePager {
     private void loadAdapter() {
 
         itemsListbeen = subjectListBean.getData().getItems();
-       // Log.d("TAG","专题页面"+ "itemsListbeen.size():" + itemsListbeen.size());
+        // Log.d("TAG","专题页面"+ "itemsListbeen.size():" + itemsListbeen.size());
 
         if (listAdapter == null) {
-            listAdapter = new SubjectListAdapter(mActivity, itemsListbeen,itemsBeens);
-            Log.d("TAG","SubjectPager"+  "走到这里");
+            listAdapter = new SubjectListAdapter(mActivity, itemsListbeen, itemsBeens);
+            Log.d("TAG", "SubjectPager" + "走到这里");
         }
-            listView.setAdapter(listAdapter);
+        listView.setAdapter(listAdapter);
 
+
+        if (listAdapter != null) {
+            Log.d("TAG", " subject 加载过程中 的 显示  -------  storm");
+            loadingAnim.stop();  //停止动画
+            ll_subject_loading.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+        }
     }
 
 
