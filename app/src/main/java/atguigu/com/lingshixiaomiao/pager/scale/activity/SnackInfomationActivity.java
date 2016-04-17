@@ -59,7 +59,7 @@ public class SnackInfomationActivity extends Activity {
 
     private void showShare() {
 
-      /*  ShareSDK.initSDK(this);
+       /* ShareSDK.initSDK(this);
         OnekeyShare oks = new OnekeyShare();
         // 分享时Notification的图标和文字
         // oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
