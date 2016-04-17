@@ -212,6 +212,8 @@
         <activity android:name=".pager.home.activity.SearchResultActivity"
             android:theme="@style/AppBackTheme">
         </activity>
+
+        <activity android:name=".pager.scale.activity.SnackInfomationActivity"></activity>
     </application>
 
 </manifest>
