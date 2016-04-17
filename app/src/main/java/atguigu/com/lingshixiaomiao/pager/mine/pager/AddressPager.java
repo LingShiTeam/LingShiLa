@@ -1,6 +1,7 @@
 package atguigu.com.lingshixiaomiao.pager.mine.pager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -9,13 +10,14 @@ import android.widget.Toast;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.adapter.AddressAdapter;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.AddressBean;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.ChangeAddressBean;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
-import atguigu.com.lingshixiaomiao.pager.mine.utils.CacheUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
@@ -28,7 +30,7 @@ public class AddressPager extends ContentBasePager {
 
     private RecyclerView rv_address_manage;
     private JsonUtils jsonUtils;
-    private AddressBean.DataEntity data;
+    public static AddressBean.DataEntity data;
     private AddressAdapter adapter;
 
     /**
@@ -48,7 +50,7 @@ public class AddressPager extends ContentBasePager {
     }
 
     private void findViewById(View v) {
-        rv_address_manage = (RecyclerView)v.findViewById(R.id.rv_address_manage);
+        rv_address_manage = (RecyclerView) v.findViewById(R.id.rv_address_manage);
     }
 
     @Override
@@ -73,36 +75,47 @@ public class AddressPager extends ContentBasePager {
 
     @Override
     public void complete() {
-
+        Intent intent = new Intent(mActivity, MineContentActivity.class);
+        intent.putExtra("edit", false);
+        intent.putExtra("pager", Constants.EDITADDRESS_PAGER);
+        mActivity.startActivity(intent);
     }
 
 
     /**
      * 获取地址管理的联网返回值
-     *
      */
     @Subscribe
     public void onEventMainThread(AddressBean addressBean) {
         if (Constants.SUCCESS.equals(addressBean.getRs_code())) {
             data = addressBean.getData();
-            String address = jsonUtils.getJson();
-            CacheUtils.setCache(CacheUtils.getSmallFile(mActivity, "address"), address);
-
             setAdapter();
+        }
+    }
+
+    /**
+     * 获取修改地址的返回值
+     */
+    @Subscribe
+    public void onEventMainThread(ChangeAddressBean changeAddressBean) {
+        int id = changeAddressBean.getData().getId();
+        if (id != 0) {
+            return;
+        }
+        if (Constants.SUCCESS.equals(changeAddressBean.getRs_code())) {
+            adapter.notifyDataSetChanged();
+            Toast.makeText(mActivity, "地址修改成功", Toast.LENGTH_SHORT).show();
+            LogUtils.loge("地址修改成功");
+        } else {
+            Toast.makeText(mActivity, "地址修改失败", Toast.LENGTH_SHORT).show();
         }
     }
     /**
      * 获取修改地址的返回值
-     *
      */
     @Subscribe
-    public void onEventMainThread(ChangeAddressBean changeAddressBean) {
-        if(Constants.SUCCESS.equals(changeAddressBean.getRs_code())){
-            Toast.makeText(mActivity, "地址修改成功", Toast.LENGTH_SHORT).show();
-            adapter.notifyDataSetChanged();
-        }else{
-            Toast.makeText(mActivity, "地址修改失败", Toast.LENGTH_SHORT).show();
-        }
+    public void onEventMainThread(AddressBean.DataEntity data) {
+       adapter.notifyDataSetChanged();
     }
 
     private void setAdapter() {
@@ -124,4 +137,6 @@ public class AddressPager extends ContentBasePager {
             EventBus.getDefault().unregister(this);
         }
     }
+
+
 }

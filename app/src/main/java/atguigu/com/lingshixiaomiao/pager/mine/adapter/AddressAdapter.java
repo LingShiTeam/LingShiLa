@@ -1,6 +1,10 @@
 package atguigu.com.lingshixiaomiao.pager.mine.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.AddressBean;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.ChangeAddressBean;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
@@ -26,7 +31,7 @@ import atguigu.com.lingshixiaomiao.pager.mine.utils.Url;
 public class AddressAdapter extends RecyclerView.Adapter {
 
     private Context context;
-    private AddressBean.DataEntity data;
+    public AddressBean.DataEntity data;
     private final List<AddressBean.DataEntity.ItemsEntity> items;
 
     public AddressAdapter(Context context, AddressBean.DataEntity data) {
@@ -103,13 +108,46 @@ public class AddressAdapter extends RecyclerView.Adapter {
                     setDefaultAddress(getPosition());
                     break;
                 case R.id.tv_mine_address_delete:
-                    deleteAddress();
+                    showDeleteDialog();
                     break;
                 case R.id.tv_mine_address_edit:
-                    Toast.makeText(context, "编辑", Toast.LENGTH_SHORT).show();
-
+                    editAddress();
                     break;
             }
+        }
+
+        private void showDeleteDialog() {
+            new AlertDialog.Builder(context)
+                    .setMessage("您确定是否删除该收货地址?")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            deleteAddress();
+                        }
+                    })
+                    .setNegativeButton("取消", null)
+                    .show();
+
+        }
+
+        private void editAddress() {
+            Intent intent = new Intent(context, MineContentActivity.class);
+            Bundle bundle = new Bundle();
+            AddressBean.DataEntity.ItemsEntity item = items.get(getPosition());
+
+            bundle.putString("add_id", item.getId() + "");
+            bundle.putString("name", item.getName());
+            bundle.putString("phone", item.getPhone());
+            bundle.putString("province", item.getProvince());
+            bundle.putString("city", item.getCity());
+            bundle.putString("proper", item.getProper());
+            bundle.putString("detail", item.getFull_add());
+            bundle.putInt("type", item.getType());
+            bundle.putInt("position", getPosition());
+            intent.putExtras(bundle);
+            intent.putExtra("pager", Constants.EDITADDRESS_PAGER);
+            intent.putExtra("edit", true);
+            context.startActivity(intent);
         }
 
         private void deleteAddress() {
@@ -120,11 +158,12 @@ public class AddressAdapter extends RecyclerView.Adapter {
                 int opt = tv_mine_address_default.isSelected() ? 1 : 0;
                 int id = items.get(position).getId();
                 String url = Url.DELETE_ADDRESS_URL[0] + loginBean.getData().getUid() + Url.DELETE_ADDRESS_URL[1] + opt + Url.DELETE_ADDRESS_URL[2] + id;
-                new JsonUtils().loadData(url, ChangeAddressBean.class);
                 items.remove(position);
                 //重置默认地址
-                if (getItemCount() > 0) {
+                if (getItemCount() > 0 && opt == 1) {
                     setDefaultAddress(0);
+                } else {
+                    new JsonUtils().loadData(url, ChangeAddressBean.class);
                 }
             } else {
                 Toast.makeText(context, "请登录后修改", Toast.LENGTH_SHORT).show();
@@ -132,19 +171,24 @@ public class AddressAdapter extends RecyclerView.Adapter {
         }
 
         private void setDefaultAddress(int position) {
-            if (!tv_mine_address_default.isSelected() && LoginUtils.getInstance().isLogin()) {
-                for (int i = 0; i < items.size(); i++) {
-                    items.get(i).setType(0);
+            if (LoginUtils.getInstance().isLogin()) {
+                if (!tv_mine_address_default.isSelected()) {
+                    for (int i = 0; i < items.size(); i++) {
+                        items.get(i).setType(0);
+                    }
+                    AddressBean.DataEntity.ItemsEntity item = items.get(position);
+                    item.setType(1);
+                    sortItems();
+                    LoginBean loginBean = (LoginBean) LoginUtils.getInstance().getData();
+                    String url = Url.CHANGE_DEFAULT_ADDRESS_URL[0] + loginBean.getData().getUid() + Url.CHANGE_DEFAULT_ADDRESS_URL[1] + item.getId();
+                    new JsonUtils().loadData(url, ChangeAddressBean.class);
                 }
-                AddressBean.DataEntity.ItemsEntity item = items.get(position);
-                item.setType(1);
-                sortItems();
-                LoginBean loginBean = (LoginBean) LoginUtils.getInstance().getData();
-                String url = Url.CHANGE_DEFAULT_ADDRESS_URL[0] + loginBean.getData().getUid() + Url.CHANGE_DEFAULT_ADDRESS_URL[1] + item.getId();
-                new JsonUtils().loadData(url, ChangeAddressBean.class);
             } else {
-                Toast.makeText(context, "已经是默认地址", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "请登录后修改", Toast.LENGTH_SHORT).show();
             }
+
         }
     }
+
+
 }

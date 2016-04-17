@@ -3,7 +3,6 @@ package atguigu.com.lingshixiaomiao.pager.scale.detailpager;
 import android.app.Activity;
 import android.graphics.Paint;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -153,7 +152,7 @@ public class ScallingPager extends ScaleBasePager {
 
             //计算出剩余时间
             long leftTime =System.currentTimeMillis()- urlTime;
-            Log.e("TAG", "剩余时间：" + leftTime);
+            //Log.e("TAG", "剩余时间：" + leftTime);
 
             //将当前的item的tv视图加入集合
             timeTvs.add(holder.tv_scale_item_time);
@@ -164,7 +163,7 @@ public class ScallingPager extends ScaleBasePager {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     String leftDate = TimeUtil.getLeftDate(millisUntilFinished);
-                    Log.e("TAG", "onTick() :" + leftDate);
+                    //Log.e("TAG", "onTick() :" + leftDate);
                     timeTvs.get(position).setText(leftDate);
                 }
 
