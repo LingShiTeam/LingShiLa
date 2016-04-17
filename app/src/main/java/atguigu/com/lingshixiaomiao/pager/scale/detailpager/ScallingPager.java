@@ -28,7 +28,7 @@ import java.util.List;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.home.utils.NetWorkUtils;
 import atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout;
-import atguigu.com.lingshixiaomiao.pager.scale.SnackInfomationActivity;
+import atguigu.com.lingshixiaomiao.pager.scale.activity.SnackInfomationActivity;
 import atguigu.com.lingshixiaomiao.pager.scale.base.ScaleBasePager;
 import atguigu.com.lingshixiaomiao.pager.scale.bean.ScallingBean;
 import atguigu.com.lingshixiaomiao.pager.scale.utils.CacheUtil;
@@ -79,12 +79,17 @@ public class ScallingPager extends ScaleBasePager {
         return rootView;
     }
 
+    /**
+     * 单机item的监听
+     */
     class MyOnItemClickListener implements AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(mActivity, SnackInfomationActivity.class);
             intent.putExtra("snack_id", itemsEntities.get(position).getId());
+            intent.putExtra("image_url", itemsEntities.get(position).getImg().getImg_url());
+            intent.putExtra("snack_title", itemsEntities.get(position).getTitle());
             mActivity.startActivity(intent);
         }
     }
