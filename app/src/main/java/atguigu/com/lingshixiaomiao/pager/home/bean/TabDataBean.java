@@ -92,8 +92,8 @@ public class TabDataBean {
             private String sales_title;
             private String type;
             private String guide_type;
-            private String sold_num;
-            private String surplus_num;
+            private int sold_num;
+            private int surplus_num;
             /**
              * current : 6.9
              * prime : 15
@@ -140,11 +140,11 @@ public class TabDataBean {
                 this.guide_type = guide_type;
             }
 
-            public void setSold_num(String sold_num) {
+            public void setSold_num(int sold_num) {
                 this.sold_num = sold_num;
             }
 
-            public void setSurplus_num(String surplus_num) {
+            public void setSurplus_num(int surplus_num) {
                 this.surplus_num = surplus_num;
             }
 
@@ -204,11 +204,11 @@ public class TabDataBean {
                 return guide_type;
             }
 
-            public String getSold_num() {
+            public int getSold_num() {
                 return sold_num;
             }
 
-            public String getSurplus_num() {
+            public int getSurplus_num() {
                 return surplus_num;
             }
 

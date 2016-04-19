@@ -3,11 +3,20 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <atguigu.com.lingshixiaomiao.pager.home.view.XListView
-        android:id="@+id/xlistview"
+    <com.handmark.pulltorefresh.library.PullToRefreshGridView
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/tab_gridview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <include layout="@layout/dialog_loading"/>
+        android:layout_height="match_parent"
+        android:numColumns="2"
+        android:horizontalSpacing="5dp"
+        android:verticalSpacing="5dp"
+        android:layout_margin="5dp"
+        ptr:ptrMode="both"
+        ptr:ptrDrawable="@drawable/ic_page_loading"
+        ptr:ptrHeaderTextColor="#7000"
+        />
+    <include layout="@layout/dialog_loading"
+        android:id="@+id/loading_dialog"/>
 
 </FrameLayout>

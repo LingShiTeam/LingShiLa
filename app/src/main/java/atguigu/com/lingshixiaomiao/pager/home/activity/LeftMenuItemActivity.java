@@ -1,14 +1,21 @@
 package atguigu.com.lingshixiaomiao.pager.home.activity;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.viewpagerindicator.TabPageIndicator;
@@ -24,8 +31,10 @@ import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.home.TabBasePager;
 import atguigu.com.lingshixiaomiao.pager.home.adapter.MenuPagerAdapter;
 import atguigu.com.lingshixiaomiao.pager.home.bean.MenuTabTitleBean;
+import atguigu.com.lingshixiaomiao.pager.home.utils.DensityUtil;
 import atguigu.com.lingshixiaomiao.pager.home.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.Url;
+import atguigu.com.lingshixiaomiao.pager.home.view.FlowLayout;
 
 /**
  * 侧滑菜单项的item详情页面
@@ -43,13 +52,17 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
     private String itembeanTitle;
     private List<String> tabTitleLists;
     private List<String> tabIDLists;
-    private String[] strs = {"tab1", "tab2", "tab3"};
     private MenuPagerAdapter adapter;
     private LinearLayout linearlayout;
     private ImageView widget_loading_pb;
     private AnimationDrawable background;
     private List<TabBasePager> pagers;
     private int itembeanID;
+    private RelativeLayout loading_dialog;
+    private PopupWindow pw;
+    private ImageView ib_next;
+    private int currPosition = 0;
+    private FlowLayout tabView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +80,7 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
      */
     private void setListener() {
         iv_search_back.setOnClickListener(this);
+        ib_next.setOnClickListener(this);
     }
 
     private void findView() {
@@ -76,8 +90,10 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
         tv_shopname = (TextView) findViewById(R.id.tv_shopname);
         iv_cart = (ImageView) findViewById(R.id.iv_cart);
         tv_shopcount = (TextView) findViewById(R.id.tv_shopcount);
+        ib_next = (ImageView) findViewById(R.id.ib_next);
 
         linearlayout = (LinearLayout) findViewById(R.id.linearlayout);
+        loading_dialog = (RelativeLayout) findViewById(R.id.loading_dialog);
         widget_loading_pb = (ImageView) findViewById(R.id.widget_loading_pb);
         background = (AnimationDrawable) widget_loading_pb.getBackground();
 
@@ -89,6 +105,8 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
      * 初始化数据
      */
     private void initData() {
+
+        background.start();
         // 注册EventBus
         registerEventBus();
         // TAB标签
@@ -108,7 +126,7 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
          */
         pagers = new ArrayList<>();
         String tabUrl = Url.MENU_ITEM_TAB_DES_MAIM + itembeanID + "since_id=0";
-        pagers.add(new TabPager1(this, tabUrl));
+        pagers.add(new TabPager(this, tabUrl));
 
         /**
          * 请求TAB标签的链接
@@ -131,6 +149,42 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
         tv_shopname.setVisibility(View.VISIBLE);
         // 设置标题
         tv_shopname.setText(itembeanTitle);
+
+    }
+
+    /**
+     * 设置PopupWindow
+     */
+    private void setPopupWindow() {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //params.width = DensityUtil.dip2px(5);
+        params.leftMargin = params.rightMargin = DensityUtil.dip2px(this, 5);
+        params.topMargin = params.bottomMargin = DensityUtil.dip2px(this, 5);
+        params.height = DensityUtil.dip2px(this, 30);
+        tabView = (FlowLayout) View.inflate(this, R.layout.popupwindow_layout, null);
+        for (int i = 0; i < tabTitleLists.size(); i++) {
+            Button button = new Button(this);
+            button.setBackgroundResource(R.drawable.bg_btn_cancel_pressed);
+            button.setText(tabTitleLists.get(i));
+            button.setTextSize(12);
+            button.setTag(i);
+            tabView.addView(button, params);
+            if (i == currPosition) {
+                button.setBackgroundResource(R.drawable.btn_look_normal);
+            }
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    currPosition = (int) v.getTag();
+                    tab_indicator.setCurrentItem(currPosition);
+                    pw.dismiss();
+                }
+            });
+        }
+
+        pw = new PopupWindow(tabView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+        pw.setTouchable(true);
+        pw.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
     }
 
     /**
@@ -153,8 +207,11 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
              "3&version=20&channel_name=wandoujia&srv=2406&pg_cur=1&pg_size=20&sub_id=;//0&parent_id=32&since_id=0
              */
             String tabUrl = Url.MENU_ITEM_TAB_DES + menuTabTitleBean.getData().getItems().get(i).getId() + "&parent_id=" + itembeanID + "&since_id=0";
-            pagers.add(new TabPager1(this, tabUrl));
+            pagers.add(new TabPager(this, tabUrl));
         }
+
+        // 设置PopupWindow
+        setPopupWindow();
 
         // 显示数据
         if (adapter == null) {
@@ -172,6 +229,15 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
             public void onPageSelected(int position) {
                 // 屏蔽ViewPager的预加载
                 pagers.get(position).initData();
+                currPosition = position;
+                for (int i = 0; i < tabTitleLists.size(); i++) {
+                    if(i == currPosition) {
+                        tabView.getChildAt(i).setBackgroundResource(R.drawable.btn_look_normal);
+                    } else {
+                        tabView.getChildAt(i).setBackgroundResource(R.drawable.bg_btn_cancel_pressed);
+                    }
+
+                }
             }
 
             @Override
@@ -179,6 +245,8 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
 
             }
         });
+
+        stopLoading();
     }
 
     /**
@@ -186,7 +254,7 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
      */
     private void stopLoading() {
         background.stop();
-        widget_loading_pb.setVisibility(View.GONE);
+        loading_dialog.setVisibility(View.GONE);
     }
 
     /**
@@ -223,6 +291,9 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
             // 返回按钮监听
             case R.id.iv_search_back:
                 finish();
+                break;
+            case R.id.ib_next:
+                pw.showAsDropDown(tab_indicator);
                 break;
         }
     }

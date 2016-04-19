@@ -310,11 +310,15 @@ public class HomePager extends BasePager implements View.OnClickListener {
         if (homePageData != null && !NetWorkUtils.isNetworkConnected()) {
             parsedHomePageJson(homePageData);
             showListView();
+            return;
         }
 
         //通过JsonUtils工具类解析url, 并通过EventBus返回数据
         //new JsonUtils().loadData(Url.HOME_TOP_URL, HomeTopBean.class);
-        new JsonUtils().loadData(Url.HOME_DATA_BASE, HomeBean.class);
+        if(NetWorkUtils.isNetworkConnected()) {
+            new JsonUtils().loadData(Url.HOME_DATA_BASE, HomeBean.class);
+        }
+
     }
 
     /**
