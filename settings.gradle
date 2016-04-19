@@ -1,2 +1,3 @@
 include ':app', ':demo', ':xutils_library', ':MyDaoGenerator', ':viewpagerindicator_library'
 include ':xListView', ':pickerview', ':zxing_library'
+include ':pullToRefresh-library'

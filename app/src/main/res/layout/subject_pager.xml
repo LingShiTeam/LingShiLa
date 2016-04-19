@@ -12,13 +12,16 @@
         android:layout_height="match_parent"
         android:paddingTop="5dp">
 
-        <ListView
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
             android:id="@+id/listview_subject"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            ptr:ptrMode = "both"
+            ptr:ptrDrawable = "@drawable/ic_page_loading"
+            >
 
-        </ListView>
+        </com.handmark.pulltorefresh.library.PullToRefreshListView>
 
         <include layout="@layout/subject_loading"
                 />

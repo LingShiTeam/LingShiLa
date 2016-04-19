@@ -7,25 +7,17 @@ The following files were *not* copied into the new Gradle project; you
 should evaluate whether these are still needed in your project and if
 so manually move them:
 
-* LICENSE.md
-* README
-* proguard.cfg
-* screenshots\
-* screenshots\load_more_loading.png
-* screenshots\load_more_normal.png
-* screenshots\load_more_ready.png
-* screenshots\refresh_loading.png
-* screenshots\refresh_normal.png
-* screenshots\refresh_ready.png
+* LICENSE
+* pom.xml
 
 Moved Files:
 ------------
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-* AndroidManifest.xml => xListView\src\main\AndroidManifest.xml
-* res\ => xListView\src\main\res\
-* src\ => xListView\src\main\java\
+* AndroidManifest.xml => pullToRefresh-library\src\main\AndroidManifest.xml
+* res\ => pullToRefresh-library\src\main\res\
+* src\ => pullToRefresh-library\src\main\java\
 
 Next Steps:
 -----------

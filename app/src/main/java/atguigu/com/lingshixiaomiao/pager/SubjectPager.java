@@ -11,6 +11,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,7 +44,7 @@ public class SubjectPager extends BasePager {
 
 
     @ViewInject(R.id.listview_subject)
-    private ListView listView;
+    private PullToRefreshListView listView;
 
     @ViewInject(R.id.iv_cart)
     private ImageView iv_cart;
@@ -108,13 +110,26 @@ public class SubjectPager extends BasePager {
         // loadingAnim = (AnimationDrawable) mActivity.getResources().getDrawable(R.drawable.ic_page_loading);
 
         registerEventBus();
+
+
         return view;
 
     }
 
+
+
+
     @Override
     public void initData() {
         super.initData();
+
+        //设置listview的下拉和上拉刷新
+        listView.setMode(PullToRefreshBase.Mode.BOTH);
+
+        listView.getRefreshableView().setHeaderDividersEnabled(true);
+        listView.getRefreshableView().setFooterDividersEnabled(true);
+
+        listView.setOnRefreshListener(new myOnRefreshListener());
 
         //显示数据加载中的动画
         loadingAnim = (AnimationDrawable) subject_loading.getBackground();
@@ -147,6 +162,19 @@ public class SubjectPager extends BasePager {
 
     }
 
+
+    class myOnRefreshListener implements PullToRefreshBase.OnRefreshListener2<ListView> {
+
+        @Override
+        public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+
+        }
+
+        @Override
+        public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+
+        }
+    }
     /**
      * listview json 数据的解析
      *
@@ -266,7 +294,7 @@ public class SubjectPager extends BasePager {
 
 
         if (listAdapter != null) {
-            Log.d("TAG", " subject 加载过程中 的 显示  -------  storm");
+
             loadingAnim.stop();  //停止动画
             ll_subject_loading.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
