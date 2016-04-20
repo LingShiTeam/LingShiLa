@@ -33,7 +33,7 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
     private RelativeLayout head_right;
     private TextView home_car_number;
     private TextView goods_detail_addtocart;
-    private  boolean isCollect = false;
+    private boolean isCollect = false;
 
 
     @Override
@@ -62,7 +62,7 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
 
         /*添加一个对象，让js可以访问该对象的方法，该对象中可以调用js的方法
          注意java调用js时，addJavascripeInterface()是不必须的*/
-
+        wv_infomation.addJavascriptInterface(getHtmlObject(), "bridge");
         //获取当前食物的id
         int snack_id = getIntent().getIntExtra("snack_id", 0);
         //加载一个网页
@@ -79,73 +79,79 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
         iv_back.setOnClickListener(this);
     }
 
-    Object incertObj = new Object() {
+    private Object getHtmlObject() {
 
+        Object incertObj = new Object() {
 
-        //js调用该方法
-        @JavascriptInterface
-        public void clickCollect() {
+            //js调用该方法
+            @JavascriptInterface
+            public void clickCollect() {
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
-
-                    if (!isCollect) {
-                        //收藏图标变红
-                        wv_infomation.loadUrl("javascript: changeCollect('true')");
-                        isCollect = true;
-                        Toast.makeText(SnackInfomationActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
-                    } else {
-                        //收藏图标变白
-                        wv_infomation.loadUrl("javascript: changeCollect('false')");
-                        isCollect = false;
-                        Toast.makeText(SnackInfomationActivity.this, "取消收藏", Toast.LENGTH_SHORT).show();
+                        if (!isCollect) {
+                            //收藏图标变红
+                            wv_infomation.loadUrl("javascript: changeCollect('true')");
+                            isCollect = true;
+                            Toast.makeText(SnackInfomationActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //收藏图标变白
+                            wv_infomation.loadUrl("javascript: changeCollect('false')");
+                            isCollect = false;
+                            Toast.makeText(SnackInfomationActivity.this, "取消收藏", Toast.LENGTH_SHORT).show();
+                        }
                     }
+                });
+            }
 
+            @JavascriptInterface
+            public void clickCopyLink(final String str) {
 
-                }
-            });
-        }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                        cm.setText(str);
+                        Toast.makeText(SnackInfomationActivity.this, "已复制到剪贴板", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-        @JavascriptInterface
-        public void clickCopyLink(final String str) {
+            }
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    cm.setText(str);
-                    Toast.makeText(SnackInfomationActivity.this, "已复制到剪贴板", Toast.LENGTH_SHORT).show();
-                }
-            });
+            @JavascriptInterface
+            public void clickMoreComment(final String url, final int total) {
 
-        }
+                runOnUiThread(new Runnable() {
 
-        @JavascriptInterface
-        public void clickMoreComment(String url, int total) {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(SnackInfomationActivity.this, CommentActivity.class);
+                        intent.putExtra("comment_url", url);
+                        Log.e("TAG", "infomation comment_url:" + url);
+                        intent.putExtra("comment_count", total);
+                        startActivity(intent);
+                        Toast.makeText(SnackInfomationActivity.this, "查看更多评论", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
 
-            Intent intent = new Intent(SnackInfomationActivity.this, CommentActivity.class);
-            intent.putExtra("comment_url", url);
-            Log.e("TAG", "infomation comment_url:" + url);
-            intent.putExtra("comment_count", total);
-            startActivity(intent);
-            Toast.makeText(SnackInfomationActivity.this, "查看更多评论", Toast.LENGTH_SHORT).show();
-        }
+            @JavascriptInterface
+            public void clickGuessLike(int id) {
 
-        @JavascriptInterface
-        public void clickGuessLike(int id) {
+                Intent intent = new Intent(SnackInfomationActivity.this, SnackInfomationActivity.class);
+                intent.putExtra("like_id", id);
+                startActivity(intent);
 
-            Intent intent = new Intent(SnackInfomationActivity.this, SnackInfomationActivity.class);
-            intent.putExtra("like_id", id);
-            startActivity(intent);
+                finish();
 
-            finish();
+            }
+        };
 
-        }
-    };
+        return incertObj;
+    }
 
-    //return incertObj;
     private void initView() {
         wv_infomation = (WebView) findViewById(R.id.wv_infomation);
         iv_infomation_share = (ImageView) findViewById(R.id.iv_infomation_share);

@@ -262,7 +262,10 @@
             android:theme="@style/AppBackTheme">
         </activity>
 
+
         <activity android:name=".pager.scale.activity.SnackInfomationActivity"></activity>
+
+        <activity android:name=".pager.scale.activity.CommentActivity"/>
     </application>
 
 </manifest>
