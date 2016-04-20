@@ -18,7 +18,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 /**
  * 美味详情页面
  */
-public class SnackInfomationActivity extends Activity {
+public class SnackInfomationActivity extends Activity implements View.OnClickListener {
 
     private WebView wv_infomation;
 
@@ -36,7 +36,14 @@ public class SnackInfomationActivity extends Activity {
         setContentView(R.layout.activity_snack_infomation);
 
         initView();
+        // 掉用HTML的初始化
+        initHTML();
 
+        setListener();
+
+    }
+
+    private void initHTML() {
         //设置响应javascript控件
         wv_infomation.getSettings().setJavaScriptEnabled(true);
 
@@ -53,8 +60,16 @@ public class SnackInfomationActivity extends Activity {
         int snack_id = getIntent().getIntExtra("snack_id", 0);
         //加载一个网页
         wv_infomation.loadUrl(Url.INFOMATION_BASE_0 + snack_id + Url.INFOMATION_BASE_1);
-        iv_infomation_share.setOnClickListener(new MyOnClickListener());
+    }
 
+    /**
+     * 设置监听
+     */
+    private void setListener() {
+        // 分享
+        iv_infomation_share.setOnClickListener(this);
+        // 返回
+        iv_back.setOnClickListener(this);
     }
 
     private void initView() {
@@ -81,14 +96,16 @@ public class SnackInfomationActivity extends Activity {
     /**
      * 点击监听
      */
-    private class MyOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {//分享按钮
-                case R.id.iv_infomation_share:
-                    showShare();
-                    break;
-            }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_infomation_share:
+                showShare();
+                break;
+            case R.id.iv_back:
+                finish();
+                break;
         }
     }
+
 }
