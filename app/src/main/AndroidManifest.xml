@@ -131,6 +131,7 @@
             android:theme="@style/AppBackTheme"/>
         <activity android:name=".pager.home.activity.LeftMenuItemActivity"
             android:theme="@style/Theme.PageIndicatorDefaults"/>
+        <activity android:name=".pager.subject.ui.SubjectTopActivity"/>
 
         <!-- 极光推送 -->
         <!-- Rich push 核心功能 since 2.0.6 -->

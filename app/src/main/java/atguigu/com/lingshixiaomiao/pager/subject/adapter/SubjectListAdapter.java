@@ -1,10 +1,12 @@
 package atguigu.com.lingshixiaomiao.pager.subject.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectListBean;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectTopBean;
+import atguigu.com.lingshixiaomiao.pager.subject.ui.SubjectTopActivity;
 import atguigu.com.lingshixiaomiao.pager.subject.view.NoscrollGridView;
 
 /**
@@ -161,8 +164,25 @@ public class SubjectListAdapter extends BaseAdapter {
 
                 break;
         }
-
+        //设置顶部item 的点击监听事件
+        gridview_top.setOnItemClickListener(new MyOnItemClickListener());
         return convertView;
+    }
+
+    /**
+     * top GridView 的点击监听
+     */
+    class MyOnItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            Intent intent = new Intent(activity, SubjectTopActivity.class);
+            intent.putExtra("topUrl", itemsBeens.get(position).getAction().getInfo());
+
+
+            activity.startActivity(intent);
+        }
     }
 
     class ViewHolder {
@@ -172,5 +192,8 @@ public class SubjectListAdapter extends BaseAdapter {
         TextView item_subject_collect; // 收藏的人数
 
     }
+
+
+
 
 }

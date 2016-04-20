@@ -73,6 +73,4 @@ public class JsonUtils<T> {
         EventBus.getDefault().post(t);
 
     }
-
-
 }

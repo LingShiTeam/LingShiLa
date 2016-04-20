@@ -5,12 +5,14 @@ import android.app.Activity;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
@@ -88,6 +90,14 @@ public class SubjectPager extends BasePager {
     private AnimationDrawable loadingAnim;
 
     /**
+     * 下拉刷新的页数
+     */
+    private int pagerCurrent = 1;
+
+
+    private String pagerLastId;
+
+    /**
      * 构造方法
      *
      * @param mActivity
@@ -95,6 +105,7 @@ public class SubjectPager extends BasePager {
     public SubjectPager(Activity mActivity) {
         super(mActivity);
     }
+
 
     @Override
     public View initView() {
@@ -117,19 +128,10 @@ public class SubjectPager extends BasePager {
     }
 
 
-
-
     @Override
     public void initData() {
         super.initData();
 
-        //设置listview的下拉和上拉刷新
-        listView.setMode(PullToRefreshBase.Mode.BOTH);
-
-        listView.getRefreshableView().setHeaderDividersEnabled(true);
-        listView.getRefreshableView().setFooterDividersEnabled(true);
-
-        listView.setOnRefreshListener(new myOnRefreshListener());
 
         //显示数据加载中的动画
         loadingAnim = (AnimationDrawable) subject_loading.getBackground();
@@ -143,11 +145,12 @@ public class SubjectPager extends BasePager {
             Toast.makeText(mActivity, "请检查网络", Toast.LENGTH_SHORT).show();
 
         }
+        //获取存储的json数据(top Gridview)
         if (CacheUtils.getString(mActivity, CacheUtils.SUBJECT_TOP_DATA) != "") {
             processData(CacheUtils.getString(mActivity, CacheUtils.SUBJECT_TOP_DATA));
 
         }
-
+        //获取保存的listview的数据
         if (CacheUtil.getString(mActivity, CacheUtils.SUBJECT_LIST_DATA) != "") {
             String listJson = CacheUtils.getString(mActivity, CacheUtils.SUBJECT_LIST_DATA);
             subjectListBean = (SubjectListBean) parseListJson(listJson);
@@ -155,26 +158,156 @@ public class SubjectPager extends BasePager {
             loadAdapter();
         }
 
-
         getDataFormNet();
 
         new JsonUtils().loadData(Url.SBUJECT_LISTVIEW, SubjectListBean.class);
+        //设置listview的下拉和上拉刷新
+        listView.setMode(PullToRefreshBase.Mode.BOTH);
+        //设置pullToRefresh 刷新状态的更新
+        initRefreshListview();
+
+        listView.getRefreshableView().setHeaderDividersEnabled(true);
+        listView.getRefreshableView().setFooterDividersEnabled(true);
+        //下拉刷新和上拉加载更多的监听
+        listView.setOnRefreshListener(new MyOnRefreshListener());
+
+        //设置listview的点击监听事件
+        listView.setOnItemClickListener(new MyOnItemClickListener());
+    }
+
+
+    /**
+     * item 的点击监听事件
+     * */
+    class MyOnItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (0 != position) {
+
+
+            } else {
+
+            }
+        }
+    }
+    /**
+     * 设置pulltoRefresh 刷新的状态显示
+     */
+    private void initRefreshListview() {
+
+        //下拉刷新 的状态显示
+        ILoadingLayout topLabel = listView.getLoadingLayoutProxy(true, false);
+        topLabel.setRefreshingLabel("精选全宇宙美食 100%正品保证");
+        topLabel.setPullLabel("精选全宇宙美食 100%正品保证");
+        topLabel.setReleaseLabel("精选全宇宙美食 100%正品保证");
+
+        //上拉加载更多 的状态显示
+        ILoadingLayout listLabel = listView.getLoadingLayoutProxy(false, true);
+        listLabel.setRefreshingLabel(null);
+        listLabel.setPullLabel(null);
+        listLabel.setReleaseLabel(null);
 
     }
 
 
-    class myOnRefreshListener implements PullToRefreshBase.OnRefreshListener2<ListView> {
+    class MyOnRefreshListener implements PullToRefreshBase.OnRefreshListener2<ListView> {
 
+        /**
+         * 下拉刷新时 监听
+         *
+         * @param refreshView
+         */
         @Override
         public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+            //Gridvewi 请求数据
+            getDataFormNet();
+            //listview 的请求数据
+            new JsonUtils().loadData(Url.SBUJECT_LISTVIEW, SubjectListBean.class);
+
 
         }
 
+        /**
+         * 上拉加载更多
+         *
+         * @param refreshView
+         */
         @Override
         public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
 
+            getMoreDataFormData();
+
+
         }
     }
+
+    /**
+     * 上拉加载更多
+     */
+    private void getMoreDataFormData() {
+        //获取当前 数据 最后一个item的id
+        List<SubjectListBean.DataBean.ItemsBean> been = subjectListBean.getData().getItems();
+        pagerLastId = been.get(been.size() - 1).getId() + "";
+        LogUtils.loge("TAG",pagerLastId);
+        RequestParams params = new RequestParams(Url.SBUJECT_LISTVIEW_MORE + "pg_cur=" +
+                pagerCurrent + "&pg_size=20&since_id=" + pagerLastId);
+
+        params.setConnectTimeout(5000);
+
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                LogUtils.loge("TAG" ," subject 专题页面的上拉加载更多数据 加载成功onSuccess " );
+
+                LogUtils.loge("TAG","subject 上拉加载更多数据 " + result);
+                if (result != null) {
+                    //解析获取的json数据
+                    processMoreData(result);
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                LogUtils.loge("TAG" ," subject 专题页面的上拉加载更多数据 加载失败 onError" );
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+                LogUtils.loge("TAG" ," subject 专题页面的上拉加载更多数据  onCancelled" );
+
+            }
+
+            @Override
+            public void onFinished() {
+                LogUtils.loge("TAG" ," subject 专题页面的上拉加载更多数据 onFinished " );
+
+            }
+        });
+    }
+
+    /**
+     * 解析加载更多获取的数据
+     * @param moreJson
+     */
+    private void processMoreData(String moreJson) {
+
+        SubjectListBean listMoreBean = parseListJson(moreJson);
+        List<SubjectListBean.DataBean.ItemsBean> listMoreItems = listMoreBean.getData().getItems();
+
+        itemsListbeen.addAll(listMoreItems);
+        //更新适配器
+        listAdapter.notifyDataSetChanged();
+
+        pagerCurrent++;
+
+        listView.onRefreshComplete();
+
+    }
+
+
     /**
      * listview json 数据的解析
      *
@@ -210,7 +343,7 @@ public class SubjectPager extends BasePager {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-
+                LogUtils.loge("TAG", "onError" + "请求数据失败");
             }
 
             @Override
@@ -274,8 +407,11 @@ public class SubjectPager extends BasePager {
     public void onEventMainThread(SubjectListBean subjectListBean) {
         this.subjectListBean = subjectListBean;
         LogUtils.loge("subjectListBean = " + subjectListBean);
+        LogUtils.loge("subjectListBean = " + subjectListBean);
+
+        pagerCurrent++;
+
         loadAdapter();
-        Log.d("TAG", "subjectListBean == null:" + (subjectListBean == null));
     }
 
     /**
@@ -286,12 +422,16 @@ public class SubjectPager extends BasePager {
         itemsListbeen = subjectListBean.getData().getItems();
         // Log.d("TAG","专题页面"+ "itemsListbeen.size():" + itemsListbeen.size());
 
+
+
         if (listAdapter == null) {
             listAdapter = new SubjectListAdapter(mActivity, itemsListbeen, itemsBeens);
             Log.d("TAG", "SubjectPager" + "走到这里");
         }
         listView.setAdapter(listAdapter);
 
+        //数据请求完成
+        listView.onRefreshComplete();
 
         if (listAdapter != null) {
 
