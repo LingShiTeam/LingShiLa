@@ -34,8 +34,6 @@ public abstract class BasePager {
             registerEventBus();
         }
 
-        //registerEventBus();
-
     }
 
     /**

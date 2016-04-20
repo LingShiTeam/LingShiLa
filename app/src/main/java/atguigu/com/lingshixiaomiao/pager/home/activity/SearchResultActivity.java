@@ -1,7 +1,9 @@
 package atguigu.com.lingshixiaomiao.pager.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -15,6 +17,7 @@ import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.home.adapter.SearchResultAdapter;
 import atguigu.com.lingshixiaomiao.pager.home.bean.SearchResultBean;
+import atguigu.com.lingshixiaomiao.pager.scale.activity.SnackInfomationActivity;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
@@ -54,6 +57,20 @@ public class SearchResultActivity extends SwipeBackActivity implements View.OnCl
     private void setListener() {
         widget_no_data_view.setOnClickListener(this);
         iv_search_back.setOnClickListener(this);
+        search_result_gridview.setOnItemClickListener(new MyOnItemClickListener());
+    }
+
+    /**
+     * gridView的点击监听
+     */
+    class MyOnItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent intent = new Intent(SearchResultActivity.this, SnackInfomationActivity.class);
+            intent.putExtra("snack_id",searchResultBean.getData().getItems().get(position).getId());
+            startActivity(intent);
+        }
     }
 
     /**

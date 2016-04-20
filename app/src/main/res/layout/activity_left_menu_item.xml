@@ -16,18 +16,18 @@
 
         <LinearLayout
             android:id="@+id/linearlayout"
-            android:visibility="gone"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
-                android:background="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:layout_marginBottom="1dp"
-                android:layout_marginTop="1dp">
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical">
 
                 <com.viewpagerindicator.TabPageIndicator
                     android:id="@+id/tab_indicator"
@@ -40,17 +40,16 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/bg_category"/>
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/ib_next"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:background="@android:color/white"
-                    android:src="@drawable/news_cate_arr"/>
+                    android:src="@drawable/btn_header_back_todown_pressed"/>
 
             </LinearLayout>
-
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/vp_leftmenu_detail"
@@ -62,7 +61,6 @@
         </LinearLayout>
 
     </FrameLayout>
-
 
 
 </LinearLayout>

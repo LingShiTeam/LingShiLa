@@ -86,7 +86,7 @@ public class HomePagerBean {
         }
 
         public static class ItemsEntity {
-            private String id;
+            private int id;
             private String title;
             private String sales_title;
             private String type;
@@ -113,7 +113,7 @@ public class HomePagerBean {
             private String desc;
             private String sub_classify_id;
 
-            public void setId(String id) {
+            public void setId(int id) {
                 this.id = id;
             }
 
@@ -173,7 +173,7 @@ public class HomePagerBean {
                 this.sub_classify_id = sub_classify_id;
             }
 
-            public String getId() {
+            public int getId() {
                 return id;
             }
 

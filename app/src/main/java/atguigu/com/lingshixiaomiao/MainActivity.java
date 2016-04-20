@@ -162,6 +162,7 @@ public class MainActivity extends FragmentActivity {
                 View pagerView = getPagerView();
                 return pagerView;
             }
+
         }).commit();
     }
 

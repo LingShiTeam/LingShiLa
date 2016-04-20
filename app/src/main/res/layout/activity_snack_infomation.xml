@@ -10,36 +10,8 @@
         android:id="@+id/wv_infomation"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="1dp"
         android:layout_weight="1"></WebView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/darker_gray"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/iv_infomation_car"
-            android:layout_width="60dp"
-            android:layout_height="35dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/scale_infomation_background"
-            android:clickable="true"
-            android:padding="3dp"
-            android:src="@drawable/btn_cart_pressed" />
-
-
-        <TextView
-            android:id="@+id/tv_infomation_intocar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="7dp"
-            android:layout_weight="1"
-            android:background="@drawable/scale_scalling_bg"
-            android:gravity="center"
-            android:text="加入购物车"
-            android:textColor="@android:color/white"
-            android:textSize="27sp" />
-    </LinearLayout>
+    <include layout="@layout/layout_goodsdetail_cart_bottom"/>
 </LinearLayout>
