@@ -46,6 +46,7 @@ import atguigu.com.lingshixiaomiao.pager.home.utils.NetWorkUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.SPUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.Url;
 import atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout;
+import atguigu.com.lingshixiaomiao.pager.scale.activity.SnackInfomationActivity;
 
 /**
  * 首页
@@ -251,6 +252,21 @@ public class HomePager extends BasePager implements View.OnClickListener {
         // 搜索框点击监听
         et_search.setOnClickListener(this);
 
+        // 首页商品listView的item的点击监听
+        listview_home.setOnItemClickListener(new MyOnItemClickListener());
+    }
+
+    /**
+     * 首页商品listView的item的点击监听
+     */
+    class MyOnItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent intent = new Intent(mActivity, SnackInfomationActivity.class);
+            intent.putExtra("snack_id", pagerData.get(position).getId());
+            mActivity.startActivity(intent);
+        }
     }
 
     /**
@@ -353,6 +369,7 @@ public class HomePager extends BasePager implements View.OnClickListener {
             // 显示ListView列表
             showListView();
         }
+        unRegisterEventBus();
     }
 
     @Subscribe
@@ -372,6 +389,7 @@ public class HomePager extends BasePager implements View.OnClickListener {
             // 显示ListView列表
             showListView();
         }
+        unRegisterEventBus();
     }
 
     /**

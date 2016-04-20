@@ -9,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -231,7 +233,7 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
                 pagers.get(position).initData();
                 currPosition = position;
                 for (int i = 0; i < tabTitleLists.size(); i++) {
-                    if(i == currPosition) {
+                    if (i == currPosition) {
                         tabView.getChildAt(i).setBackgroundResource(R.drawable.btn_look_normal);
                     } else {
                         tabView.getChildAt(i).setBackgroundResource(R.drawable.bg_btn_cancel_pressed);
@@ -248,6 +250,7 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
 
         stopLoading();
     }
+
 
     /**
      * 停止加载动画
@@ -293,8 +296,36 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
                 finish();
                 break;
             case R.id.ib_next:
-                pw.showAsDropDown(tab_indicator);
+                if (!pw.isShowing()) {
+                    popupWindowAnimationOpen();
+                    pw.showAsDropDown(tab_indicator);
+                } else {
+                    pw.dismiss();
+                    popupWindowAnimationClose();
+                }
+
                 break;
         }
+    }
+
+
+    /**
+     * 关闭popupWindow的动画
+     */
+    private void popupWindowAnimationClose() {
+        RotateAnimation ra = new RotateAnimation(-180, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        ra.setDuration(800);
+        ra.setFillAfter(true);
+        ib_next.startAnimation(ra);
+    }
+
+    /**
+     * 打开popupWindow的动画
+     */
+    private void popupWindowAnimationOpen() {
+        RotateAnimation ra = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        ra.setDuration(800);
+        ra.setFillAfter(true);
+        ib_next.startAnimation(ra);
     }
 }

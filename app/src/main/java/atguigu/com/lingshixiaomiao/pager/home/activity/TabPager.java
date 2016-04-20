@@ -1,9 +1,11 @@
 package atguigu.com.lingshixiaomiao.pager.home.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import atguigu.com.lingshixiaomiao.pager.home.TabBasePager;
 import atguigu.com.lingshixiaomiao.pager.home.adapter.TabItemAdapter;
 import atguigu.com.lingshixiaomiao.pager.home.bean.TabDataBean;
 import atguigu.com.lingshixiaomiao.pager.home.utils.JsonUtils;
+import atguigu.com.lingshixiaomiao.pager.scale.activity.SnackInfomationActivity;
 
 /**
  * Created by Liu_haiwei on 2016/4/16.
@@ -95,6 +98,21 @@ public class TabPager extends TabBasePager {
      */
     private void setListener() {
         tab_gridview.setOnRefreshListener(new MyOnRefreshListener());
+        // GridView的item的点击监听
+        tab_gridview.setOnItemClickListener(new MyOnItemClickListener());
+    }
+
+    /**
+     * GridView的item的点击监听
+     */
+    class MyOnItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent intent = new Intent(mContent, SnackInfomationActivity.class);
+            intent.putExtra("snack_id", dataLists.get(position).getId());
+            mContent.startActivity(intent);
+        }
     }
 
     private int page = 1;
@@ -184,21 +202,6 @@ public class TabPager extends TabBasePager {
         this.tabDataBean = tabDataBean;
         if (tabDataBean != null) {
 
-            /*if (!isLoadMore) {
-                dataLists.clear();
-                dataLists.addAll(tabDataBean.getData().getItems());
-                if (adapter == null) {
-                    adapter = new TabItemAdapter(mContent, tabDataBean,dataLists);
-                }
-                tab_gridview.setAdapter(adapter);
-            } else {
-                dataLists.addAll(tabDataBean.getData().getItems());
-                adapter.notifyDataSetChanged();
-                isLoadMore = false;
-            }
-
-            tab_gridview.onRefreshComplete();*/
-
             dataLists.addAll(tabDataBean.getData().getItems());
             if (adapter == null) {
                 adapter = new TabItemAdapter(mContent, tabDataBean,dataLists);
@@ -208,6 +211,8 @@ public class TabPager extends TabBasePager {
         }
         // 停止加载
         stopLoading();
+        // 解注册EventBus
+        unRegisterEventBus();
     }
 
     private void stopLoading() {

@@ -87,7 +87,7 @@ public class TabDataBean {
         }
 
         public static class ItemsEntity {
-            private String id;
+            private int id;
             private String title;
             private String sales_title;
             private String type;
@@ -120,7 +120,7 @@ public class TabDataBean {
             private String fav_num;
             private String sub_classify_id;
 
-            public void setId(String id) {
+            public void setId(int id) {
                 this.id = id;
             }
 
@@ -184,7 +184,7 @@ public class TabDataBean {
                 this.sub_classify_id = sub_classify_id;
             }
 
-            public String getId() {
+            public int getId() {
                 return id;
             }
 
