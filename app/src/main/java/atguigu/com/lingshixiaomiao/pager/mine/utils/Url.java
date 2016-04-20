@@ -30,9 +30,24 @@ public class Url {
             "=feibo&srv=2102&mobi_num=", "&pwd=", "&opt=0"};
 
     /**
-     * 注册地址
+     * 注册地址 第一步 输入手机号
      */
     public static final String REGISTER_URL = "http://testapi.ds.lingshi.cccwei.com/api/Tpl/default/Login/register.html";
+    /**
+     * 注册地址 第二步 设置密码
+     */
+    public static final String REGISTER_URL2 = "http://testapi.ds.lingshi.cccwei.com/api/Tpl/default/Login/loginPwd.html";
+
+    public static final String[] REGISTER_URL_CHECK = {"http://api.ds.lingshi.cccwei.com/?cid=759713&uid=0&tms=201604182" +
+            "25946&sig=210068a5612119e9&wssig=5ed755c634dc49e0&os_type=3&version=22&channel_name=feibo&srv=2105&mobi_num=", "&opt=0"};
+    public static final String[] REGISTER_URL_CHECK2 = {"http://api.ds.lingshi.cccwei.com/?cid=759713&uid=0&tms=201604190" +
+            "85505&sig=bfe15db7ff82fb2d&wssig=8f94e72dfaaf9d08&os_type=3&version=22&channel_name=feibo&srv=2102" +
+            "&mobi_num=", "&pwd=", "&msg_code=", "&opt=1"};
+
+    public static final String[] CHECK_SMS = {"http://api.ds.lingshi.cccwei.com/?cid=759713&uid=0&tms=20160419152627&sig=899f21881ac" +
+            "ece98&wssig=c9ebf5d73bd5f6d0&os_type=3&version=22&channel_name=feibo&srv=2103&mobi_num=", "&img_code=null"};
+
+    public static final String USERAGREEMENT = "http://api.ds.lingshi.cccwei.com/?cid=759713&uid=0&tms=20160419092013&sig=2a1634e2380aee6d&wssig=7d7ad728981d6d81&os_type=3&version=22&channel_name=feibo&srv=2104";
 
     /**
      * 忘记密码地址
@@ -74,4 +89,23 @@ public class Url {
             "&tms=20160414211634&sig=92766e9d648e3842&wssig=e6ef18ce7211c61b&os_type=3" +
                     "&version=22&channel_name=feibo&srv=2802&add_id=",
             "&name=", "&phone=", "&province=", "&city=", "&proper=", "&full_add=", "&type="};
+
+    public static final String[] COLLECTION_GOODS_URL = {"http://api.ds.lingshi.cccwei.com/?cid=759713&" +
+            "uid=", "&tms=20160419191051&sig=10bd8b3956ec4e5f&wssig=a0d6ab092720d3d2&os_type=3" +
+            "&version=22&channel_name=feibo&srv=2804&pg_cur=", "&pg_size=20&since_id=", "&type=0"};
+    public static final String[] COLLECTION_SPECIAL_URL = {"http://api.ds.lingshi.cccwei.com/?cid=759713&" +
+            "uid=", "&tms=20160420104346&sig=91de33e5e9cde2bc&wssig=ff30bb53d45ddeea&os_type=3" +
+            "&version=22&channel_name=feibo&srv=2806&pg_cur=", "&pg_size=20&type=1&since_id="};
+
+    //http://api.ds.lingshi.cccwei.com/?cid=759713&uid=181772&tms=20160419210128&sig=e276acb544f6e0f1&wssig
+    // =36816c644cb06345&os_type=3&version=22&channel_name=feibo&srv=2804&pg_cur=2&pg_size=20&since_id=6856&type=0
+
+    public static final String[] REMOVE_COLLECTION_GOODS_URL = {"http://api.ds.lingshi.cccwei.com/" +
+            "?cid=759713&uid=", "&tms=20160420091221&sig=950747e124711761&wssig=fb3077064657dc53&" +
+            "os_type=3&version=22&channel_name=feibo&srv=2805&fav_id=", "&type=", "&opt=1"};
+
+
+    public static final String[] RESET_PASSWORD_URL = {"http://api.ds.lingshi.cccwei.com/?cid=759713" +
+            "&uid=0&tms=20160420113237&sig=e821043a493e3b29&wssig=09aaa10ca487d72b&os_type" +
+            "=3&version=22&channel_name=feibo&srv=2102&mobi_num=", "&pwd=", "&msg_code=", "&opt=2"};
 }

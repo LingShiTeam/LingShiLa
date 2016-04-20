@@ -14,30 +14,20 @@ import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
 
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
-import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.RegisterBean;
-import atguigu.com.lingshixiaomiao.pager.mine.utils.CacheUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
-import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Url;
-import cn.jpush.android.api.JPushInterface;
 
 /**
- * Created by lanmang on 2016/4/10.
+ * Created by lanmang on 2016/4/19.
  */
-public class WebPager extends ContentBasePager {
-
+public class RegisterPager extends ContentBasePager {
     private WebView wv_webview;
     private Bundle bundle;
     private String url = "";
@@ -49,28 +39,20 @@ public class WebPager extends ContentBasePager {
      * @param mActivity
      * @param bundle
      */
-    public WebPager(Activity mActivity, Bundle bundle, boolean isPush) {
+    public RegisterPager(Activity mActivity, Bundle bundle) {
         super(mActivity);
         this.bundle = bundle;
-        if (isPush) {
-            startPushUrl();
-        } else {
             startWebUrl();
             wv_webview.addJavascriptInterface(new Register(), "bridge");
-        }
     }
 
-    private JsonUtils jsonUtils;
-
     public class Register {
-
         @JavascriptInterface
         public void jump(int type, String mobNum) {
             //注册
             LogUtils.loge("type = " + type + ", mobNum = " + mobNum);
             String url = Url.REGISTER_URL_CHECK[0] + mobNum + Url.REGISTER_URL_CHECK[1];
-            WebPager.phone = mobNum;
-            getMobVerify();
+            RegisterPager.phone = mobNum;
             new JsonUtils().loadData(url, RegisterBean.class);
         }
 
@@ -89,54 +71,18 @@ public class WebPager extends ContentBasePager {
         }
 
         @JavascriptInterface
-        public void register(String code, String pwd, String verifyPwd) {
-            String url = Url.REGISTER_URL_CHECK2[0] + WebPager.phone + Url.REGISTER_URL_CHECK2[1]
+        public void register(int code, String pwd, String verifyPwd) {
+            String url = Url.REGISTER_URL_CHECK2[0] + RegisterPager.phone + Url.REGISTER_URL_CHECK2[1]
                     + pwd + Url.REGISTER_URL_CHECK2[2] + code + Url.REGISTER_URL_CHECK2[3];
-            jsonUtils = new JsonUtils();
-            jsonUtils.loadData(url, LoginBean.class);
+            new JsonUtils().loadData(url, RegisterBean.class);
         }
 
         @JavascriptInterface
         public void getMobVerify() {
-            String url = Url.CHECK_SMS[0] + WebPager.phone + Url.CHECK_SMS[1];
-            x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
-                @Override
-                public void onSuccess(String result) {
-                    LogUtils.loge("onlyRequest = " + result);
-                }
 
-                @Override
-                public void onError(Throwable ex, boolean isOnCallback) {
-
-                }
-
-                @Override
-                public void onCancelled(CancelledException cex) {
-
-                }
-
-                @Override
-                public void onFinished() {
-
-                }
-            });
-        }
-
-        @JavascriptInterface
-        public void getMobVerify(String tel) {
-            WebPager.phone = tel;
-            getMobVerify();
-        }
-
-        @JavascriptInterface
-        public void setPwd(String code, String tel, String login_code, String telPwd) {
-            LogUtils.loge("setPwd = " + tel + ", " + login_code + ", " + telPwd);
-            String[] u = Url.RESET_PASSWORD_URL;
-            String url = u[0] + tel + u[1] + telPwd + u[2] + login_code + u[3];
-            jsonUtils = new JsonUtils();
-            jsonUtils.loadData(url, LoginBean.class);
         }
     }
+
 
     /**
      * 获取注册返回信息
@@ -159,23 +105,6 @@ public class WebPager extends ContentBasePager {
             Toast.makeText(mActivity, rs_msg, Toast.LENGTH_SHORT).show();
         }
     }
-
-    /**
-     * 获取注册返回信息
-     *
-     * @param loginBean
-     */
-    @Subscribe
-    public void onEventMainThread(LoginBean loginBean) {
-        if (Constants.SUCCESS.equals(loginBean.getRs_code())) {
-            CacheUtils.setCache(CacheUtils.getSmallFile(mActivity, "login"), jsonUtils.getJson());
-            LoginUtils.getInstance().loginRequestSuccess(loginBean);
-            mActivity.finish();
-        } else {
-            Toast.makeText(mActivity, loginBean.getRs_msg(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
 
     private void loadUserAggrement(String url) {
         Intent intent = new Intent(mActivity, MineContentActivity.class);
@@ -219,28 +148,6 @@ public class WebPager extends ContentBasePager {
         url = bundle.getString("url");
         title = bundle.getString("title");
         startUrl();
-    }
-
-    /**
-     * Push推送
-     */
-    private void startPushUrl() {
-        LogUtils.loge("push 开始加载");
-        LogUtils.loge(bundle.toString());
-
-        String urlJson = bundle.getString(JPushInterface.EXTRA_EXTRA);
-        title = bundle.getString(JPushInterface.EXTRA_TITLE);
-        try {
-            JSONObject jsonObject = new JSONObject(urlJson);
-            url = jsonObject.getString("url");
-            LogUtils.loge("url = " + url);
-            startUrl();
-            LogUtils.loge("push 加载完成");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
     }
 
     private void startUrl() {
@@ -291,5 +198,4 @@ public class WebPager extends ContentBasePager {
     public void initData() {
         super.initData();
     }
-
 }

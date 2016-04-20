@@ -1,7 +1,6 @@
 package atguigu.com.lingshixiaomiao.pager.mine.pager;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -10,13 +9,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bigkoo.pickerview.OptionsPickerView;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -25,18 +21,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.application.MyApplication;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.AddressBean;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.ChangeAddressBean;
-import atguigu.com.lingshixiaomiao.pager.mine.bean.CountryBean;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.ProvinceBean;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
-import atguigu.com.lingshixiaomiao.pager.mine.utils.StringUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Url;
 
 /**
@@ -76,7 +70,8 @@ public class EditAddressPager extends ContentBasePager implements View.OnClickLi
         super(mActivity);
         this.bundle = bundle;
         loadData(isEdit);
-        loadCitiesData();
+        //loadCitiesData();
+        setPicker();
     }
 
     private void loadData(boolean isEdit) {
@@ -143,24 +138,20 @@ public class EditAddressPager extends ContentBasePager implements View.OnClickLi
     }
 
     private void editAddress() {
-        if (LoginUtils.getInstance().isLogin()) {
-            LoginBean loginBean = (LoginBean) LoginUtils.getInstance().getData();
-            String uid = loginBean.getData().getUid();
-            String[] u = Url.EDIT_ADDRESS_URL;
+        LoginBean loginBean = (LoginBean) LoginUtils.getInstance().getData();
+        String uid = loginBean.getData().getUid();
+        String[] u = Url.EDIT_ADDRESS_URL;
 
-            name = et_mine_edit_address_name.getText().toString();
-            phone = et_mine_edit_address_phone.getText().toString();
-            full_add = et_mine_edit_address_detail.getText().toString();
+        name = et_mine_edit_address_name.getText().toString();
+        phone = et_mine_edit_address_phone.getText().toString();
+        full_add = et_mine_edit_address_detail.getText().toString();
 
-            encodeAddress();
+        encodeAddress();
 
-            String url = u[0] + uid + u[1] + add_id + u[2] + name + u[3] + phone
-                    + u[4] + province + u[5] + city + u[6] + proper + u[7] + full_add + u[8] + type;
+        String url = u[0] + uid + u[1] + add_id + u[2] + name + u[3] + phone
+                + u[4] + province + u[5] + city + u[6] + proper + u[7] + full_add + u[8] + type;
 
-            new JsonUtils().loadData(url, ChangeAddressBean.class);
-        } else {
-            Toast.makeText(mActivity, "请联网后进行操作", Toast.LENGTH_SHORT).show();
-        }
+        new JsonUtils().loadData(url, ChangeAddressBean.class);
 
     }
 
@@ -300,106 +291,30 @@ public class EditAddressPager extends ContentBasePager implements View.OnClickLi
             case R.id.ll_mine_address:
                 //点击弹出选项选择器
                 pvOptions.show();
-                //choiceAddress();
                 break;
         }
     }
 
-    private void choiceAddress() {
-        View inflate = View.inflate(mActivity, R.layout.mine_choice_address, null);
-        tv_choice_address = (TextView) inflate.findViewById(R.id.tv_choice_address);
 
-        new AlertDialog.Builder(mActivity)
-                .setView(inflate)
-                .show();
-    }
-
-    private ArrayList<ProvinceBean> options1Items = new ArrayList<ProvinceBean>();
-    private ArrayList<ArrayList<String>> options2Items = new ArrayList<ArrayList<String>>();
-    private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<ArrayList<ArrayList<String>>>();
     OptionsPickerView pvOptions;
 
-    public void loadCitiesData() {
-        try {
-           /* InputStream is = mActivity.getAssets().open("cities.json");
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int len = -1;
-            while ((len = is.read(buffer)) != -1) {
-                baos.write(buffer, 0, len);
-            }
-            String citiesJson = baos.toString();
-            baos.close();
-            is.close();*/
-
-            InputStream is = mActivity.getAssets().open("cities.json");
-            int size = is.available();
-
-            LogUtils.loge("size = " + size);
-
-            // Read the entire asset into a local byte buffer.
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-
-            // Convert the buffer into a string.
-            String citiesJson = StringUtils.replaceBlank(new String(buffer, "utf-8"));
-
-            LogUtils.loge("citiesJson = " + citiesJson);
-            //new JsonUtils().parseJson(citiesJson, CountryBean.class);
-            countryBean =  new Gson().fromJson(citiesJson, CountryBean.class);
-            LogUtils.loge("countryBEna = " + countryBean);
-            setPicker();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private CountryBean countryBean;
-
-    @Subscribe
-    public void onEventMainThread(CountryBean countryBean) {
-        LogUtils.loge("countryBean = " + countryBean);
-        this.countryBean = countryBean;
-        //setPicker();
-    }
+    public ArrayList<ProvinceBean> options1Items;
+    public ArrayList<ArrayList<String>> options2Items;
+    public ArrayList<ArrayList<ArrayList<String>>> options3Items;
 
     private void setPicker() {
 
         //选项选择器
         pvOptions = new OptionsPickerView(mActivity);
 
-
-        List<CountryBean.CountryEntity.ProvinceEntity> province = countryBean.getCountry().getProvince();
-        for (int i = 0; i < province.size(); i++) {
-            //选项1
-            CountryBean.CountryEntity.ProvinceEntity provinceEntity = province.get(i);
-            options1Items.add(new ProvinceBean(i, provinceEntity.getName(), "", ""));
-
-            //选项2
-            List<CountryBean.CountryEntity.ProvinceEntity.CityEntity> city = provinceEntity.getCity();
-
-            ArrayList<String> options2Items_01 = null;
-            ArrayList<ArrayList<String>> options3Items_01 = null;
-
-            for (int j = 0; j < city.size(); j++) {
-                options2Items_01 = new ArrayList<String>();
-                options2Items_01.add(city.get(j).getName());
-
-                //选项3
-                List<CountryBean.CountryEntity.ProvinceEntity.CityEntity.CountyEntity> county = city.get(j).getCounty();
-                options3Items_01 = new ArrayList<ArrayList<String>>();
-                ArrayList<String> options3Items_01_01 = null;
-                for (int w = 0; w < county.size(); i++) {
-                    options3Items_01_01 = new ArrayList<String>();
-                    options3Items_01_01.add(county.get(w).getName());
-                }
-                options3Items_01.add(options3Items_01_01);
-
-            }
-            options2Items.add(options2Items_01);
-
-            options3Items.add(options3Items_01);
+        MyApplication application = (MyApplication) mActivity.getApplication();
+        application.loadCities();
+        if (application.isLoadCities) {
+            options1Items = application.options1Items;
+            options2Items = application.options2Items;
+            options3Items = application.options3Items;
+        } else {
+            return;
         }
 
         //三级联动效果
@@ -410,7 +325,7 @@ public class EditAddressPager extends ContentBasePager implements View.OnClickLi
         pvOptions.setCyclic(false, true, true);
         //设置默认选中的三级项目
         //监听确定选择按钮
-        pvOptions.setSelectOptions(1, 1, 1);
+        pvOptions.setSelectOptions(0, 0, 0);
         pvOptions.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
 
             @Override
@@ -424,4 +339,5 @@ public class EditAddressPager extends ContentBasePager implements View.OnClickLi
         });
 
     }
+
 }

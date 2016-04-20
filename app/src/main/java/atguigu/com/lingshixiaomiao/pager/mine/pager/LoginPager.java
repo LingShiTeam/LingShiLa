@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -176,8 +177,10 @@ public class LoginPager extends ContentBasePager implements View.OnClickListener
         String rs_code = loginBean.getRs_code();
         if (Constants.SUCCESS.equals(rs_code)) {
             data = loginBean.getData();
-            CacheUtils.setCache(CacheUtils.getSmallFile(mActivity, "login"), jsonUtils.getJson());
-            LoginUtils.getInstance().loginRequestSuccess(loginBean);
+            if (jsonUtils!=null && !TextUtils.isEmpty(jsonUtils.getJson())) {
+                CacheUtils.setCache(CacheUtils.getSmallFile(mActivity, "login"), jsonUtils.getJson());
+                LoginUtils.getInstance().loginRequestSuccess(loginBean);
+            }
             mActivity.finish();
         } else {
             Toast.makeText(mActivity, loginBean.getRs_msg(), Toast.LENGTH_SHORT).show();

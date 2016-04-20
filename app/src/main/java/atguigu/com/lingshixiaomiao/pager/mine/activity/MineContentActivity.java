@@ -1,22 +1,28 @@
 package atguigu.com.lingshixiaomiao.pager.mine.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.AboutPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.AddressPager;
+import atguigu.com.lingshixiaomiao.pager.mine.pager.CollectionPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.EditAddressPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.LoginPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.ResetHeaderPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.ResetNicknamePager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.SettingPager;
+import atguigu.com.lingshixiaomiao.pager.mine.pager.UserAggrementPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.UserPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.WebPager;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
@@ -53,6 +59,13 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
                 break;
             case Constants.ABOUT_PAGER:
                 pager = new AboutPager(this);//关于零食小喵界面
+                break;
+            case Constants.COLLECTION_PAGER:
+                pager = new CollectionPager(this);//我的收藏
+                tv_mine_title_complete.setVisibility(View.VISIBLE);
+                break;
+            case Constants.USERAGGREMENT_PAGER:
+                pager = new UserAggrementPager(this, bundle);//用户协议界面
                 break;
             case Constants.ADDRESS_PAGER:
                 pager = new AddressPager(this);//管理收货地址界面
@@ -127,6 +140,7 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
 
     @Override
     protected void onDestroy() {
+        pager.unRegisterEventBus();
         super.onDestroy();
     }
 
@@ -134,7 +148,7 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //处理扫描结果（在界面上显示）
-        if (resultCode == Constants.RESULT_OK) {
+        if (resultCode == Constants.RESULT_OK && requestCode == 1) {
             Bundle bundle = data.getExtras();
             String scanResult = bundle.getString("result");
             LogUtils.loge("scanResult = " + scanResult);
@@ -148,5 +162,55 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
             startActivity(intent);
 
         }
+
+        if (requestCode == 2) {
+            startPhotoZoom(data.getData());
+        }
+
+        // 取得裁剪后的图片
+        if (requestCode == 3) {
+            if (data != null) {
+                setPicToView(data);
+            }
+        }
+    }
+
+    /**
+     * 保存裁剪之后的图片数据
+     *
+     * @param picdata
+     */
+    private void setPicToView(Intent picdata) {
+        Bundle extras = picdata.getExtras();
+        if (extras != null) {
+            Bitmap photo = extras.getParcelable("data");
+            EventBus.getDefault().post(photo);
+        }
+    }
+
+
+    /**
+     * 裁剪图片方法实现
+     *
+     * @param uri
+     */
+    public void startPhotoZoom(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        //下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 150);
+        intent.putExtra("outputY", 150);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, 3);
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
     }
 }

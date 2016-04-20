@@ -2,6 +2,8 @@ package atguigu.com.lingshixiaomiao.pager.mine.pager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -82,18 +84,25 @@ public class UserPager extends ContentBasePager implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.ll_mine_setting_user_nickname:
                 position = Constants.CHANGE_NICKNAME_PAGER;
+                intent = new Intent(mActivity, MineContentActivity.class);
+                intent.putExtra("pager", position);
+                mActivity.startActivity(intent);
                 break;
             case R.id.ll_mine_setting_user_header:
-                position = Constants.CHANGE_HEADER_PAGER;
+                //position = Constants.CHANGE_HEADER_PAGER;
+                intent = new Intent(Intent.ACTION_PICK, null);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                mActivity.startActivityForResult(intent, 2);
                 break;
         }
-        Intent intent = new Intent(mActivity, MineContentActivity.class);
-        intent.putExtra("pager", position);
-        mActivity.startActivity(intent);
+
     }
+
+
 
     /**
      * 获取修改个人资料返回值
@@ -104,6 +113,15 @@ public class UserPager extends ContentBasePager implements View.OnClickListener 
         LoginBean loginBean = (LoginBean) loginUtils.getData();
         String nickname = loginBean.getData().getNickname();
         tv_mine_setting_user_nickname.setText(nickname);
+    }
+
+    /**
+     * 获取修改个人头像返回值
+     *
+     */
+    @Subscribe
+    public void onEventMainThread(Bitmap bitmap) {
+        iv_mine_setting_user_header.setImageBitmap(bitmap);
     }
 
     @Override

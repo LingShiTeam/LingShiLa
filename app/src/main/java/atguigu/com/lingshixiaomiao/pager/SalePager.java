@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.viewpagerindicator.TabPageIndicator;
@@ -160,8 +161,10 @@ public class SalePager extends BasePager {
 
                     //进入首页
                     MainActivity mainActivity = (MainActivity) mActivity;
-                    mainActivity.setPosition(0);
-                    mainActivity.setCurrentPage();
+//                    mainActivity.setPosition(0);
+//                    mainActivity.setCurrentPage();
+                    RadioGroup rg_main = (RadioGroup) mainActivity.findViewById(R.id.rg_main);
+                    rg_main.check(R.id.rb_main_home);
                     break;
 
                 case R.id.iv_scale_shoppingcar:

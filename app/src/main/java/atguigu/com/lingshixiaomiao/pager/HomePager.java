@@ -2,9 +2,12 @@ package atguigu.com.lingshixiaomiao.pager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
+import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -46,6 +50,10 @@ import atguigu.com.lingshixiaomiao.pager.home.utils.NetWorkUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.SPUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.Url;
 import atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout;
+import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
+import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
 import atguigu.com.lingshixiaomiao.pager.scale.activity.SnackInfomationActivity;
 
 /**
@@ -92,6 +100,8 @@ public class HomePager extends BasePager implements View.OnClickListener {
     private ListView left_drawer_list;
     private LeftMenuAdapter menuAdapter;
     private View menuView;
+    private ImageOptions imageOption;
+    private LoginUtils loginUtils; // 登录信息
 
     public HomePager(Activity mActivity, DrawerLayout dl_menu) {
         super(mActivity);
@@ -177,6 +187,7 @@ public class HomePager extends BasePager implements View.OnClickListener {
      */
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             // 置顶按钮点击监听
             case R.id.iv_home_tiptop:
@@ -184,7 +195,7 @@ public class HomePager extends BasePager implements View.OnClickListener {
                 break;
             // 搜索框点击监听
             case R.id.et_search:
-                Intent intent = new Intent(mActivity, SearchActivity.class);
+                intent = new Intent(mActivity, SearchActivity.class);
                 mActivity.startActivity(intent);
                 break;
             default:
@@ -306,6 +317,14 @@ public class HomePager extends BasePager implements View.OnClickListener {
         super.initData();
         LogUtils.loge("首页 开始加载首页数据");
 
+        imageOption = new ImageOptions.Builder()
+                //.setImageScaleType(ImageView.ScaleType.FIT_START)//等比例缩小到充满长/宽居中显示, 或原样显示
+                .setLoadingDrawableId(R.drawable.default_home_banner_640_270)
+                .setFailureDrawableId(R.drawable.default_home_banner_640_270)
+                .setConfig(Bitmap.Config.ARGB_4444)
+                .setCircular(true)
+                .build();
+
         // 显示加载的dialog
         ad = (AnimationDrawable) widget_loading_pb.getBackground();
         ad.start();
@@ -330,7 +349,7 @@ public class HomePager extends BasePager implements View.OnClickListener {
         }
 
         //通过JsonUtils工具类解析url, 并通过EventBus返回数据
-        if(NetWorkUtils.isNetworkConnected()) {
+        if (NetWorkUtils.isNetworkConnected()) {
             new JsonUtils().loadData(Url.HOME_DATA_BASE, HomeBean.class);
         }
 
@@ -369,7 +388,7 @@ public class HomePager extends BasePager implements View.OnClickListener {
             // 显示ListView列表
             showListView();
         }
-        unRegisterEventBus();
+        //unRegisterEventBus();
     }
 
     @Subscribe
@@ -389,7 +408,33 @@ public class HomePager extends BasePager implements View.OnClickListener {
             // 显示ListView列表
             showListView();
         }
-        unRegisterEventBus();
+        //unRegisterEventBus();
+    }
+
+
+    /**
+     * 判断是否登录
+     */
+    private void checkLoading() {
+        Log.e("TAG", "登录成功!");
+        drawerleft_framelayout_login.setVisibility(View.VISIBLE);
+        drawerleft_framelayout_unlogin.setVisibility(View.GONE);
+        Log.e("TAG", "是否登录" + LoginUtils.getInstance().isLogin());
+        if (LoginUtils.getInstance().isLogin()) {
+            loginUtils = LoginUtils.getInstance();
+            LoginBean loginBean = (LoginBean) loginUtils.getData();
+            if (loginBean == null) {
+                return;
+            }
+            LoginBean.DataEntity data = loginBean.getData();
+            String nickname = data.getNickname();
+            drawerleft_nick_name.setText(nickname);
+            x.image().bind(drawerleft_image_avatar,data.getAvatar(),imageOption);
+        } else {
+            drawerleft_framelayout_login.setVisibility(View.GONE);
+            drawerleft_framelayout_unlogin.setVisibility(View.VISIBLE);
+            drawerleft_image_avatar.setImageResource(R.drawable.default_photo);
+        }
     }
 
     /**
@@ -400,32 +445,52 @@ public class HomePager extends BasePager implements View.OnClickListener {
         public void onClick(View v) {
             dl_menu.openDrawer(Gravity.LEFT);
             // 显示侧滑菜单数据
-            if(homeBean != null && ib_left_menu.isShown()) {
+            if (homeBean != null && ib_left_menu.isShown()) {
 
-                if(menuAdapter == null) {
+                if (menuAdapter == null) {
                     menuView = dl_menu.getRootView();
                     initMenuView(menuView);
                 }
 
-                if(menuAdapter == null) {
-                    menuAdapter = new LeftMenuAdapter(mActivity,homeBean);
+                if (menuAdapter == null) {
+                    menuAdapter = new LeftMenuAdapter(mActivity, homeBean);
                 }
+                // 判断是否登录
+                checkLoading();
 
-                // 判断是否已经登录
+                // 点击登录
                 drawerleft_to_login_page.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        LogUtils.loge("TAG","跳转到登录界面");
+                        LogUtils.loge("TAG", "跳转到登录界面");
+                        Intent intent = new Intent(mActivity, MineContentActivity.class);
+                        intent.putExtra("pager", Constants.LOGIN_PAGER);
+                        mActivity.startActivity(intent);
+                    }
+                });
+                // 点击注册
+                drawerleft_to_registe_page.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mActivity, MineContentActivity.class);
+                        intent.putExtra("pager", Constants.WEBVIEW_PAGER);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("title", "注册");
+                        bundle.putString("url", atguigu.com.lingshixiaomiao.pager.mine.utils.Url.REGISTER_URL);
+                        intent.putExtras(bundle);
+                        mActivity.startActivity(intent);
                     }
                 });
 
                 left_drawer_list.setAdapter(menuAdapter);
             }
         }
+
     }
 
     /**
      * 初始化侧滑菜单布局控件
+     *
      * @param menuView
      */
     private void initMenuView(View menuView) {

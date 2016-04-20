@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,13 +35,15 @@ import atguigu.com.lingshixiaomiao.pager.mine.utils.CacheUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 
 /**
  * 主页面
  */
 public class MainActivity extends FragmentActivity {
 
-    private RadioGroup rg_main;
+    public RadioGroup rg_main;
     private DrawerLayout dl_menu;
     private List<BasePager> pagers;
 
@@ -68,7 +71,64 @@ public class MainActivity extends FragmentActivity {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+
         checkIsLogin();
+
+        String Token = "sse55ZfB+l5Eu5ALKDtU+vZZ974o5NwHfIz1STycoViVc5E9csh0tlEiarq7XZfJokLknrAleDpanPLGtTQAXg==";//test
+        /**
+         * IMKit SDK调用第二步
+         *
+         * 建立与服务器的连接
+         *
+         */
+
+        connect(Token);
+    }
+
+    /**
+     * 建立与融云服务器的连接
+     *
+     * @param token
+     */
+    private void connect(String token) {
+
+
+        /**
+         * IMKit SDK调用第二步,建立与服务器的连接
+         */
+        RongIM.connect(token, new RongIMClient.ConnectCallback() {
+
+            /**
+             * Token 错误，在线上环境下主要是因为 Token 已经过期，您需要向 App Server 重新请求一个新的 Token
+             */
+            @Override
+            public void onTokenIncorrect() {
+
+                Log.d("LoginActivity", "--onTokenIncorrect");
+            }
+
+            /**
+             * 连接融云成功
+             * @param userid 当前 token
+             */
+            @Override
+            public void onSuccess(String userid) {
+
+                Log.d("LoginActivity", "--onSuccess" + userid);
+                // startActivity(new Intent(LoginActivity.this, MainActivity.class));
+               // finish();
+            }
+
+            /**
+             * 连接融云失败
+             * @param errorCode 错误码，可到官网 查看错误码对应的注释
+             */
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+
+                Log.d("LoginActivity", "--onError" + errorCode);
+            }
+        });
     }
 
     /**
@@ -162,7 +222,6 @@ public class MainActivity extends FragmentActivity {
                 View pagerView = getPagerView();
                 return pagerView;
             }
-
         }).commit();
     }
 
@@ -241,13 +300,12 @@ public class MainActivity extends FragmentActivity {
 
     /**
      * 获取自动登录信息
-     *
      * @param loginBean
      */
     @Subscribe
     public void onEventMainThread(LoginBean loginBean) {
         LogUtils.loge("接收到自动登录信息 = " + loginBean);
-        if (Constants.SUCCESS.equals(loginBean.getRs_code())) {
+        if(Constants.SUCCESS.equals(loginBean.getRs_code())){
             LoginUtils.getInstance().loginRequestSuccess(loginBean);
         }
     }
