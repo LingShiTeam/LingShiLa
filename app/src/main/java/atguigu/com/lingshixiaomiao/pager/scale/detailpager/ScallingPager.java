@@ -218,11 +218,6 @@ public class ScallingPager extends ScaleBasePager {
 
             CountDownTimer timer = (CountDownTimer) holder.tv_scale_item_time.getTag();
 
-            if (timer != null) {
-
-                timer.cancel();
-                timer = null;
-            }
 
             //获取url时间戳
             long urlTime = ((long) (itemsEntity.getTime())) * 1000;

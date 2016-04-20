@@ -1,14 +1,20 @@
 package atguigu.com.lingshixiaomiao.pager.scale.activity;
 
 import android.app.Activity;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.scale.utils.Url;
@@ -27,6 +33,7 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
     private RelativeLayout head_right;
     private TextView home_car_number;
     private TextView goods_detail_addtocart;
+    private  boolean isCollect = false;
 
 
     @Override
@@ -72,6 +79,73 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
         iv_back.setOnClickListener(this);
     }
 
+    Object incertObj = new Object() {
+
+
+        //js调用该方法
+        @JavascriptInterface
+        public void clickCollect() {
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+
+                    if (!isCollect) {
+                        //收藏图标变红
+                        wv_infomation.loadUrl("javascript: changeCollect('true')");
+                        isCollect = true;
+                        Toast.makeText(SnackInfomationActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //收藏图标变白
+                        wv_infomation.loadUrl("javascript: changeCollect('false')");
+                        isCollect = false;
+                        Toast.makeText(SnackInfomationActivity.this, "取消收藏", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void clickCopyLink(final String str) {
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(str);
+                    Toast.makeText(SnackInfomationActivity.this, "已复制到剪贴板", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+
+        @JavascriptInterface
+        public void clickMoreComment(String url, int total) {
+
+            Intent intent = new Intent(SnackInfomationActivity.this, CommentActivity.class);
+            intent.putExtra("comment_url", url);
+            Log.e("TAG", "infomation comment_url:" + url);
+            intent.putExtra("comment_count", total);
+            startActivity(intent);
+            Toast.makeText(SnackInfomationActivity.this, "查看更多评论", Toast.LENGTH_SHORT).show();
+        }
+
+        @JavascriptInterface
+        public void clickGuessLike(int id) {
+
+            Intent intent = new Intent(SnackInfomationActivity.this, SnackInfomationActivity.class);
+            intent.putExtra("like_id", id);
+            startActivity(intent);
+
+            finish();
+
+        }
+    };
+
+    //return incertObj;
     private void initView() {
         wv_infomation = (WebView) findViewById(R.id.wv_infomation);
         iv_infomation_share = (ImageView) findViewById(R.id.iv_infomation_share);

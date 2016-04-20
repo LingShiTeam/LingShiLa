@@ -65,7 +65,7 @@ public class MainActivity extends FragmentActivity {
         //锁定左侧菜单
         dl_menu.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         //判断是否自动登录
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
         checkIsLogin();
@@ -152,7 +152,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * 根据position设置当前页面
      */
-    private void setCurrentPage() {
+    public void setCurrentPage() {
         FragmentManager sfm = getSupportFragmentManager();
         FragmentTransaction ft = sfm.beginTransaction();
         ft.replace(R.id.fl_main_pager, new Fragment() {
@@ -233,7 +233,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * 判断是否保存用户登录信息,已经保存则直接登录并加载用户信息
      */
-    public void checkIsLogin(){
+    public void checkIsLogin() {
         String login = CacheUtils.getCache(CacheUtils.getSmallFile(this, "login"));
         LogUtils.loge("login auto = " + login);
         new JsonUtils().parseJson(login, LoginBean.class);
@@ -241,14 +241,23 @@ public class MainActivity extends FragmentActivity {
 
     /**
      * 获取自动登录信息
+     *
      * @param loginBean
      */
     @Subscribe
     public void onEventMainThread(LoginBean loginBean) {
         LogUtils.loge("接收到自动登录信息 = " + loginBean);
-        if(Constants.SUCCESS.equals(loginBean.getRs_code())){
+        if (Constants.SUCCESS.equals(loginBean.getRs_code())) {
             LoginUtils.getInstance().loginRequestSuccess(loginBean);
         }
+    }
+
+    /**
+     * 设置当前位置
+     */
+    public void setPosition(int position) {
+
+        this.position = position;
     }
 
 }
