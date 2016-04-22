@@ -1,12 +1,14 @@
 package atguigu.com.lingshixiaomiao.pager.scale.detailpager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -25,6 +27,7 @@ import java.util.List;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.home.utils.NetWorkUtils;
 import atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout;
+import atguigu.com.lingshixiaomiao.pager.scale.activity.SnackInfomationActivity;
 import atguigu.com.lingshixiaomiao.pager.scale.base.ScaleBasePager;
 import atguigu.com.lingshixiaomiao.pager.scale.bean.ScaleBeginBean;
 import atguigu.com.lingshixiaomiao.pager.scale.utils.CacheUtil;
@@ -62,6 +65,8 @@ public class ScaleBeginPager extends ScaleBasePager {
         View rootView = View.inflate(mActivity, R.layout.scale_begin_pager, null);
         lv_scale_begin = (ListView) rootView.findViewById(R.id.lv_scale_begin);
         rl_scale_begin = (RefreshLayout) rootView.findViewById(R.id.rl_scale_begin);
+
+        lv_scale_begin.setOnItemClickListener(new MyOnItemClickListener());
 
         // 下拉刷新
         rl_scale_begin.setOnRefreshListener(new MyOnRefreshListener());
@@ -283,5 +288,19 @@ public class ScaleBeginPager extends ScaleBasePager {
                 rl_scale_begin.setLoading(false);
             }
         });
+    }
+
+    /**
+     * 单机item监听
+     */
+    private class MyOnItemClickListener implements android.widget.AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent intent = new Intent(mActivity, SnackInfomationActivity.class);
+            intent.putExtra("snack_id", itemsEntities.get(position).getId());
+            intent.putExtra("image_url", itemsEntities.get(position).getImg().getImg_url());
+            intent.putExtra("snack_title", itemsEntities.get(position).getTitle());
+            mActivity.startActivity(intent);
+        }
     }
 }

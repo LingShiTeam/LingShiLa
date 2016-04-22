@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 /**
  * Created by lanmang on 2016/4/15.
+ * 拦截子视图事件的LInearLayout
  */
 public class InterceptLinearLayout extends LinearLayout {
     public InterceptLinearLayout(Context context, AttributeSet attrs) {

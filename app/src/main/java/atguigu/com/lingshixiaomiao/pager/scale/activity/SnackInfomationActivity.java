@@ -1,16 +1,28 @@
 package atguigu.com.lingshixiaomiao.pager.scale.activity;
 
 import android.app.Activity;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
 import atguigu.com.lingshixiaomiao.pager.scale.utils.Url;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
@@ -27,6 +39,8 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
     private RelativeLayout head_right;
     private TextView home_car_number;
     private TextView goods_detail_addtocart;
+    private boolean isCollect = false;
+    private int snack_id;
 
 
     @Override
@@ -55,9 +69,9 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
 
         /*添加一个对象，让js可以访问该对象的方法，该对象中可以调用js的方法
          注意java调用js时，addJavascripeInterface()是不必须的*/
-
+        wv_infomation.addJavascriptInterface(getHtmlObject(), "bridge");
         //获取当前食物的id
-        int snack_id = getIntent().getIntExtra("snack_id", 0);
+        snack_id = getIntent().getIntExtra("snack_id", 0);
         //加载一个网页
         wv_infomation.loadUrl(Url.INFOMATION_BASE_0 + snack_id + Url.INFOMATION_BASE_1);
     }
@@ -70,6 +84,194 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
         iv_infomation_share.setOnClickListener(this);
         // 返回
         iv_back.setOnClickListener(this);
+    }
+
+    /**
+     * 获取js调用java的接口对象
+     *
+     * @return
+     */
+    private Object getHtmlObject() {
+
+        Object incertObj = new Object() {
+
+            /**
+             *收藏
+             */
+            @JavascriptInterface
+            public void clickCollect() {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        //如果未登录
+                        if (!LoginUtils.getInstance().isLogin()) {
+                            Toast.makeText(SnackInfomationActivity.this, "请登录", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if (!isCollect) {
+
+                            //收藏
+                            collect();
+
+                        } else {
+
+                            //取消收藏
+                            cancellCollect();
+                        }
+                    }
+                });
+            }
+
+            /**
+             * 复制到剪切板
+             * @param str
+             */
+            @JavascriptInterface
+            public void clickCopyLink(final String str) {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                        cm.setText(str);
+                        Toast.makeText(SnackInfomationActivity.this, "已复制到剪贴板", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+
+            /**
+             * 更多评论
+             * @param url
+             * @param total
+             */
+            @JavascriptInterface
+            public void clickMoreComment(final String url, final int total) {
+
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(SnackInfomationActivity.this, CommentActivity.class);
+                        intent.putExtra("comment_url", url);
+                        Log.e("TAG", "infomation comment_url:" + url);
+                        intent.putExtra("comment_count", total);
+                        startActivity(intent);
+                        Toast.makeText(SnackInfomationActivity.this, "查看更多评论", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            /**
+             * 猜你喜欢
+             * @param id
+             */
+            @JavascriptInterface
+            public void clickGuessLike(int id) {
+
+                Intent intent = new Intent(SnackInfomationActivity.this, SnackInfomationActivity.class);
+                intent.putExtra("like_id", id);
+                startActivity(intent);
+
+                finish();
+
+            }
+        };
+
+        return incertObj;
+    }
+
+    /**
+     * 收藏
+     */
+    private void collect() {
+
+        //获取用户id
+        LoginBean loginBean = (LoginBean) LoginUtils.getInstance().getData();
+        String uid = loginBean.getData().getUid();
+
+        //得到请求地址
+        String collectUrl = Url.COLLECT_IN_0 + uid + Url.COLLECT_IN_1 + snack_id + Url.COLLECT_IN_2;
+
+        //发送携带数据的get请求
+        RequestParams requestParams = new RequestParams(collectUrl);
+
+        x.http().get(requestParams, new Callback.CommonCallback<String>() {
+
+            @Override
+            public void onSuccess(String result) {
+
+                //收藏图标变红
+                wv_infomation.loadUrl("javascript: changeCollect('true')");
+
+                isCollect = true;
+
+                Toast.makeText(SnackInfomationActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    /**
+     * 取消收藏
+     */
+    private void cancellCollect() {
+
+        //获取用户id
+        LoginBean loginBean = (LoginBean) LoginUtils.getInstance().getData();
+        String uid = loginBean.getData().getUid();
+
+        //得到请求地址
+        String collectUrl = Url.COLLECT_OUT_0 + uid + Url.COLLECT_OUT_1 + snack_id + Url.COLLECT_OUT_2;
+
+        //发送携带数据的get请求
+        RequestParams requestParams = new RequestParams(collectUrl);
+
+        x.http().get(requestParams, new Callback.CommonCallback<String>() {
+
+            @Override
+            public void onSuccess(String result) {
+
+                //收藏图标变白
+                wv_infomation.loadUrl("javascript: changeCollect('false')");
+
+                isCollect = false;
+
+                Toast.makeText(SnackInfomationActivity.this, "取消收藏", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
     private void initView() {

@@ -19,4 +19,16 @@ public class Url {
     public static final String INFOMATION_BASE_0 = "http://ds.lingshi.cccwei.com/api.php?apptype=0&srv=2506&goods_id=";
 
     public static final String INFOMATION_BASE_1 = "&cid=10002&uid=0&tms=20150721190147&sig=8c35f5a024148111&wssig=308efe4382a088e0&os_type=3&version=22";
+
+    public static final String COLLECT_IN_0 = "http://api.ds.lingshi.cccwei.com/?cid=760653&uid=";
+
+    public static final String COLLECT_IN_1 = "&tms=20160420154128&sig=83def29b01fe63e6&wssig=e2eecd2c64fdb2f3&os_type=3&version=22&channel_name=feibo&srv=2805&fav_id=";
+
+    public static final String COLLECT_IN_2 = "&type=0&opt=0";
+
+    public static final String COLLECT_OUT_0 = "http://api.ds.lingshi.cccwei.com/?cid=760653&uid=";
+
+    public static final String COLLECT_OUT_1 = "&tms=20160420154128&sig=83def29b01fe63e6&wssig=e2eecd2c64fdb2f3&os_type=3&version=22&channel_name=feibo&srv=2805&fav_id=";
+
+    public static final String COLLECT_OUT_2 = "&type=0&opt=1";
 }

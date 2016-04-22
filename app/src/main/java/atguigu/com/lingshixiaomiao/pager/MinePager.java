@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +26,7 @@ import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Url;
+import io.rong.imkit.RongIM;
 
 /**
  * Created by lanmang on 2016/4/8.
@@ -35,6 +37,8 @@ public class MinePager extends BasePager implements View.OnClickListener {
     private ImageButton ib_mine_setting;
     private ImageView ib_mine_user_header;
     private LinearLayout ll_mine_call_service;
+    private LinearLayout ll_mine_service;
+    private LinearLayout ll_mine_collections;
     private LinearLayout ll_register_login;
     private TextView tv_mine_login;
     private TextView tv_mine_register;
@@ -57,6 +61,8 @@ public class MinePager extends BasePager implements View.OnClickListener {
         ib_mine_setting = (ImageButton) v.findViewById(R.id.ib_mine_setting);
         ib_mine_user_header = (ImageView) v.findViewById(R.id.ib_mine_user_header);
         ll_mine_call_service = (LinearLayout) v.findViewById(R.id.ll_mine_call_service);
+        ll_mine_collections = (LinearLayout) v.findViewById(R.id.ll_mine_collections);
+        ll_mine_service = (LinearLayout) v.findViewById(R.id.ll_mine_service);
         ll_register_login = (LinearLayout) v.findViewById(R.id.ll_register_login);
         tv_mine_login = (TextView) v.findViewById(R.id.tv_mine_login);
         tv_mine_register = (TextView) v.findViewById(R.id.tv_mine_register);
@@ -68,8 +74,25 @@ public class MinePager extends BasePager implements View.OnClickListener {
         tv_mine_login.setOnClickListener(this);
         tv_mine_register.setOnClickListener(this);
         tv_mine_nickname.setOnClickListener(this);
+        ll_mine_collections.setOnClickListener(this);
+        //与客服聊天 融云
+        ll_mine_service.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (RongIM.getInstance() != null) {
+                    /**
+                     * 启动客户服聊天界面。
+                     *
+                     * @param context               应用上下文。
+                     * @param customerServiceUserId 要与之聊天的客服 Id。
+                     * @param title                 聊天的标题，如果传入空值，则默认显示与之聊天的客服名称。
+                     */
+                    RongIM.getInstance().startCustomerServiceChat(mActivity, "KEFU146096865825500", "在线客服");
+                }
+            }
+        });
 
-        //联系客服
+        //电话联系客服
         ll_mine_call_service.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +113,9 @@ public class MinePager extends BasePager implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.ib_mine_setting://设置界面
                 position = Constants.SETTING_PAGER;
+                break;
+            case R.id.ll_mine_collections://我的收藏界面
+                position = Constants.COLLECTION_PAGER;
                 break;
             case R.id.tv_mine_login://登录界面
             case R.id.tv_mine_nickname:
@@ -128,15 +154,6 @@ public class MinePager extends BasePager implements View.OnClickListener {
                     }
                 })
                 .show();
-               /* .setView(inflate);*/
-
-      /*  AlertDialog alertDialog = builder.create();
-        Window window = alertDialog.getWindow();
-        WindowManager.LayoutParams attributes = window.getAttributes();
-        int height = mActivity.getWindowManager().getDefaultDisplay().getHeight();
-        attributes.height = (int) (height*0.6);
-        window.setAttributes(attributes);
-        builder.show();*/
     }
 
     private void startActivity(Class clazz) {
@@ -144,17 +161,21 @@ public class MinePager extends BasePager implements View.OnClickListener {
         if (bundle != null) {
             intent.putExtras(bundle);
         }
+
+        if (position >= 11 && !LoginUtils.getInstance().isLogin()) {
+            position = Constants.LOGIN_PAGER;
+        }
+
         intent.putExtra("pager", position);
         mActivity.startActivity(intent);
     }
 
     /**
      * 登录成功后更新用户信息
-     *
      */
     @Subscribe
     public void onEventMainThread(LoginUtils loginUtils) {
-        if(LoginUtils.getInstance().isLogin()){
+        if (LoginUtils.getInstance().isLogin()) {
             LoginBean.DataEntity data = ((LoginBean) loginUtils.getData()).getData();
             if (data == null) {
                 return;
@@ -167,11 +188,21 @@ public class MinePager extends BasePager implements View.OnClickListener {
             String headerUrl = data.getAvatar();
             ImageOptions imageOptions = new ImageOptions.Builder().setPlaceholderScaleType(ImageView.ScaleType.CENTER_CROP).build();
             x.image().bind(ib_mine_user_header, headerUrl, imageOptions);
-        }else{
+        } else {
             ll_register_login.setVisibility(View.VISIBLE);
             tv_mine_nickname.setVisibility(View.GONE);
             ib_mine_user_header.setImageResource(R.drawable.default_photo_person);
         }
+    }
+
+
+    /**
+     * 获取修改个人头像返回值
+     *
+     */
+    @Subscribe
+    public void onEventMainThread(Bitmap bitmap) {
+        ib_mine_user_header.setImageBitmap(bitmap);
     }
 
     @Override

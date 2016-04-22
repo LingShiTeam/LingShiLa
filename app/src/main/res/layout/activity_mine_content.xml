@@ -25,6 +25,47 @@
             android:text="标题"
             android:textSize="20sp" />
 
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ll_mine_collection_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/tv_mine_collection_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/mine_collection_left_selector"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:clickable="true"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:text="商品"
+                android:textColor="@drawable/mine_colloection_textcolor_selector"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_mine_collection_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/mine_collection_right_selector"
+                android:gravity="center"
+                android:clickable="true"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:text="专题"
+                android:textColor="@drawable/mine_colloection_textcolor_selector"
+                android:textSize="15sp" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/tv_mine_title_complete"
             android:layout_width="wrap_content"
@@ -34,8 +75,8 @@
             android:layout_marginRight="10dp"
             android:clickable="true"
             android:text="完成"
-            android:visibility="gone"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

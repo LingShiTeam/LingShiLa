@@ -9,6 +9,7 @@
         android:layout_height="120dp">
 
         <ImageView
+
             android:id="@+id/iv_scale_item"
             android:layout_width="115dp"
             android:layout_height="115dp"
@@ -21,8 +22,9 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_margin="5dp"
-            android:text="4.6折"
+            android:background="@drawable/scale_scalling_bg"
             android:padding="2dp"
+            android:text="4.6折"
             android:textColor="@android:color/white" />
     </RelativeLayout>
 
@@ -81,13 +83,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/scale_scalling_bg_2"
+                android:layout_marginRight="3dp"
+                android:background="@drawable/scale_scalling_bg"
                 android:clickable="true"
+                android:padding="3dp"
                 android:text="加入购物车"
                 android:textColor="@android:color/white"
-                android:textSize="12sp"
-                android:padding="3dp"
-                android:layout_marginRight="3dp"/>
+                android:textSize="12sp" />
 
         </RelativeLayout>
 
