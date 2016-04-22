@@ -131,7 +131,8 @@
             android:theme="@style/AppBackTheme"/>
         <activity android:name=".pager.home.activity.LeftMenuItemActivity"
             android:theme="@style/Theme.PageIndicatorDefaults"/>
-        <activity android:name=".pager.subject.ui.SubjectTopActivity"/>
+        <activity android:name=".pager.subject.ui.SubjectTopActivity"
+            android:theme="@style/Theme.PageIndicatorDefaults" />
 
         <!-- 极光推送 -->
         <!-- Rich push 核心功能 since 2.0.6 -->
@@ -264,11 +265,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-            android:theme="@style/AppBackTheme"></activity>
-        <activity
-            android:name=".pager.home.activity.SearchResultActivity"
-            android:theme="@style/AppBackTheme"></activity>
-        <activity android:name=".pager.scale.activity.SnackInfomationActivity" />
+
         <activity android:name=".pager.scale.activity.CommentActivity"/>
         <!-- 融云 -->
         <activity
@@ -292,9 +289,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <activity android:name=".pager.scale.activity.SnackInfomationActivity"></activity>
-
-        <activity android:name=".pager.scale.activity.CommentActivity"/>
         <!--百度定位-->
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
         </service>
@@ -303,5 +297,14 @@
             android:value="2e7dl8xQBTM3msWZxlAAC5jqycLdDKDe" />       <!--key:开发者申请的key-->
         <!--百度定位-->
     </application>
+
+
+    <!-- subject activity-->
+    <activity android:name=".pager.subject.ui.DelicacyDetailsActivity"
+        android:theme="@style/Theme.PageIndicatorDefaults" />
+    <activity android:name=".pager.subject.ui.SubjectDetailsActivity"
+        android:theme="@style/Theme.PageIndicatorDefaults" />
+
+    <!-- subject activity-->
 
 </manifest>
