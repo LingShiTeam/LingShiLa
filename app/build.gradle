@@ -53,4 +53,5 @@ dependencies {
     compile files('lib/ShareSDK-Wechat-Favorite-2.7.1.jar')
     compile files('lib/ShareSDK-Wechat-Moments-2.7.1.jar')
     compile project(':pullToRefresh-library')
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }

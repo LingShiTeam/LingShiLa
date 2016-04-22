@@ -9,6 +9,7 @@
         android:layout_height="180dp"
         android:horizontalSpacing="7dp"
         android:numColumns="2"
-        android:verticalSpacing="7dp" />
+        android:verticalSpacing="7dp"
+        />
 </RelativeLayout>
 

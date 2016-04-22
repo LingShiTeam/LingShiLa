@@ -29,6 +29,15 @@ public class Url {
     /**
      * 专题详情页面 顶部top 点击后的数据地址
      */
-    public static final String SUBJECT_TOP_DATA = BASE_URL + "/?cid=109&uid=0&tms=20160420005812&sig=167038ac68b0ad50&wssig=6cba698c1e140169&os_type=3&version=20&channel_name=wandoujia&srv=2407&pg_cur=1&pg_size=20&subject_";
+   // public static final String SUBJECT_TOP_DATA = BASE_URL + "/?cid=109&uid=0&tms=20160420005812&sig=167038ac68b0ad50&wssig=6cba698c1e140169&os_type=3&version=20&channel_name=wandoujia&srv=2407&pg_cur=1&pg_size=20&subject_";
+    public static final String SUBJECT_TOP_DATA = BASE_URL + "/?cid=109&uid=0&tms=20160420005812&sig=167038ac68b0ad50&wssig=6cba698c1e140169&os_type=3&version=20&channel_name=wandoujia&srv=2407&pg_cur=";
 
+    /**
+     * 专题详情页面 listview 的地址
+     */
+    public static final String SUBJECT_DETAILS = BASE_URL + "/api.php?active=0&apptype=0&srv=2414&subject_id=";
+    /**
+     * 商品列表的商品详情页面
+     */
+    public static final String SUBJECT_DELICACY_DETAILS = BASE_URL + "/?cid=109&uid=0&tms=20160422075904&sig=db983a1c7248e8b9&wssig=85d2a8009f1972e6&os_type=3&version=20&channel_name=wandoujia&srv=2505&goods_id=";
 }

@@ -2,6 +2,7 @@ package atguigu.com.lingshixiaomiao.pager;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +33,7 @@ import atguigu.com.lingshixiaomiao.pager.scale.utils.CacheUtil;
 import atguigu.com.lingshixiaomiao.pager.subject.adapter.SubjectListAdapter;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectListBean;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectTopBean;
+import atguigu.com.lingshixiaomiao.pager.subject.ui.SubjectDetailsActivity;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.CacheUtils;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.SubjectNetUtils;
@@ -116,8 +118,6 @@ public class SubjectPager extends BasePager {
 
         ll_subject_loading = (LinearLayout) view.findViewById(R.id.ll_subject_loading);
         subject_loading = (ImageView) view.findViewById(R.id.subject_loading);
-
-
         // loadingAnim = (AnimationDrawable) mActivity.getResources().getDrawable(R.drawable.ic_page_loading);
 
         registerEventBus();
@@ -172,7 +172,7 @@ public class SubjectPager extends BasePager {
         listView.setOnRefreshListener(new MyOnRefreshListener());
 
         //设置listview的点击监听事件
-        listView.setOnItemClickListener(new MyOnItemClickListener());
+       listView.setOnItemClickListener(new MyOnItemClickListener());
     }
 
 
@@ -183,12 +183,13 @@ public class SubjectPager extends BasePager {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (0 != position) {
 
 
-            } else {
 
-            }
+            Log.d("TAG", " z专题 position:" + position);
+            Intent intent = new Intent(mActivity,SubjectDetailsActivity.class);
+            intent.putExtra("detailsUrl", itemsListbeen.get(position - 2).getId() + "");
+            mActivity.startActivity(intent);
         }
     }
     /**
@@ -407,10 +408,7 @@ public class SubjectPager extends BasePager {
     public void onEventMainThread(SubjectListBean subjectListBean) {
         this.subjectListBean = subjectListBean;
         LogUtils.loge("subjectListBean = " + subjectListBean);
-        LogUtils.loge("subjectListBean = " + subjectListBean);
-
         pagerCurrent++;
-
         loadAdapter();
     }
 
