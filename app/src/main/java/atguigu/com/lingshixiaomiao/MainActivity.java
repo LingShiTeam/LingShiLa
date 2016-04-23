@@ -1,6 +1,7 @@
 package atguigu.com.lingshixiaomiao;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,23 +19,31 @@ import android.view.Window;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import atguigu.com.lingshixiaomiao.application.GlobalVariables;
 import atguigu.com.lingshixiaomiao.base.BasePager;
 import atguigu.com.lingshixiaomiao.pager.HomePager;
 import atguigu.com.lingshixiaomiao.pager.MinePager;
 import atguigu.com.lingshixiaomiao.pager.SalePager;
 import atguigu.com.lingshixiaomiao.pager.SubjectPager;
+import atguigu.com.lingshixiaomiao.pager.mine.activity.BindPhoneNumActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.CacheUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.Url;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
@@ -51,6 +60,7 @@ public class MainActivity extends FragmentActivity {
      * 当前页面的标记 首次进入主页面默认为0 范围:0~3
      */
     private int position = 0;
+    private UMShareAPI mShareAPI;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +68,14 @@ public class MainActivity extends FragmentActivity {
         // 全屏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
+        /**
+         * 友盟第三方登录初始化
+         */
+        /** init auth api**/
+        mShareAPI = UMShareAPI.get(this);
+        GlobalVariables.mShareAPI = mShareAPI;
+        GlobalVariables.mainActivity = this;
 
         findViewById();
         loadPager();
@@ -83,6 +101,8 @@ public class MainActivity extends FragmentActivity {
          */
 
         connect(Token);
+
+
     }
 
     /**
@@ -116,7 +136,7 @@ public class MainActivity extends FragmentActivity {
 
                 Log.d("LoginActivity", "--onSuccess" + userid);
                 // startActivity(new Intent(LoginActivity.this, MainActivity.class));
-               // finish();
+                // finish();
             }
 
             /**
@@ -300,13 +320,28 @@ public class MainActivity extends FragmentActivity {
 
     /**
      * 获取自动登录信息
+     *
      * @param loginBean
      */
     @Subscribe
     public void onEventMainThread(LoginBean loginBean) {
         LogUtils.loge("接收到自动登录信息 = " + loginBean);
-        if(Constants.SUCCESS.equals(loginBean.getRs_code())){
-            LoginUtils.getInstance().loginRequestSuccess(loginBean);
+
+        if (Constants.SUCCESS.equals(loginBean.getRs_code())) {
+
+            if ("".equals(loginBean.getData().getMobi_num())) {
+                // 进入手机号绑定界面
+                LogUtils.loge("TAG", "进入手机号绑定界面");
+                Intent intent = new Intent(MainActivity.this, BindPhoneNumActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("SinaWeiBo", loginBean);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            } else {
+                // 自动登录界面
+                LogUtils.loge("TAG", "进入自动登录界面");
+                LoginUtils.getInstance().loginRequestSuccess(loginBean);
+            }
         }
     }
 
@@ -316,6 +351,52 @@ public class MainActivity extends FragmentActivity {
     public void setPosition(int position) {
 
         this.position = position;
+    }
+
+    public void loginWeiBo() {
+        //DialogUtils.startLogin();
+        SHARE_MEDIA platform = SHARE_MEDIA.SINA;
+        mShareAPI.doOauthVerify(this, platform, umAuthListener);
+    }
+
+    /**
+     * sina第三方登录回调借口
+     * auth callback interface
+     **/
+    private UMAuthListener umAuthListener = new UMAuthListener() {
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            android.util.Log.e("TAG", "data = " + data.get("uid"));
+            android.util.Log.e("TAG", "data = " + data.get("access_token"));
+            android.util.Log.e("TAG", "data = " + data.toString());
+            Toast.makeText(getApplicationContext(), "Authorize succeed", Toast.LENGTH_SHORT).show();
+            // 再次请求
+            String weibo_info_url = Url.WEIBO_INFO[0] + data.get("uid") + Url.WEIBO_INFO[1] + Url.WEIBO_INFO[2];
+            new JsonUtils().loadData(weibo_info_url, LoginBean.class);
+
+            //DialogUtils.endLogin();
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            Toast.makeText(getApplicationContext(), "Authorize fail", Toast.LENGTH_SHORT).show();
+            Log.e("TAG", "onError");
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+            Toast.makeText(getApplicationContext(), "Authorize cancel", Toast.LENGTH_SHORT).show();
+            Log.e("TAG", "onCancel");
+        }
+    };
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        com.umeng.socialize.utils.Log.d("auth", "on activity re 2");
+        mShareAPI.onActivityResult(requestCode, resultCode, data);
+        com.umeng.socialize.utils.Log.d("auth", "on activity re 3");
     }
 
 }

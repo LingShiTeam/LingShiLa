@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <include layout="@layout/home_title"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.handmark.pulltorefresh.library.PullToRefreshGridView
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/shoppinglist_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:numColumns="2"
+            android:horizontalSpacing="5dp"
+            android:verticalSpacing="5dp"
+            android:layout_margin="5dp"
+            ptr:ptrMode="both"
+            ptr:ptrDrawable="@drawable/ic_page_loading"
+            ptr:ptrHeaderTextColor="#7000"
+            />
+        <include layout="@layout/dialog_loading"
+                 android:id="@+id/loading_dialog"/>
+
+    </FrameLayout>
+
+</LinearLayout>

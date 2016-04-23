@@ -14,16 +14,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.umeng.socialize.UMShareAPI;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.application.GlobalVariables;
 import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.CacheUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.DialogUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.PhoneUtils;
@@ -47,6 +51,8 @@ public class LoginPager extends ContentBasePager implements View.OnClickListener
     private boolean isOpenEye = false;
     private LoginBean.DataEntity data;
     private JsonUtils jsonUtils;
+
+    private UMShareAPI mShareAPI;
 
     /**
      * 构造方法
@@ -115,7 +121,7 @@ public class LoginPager extends ContentBasePager implements View.OnClickListener
     @Override
     public void initData() {
         super.initData();
-
+        this.mShareAPI = GlobalVariables.mShareAPI;
     }
 
     @Override
@@ -144,16 +150,19 @@ public class LoginPager extends ContentBasePager implements View.OnClickListener
                 mActivity.startActivity(intent);
                 break;
             case R.id.iv_mine_three_qq:
-
+                DialogUtils.showDialog("内容持续完善中,尽情期待...");
                 break;
             case R.id.iv_mine_three_weixin:
-
+                DialogUtils.showDialog("内容持续完善中,尽情期待...");
                 break;
-            case R.id.iv_mine_three_weibo:
-
+            case R.id.iv_mine_three_weibo: // 微博授权
+                GlobalVariables.mainActivity.loginWeiBo();
+                //mActivity.finish();
                 break;
         }
     }
+
+
 
     /**
      * 登录

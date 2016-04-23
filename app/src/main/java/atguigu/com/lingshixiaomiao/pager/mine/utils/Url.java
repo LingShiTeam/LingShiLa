@@ -108,4 +108,26 @@ public class Url {
     public static final String[] RESET_PASSWORD_URL = {"http://api.ds.lingshi.cccwei.com/?cid=759713" +
             "&uid=0&tms=20160420113237&sig=e821043a493e3b29&wssig=09aaa10ca487d72b&os_type" +
             "=3&version=22&channel_name=feibo&srv=2102&mobi_num=", "&pwd=", "&msg_code=", "&opt=2"};
+    // 淘宝订单URL
+    public static final String TAOBAO_ORDER_URL = "https://login.m.taobao.com/login.htm?tpl_redirect_url=" +
+            "http%3A%2F%2Fh5.m.taobao.com%2Fmlapp%2Fmytaobao.html%23mlapp-mytaobao";
+    // 优惠券url
+    public static final String COUPON_URL = "http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160421190419&sig=a9d30b7a659677be&" +
+            "wssig=f23ba7b7fde760e0&os_type=3&version=20&channel_name=wandoujia&srv=2903";
+    // 优惠券使用url
+    public static final String COUPON_USE_URL = "http://ds.lingshi.cccwei.com/api.php?apptype=0&srv=2910&&cid=10002&uid=0&tms=20150721190147&" +
+            "sig=8c35f5a024148111&wssig=308efe4382a088e0&os_type=3&version=12";
+
+    // 领取优惠券url
+    public static final String GET_COUPON_URL = "http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160421190050&sig=4f2151303af390dd&" +
+            "wssig=a2811f4aa03b08c7&os_type=3&version=20&channel_name=wandoujia&srv=3005&coupnum=";
+    // 根据手机号码--获取验证码
+    public static final String BIND_PHONE_NUM_URL = "http://testapi.ds.lingshi.cccwei.com/api/Tpl/default/Login/bind.html";
+
+    // 绑定手机号码
+    public static final String[] BIND_URL = {"http://api.ds.lingshi.cccwei.com/?cid=760272&uid=","&tms=20160422231220&sig=2e2897ff1aec32ce&wssig=34bfaa4e324afdf3&os_type=3&version=20&channel_name=wandoujia&srv=2102&mobi_num=","&pwd=","&msg_code=","&opt=3"};
+
+    // 获取新浪微博信息的url
+    public static final String[] WEIBO_INFO = {"http://api.ds.lingshi.cccwei.com/?cid=760272&uid=0&tms=20160423084400&sig=b67496107e6cd81f&wssig=df6263bffd9f0c3a&os_type=3&version=20&channel_name=wandoujia&srv=1101&pf_type=3&openid=","&nickname=","&icon=null"};
+
 }

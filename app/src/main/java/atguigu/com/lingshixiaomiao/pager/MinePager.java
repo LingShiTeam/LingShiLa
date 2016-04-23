@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -45,6 +46,8 @@ public class MinePager extends BasePager implements View.OnClickListener {
     private TextView tv_mine_nickname;
     private int position;
     private Bundle bundle;
+    private LinearLayout ll_taobao_order;
+    private LinearLayout ll_mycoupon;
 
     public MinePager(Activity mActivity) {
         super(mActivity);
@@ -67,6 +70,8 @@ public class MinePager extends BasePager implements View.OnClickListener {
         tv_mine_login = (TextView) v.findViewById(R.id.tv_mine_login);
         tv_mine_register = (TextView) v.findViewById(R.id.tv_mine_register);
         tv_mine_nickname = (TextView) v.findViewById(R.id.tv_mine_nickname);
+        ll_taobao_order = (LinearLayout) v.findViewById(R.id.ll_taobao_order);
+        ll_mycoupon = (LinearLayout) v.findViewById(R.id.ll_mycoupon);
 
         //设置监听
         ib_mine_setting.setOnClickListener(this);
@@ -75,6 +80,8 @@ public class MinePager extends BasePager implements View.OnClickListener {
         tv_mine_register.setOnClickListener(this);
         tv_mine_nickname.setOnClickListener(this);
         ll_mine_collections.setOnClickListener(this);
+        ll_taobao_order.setOnClickListener(this);
+        ll_mycoupon.setOnClickListener(this);
         //与客服聊天 融云
         ll_mine_service.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +138,12 @@ public class MinePager extends BasePager implements View.OnClickListener {
                 bundle.putString("url", Url.REGISTER_URL);
                 bundle.putString("title", "注册");
                 position = Constants.WEBVIEW_PAGER;
+                break;
+            case R.id.ll_taobao_order: // 我的淘宝订单
+                position = Constants.TAOBAO_ORDER;
+                break;
+            case R.id.ll_mycoupon:
+                position = Constants.MY_COUPON;
                 break;
         }
         startActivity(MineContentActivity.class);
@@ -198,7 +211,6 @@ public class MinePager extends BasePager implements View.OnClickListener {
 
     /**
      * 获取修改个人头像返回值
-     *
      */
     @Subscribe
     public void onEventMainThread(Bitmap bitmap) {

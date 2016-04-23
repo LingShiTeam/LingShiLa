@@ -5,6 +5,7 @@ import android.view.View;
 
 /**
  * Created by Liu_haiwei on 2016/4/17.
+ * 左侧菜单详情页面的基类
  */
 public abstract class TabBasePager {
     public Context mContent;

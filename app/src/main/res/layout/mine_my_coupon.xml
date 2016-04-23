@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/c5">
+
+    <RelativeLayout
+        android:id="@+id/fragment_orders_detail_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="52.0dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/white"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/bt_fragment_coupon_getcoupon"
+            android:layout_width="wrap_content"
+            android:layout_height="34.0dip"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/b1"
+            android:layout_marginRight="@dimen/b1"
+            android:background="@drawable/btn_account_select"
+            android:paddingLeft="20.0dip"
+            android:paddingRight="20.0dip"
+            android:text="兑换"
+            android:textColor="@color/c6"
+            android:textSize="@dimen/s2"/>
+
+        <EditText
+            android:id="@+id/eidt_fragment_coupo_number"
+            android:layout_width="61.0dip"
+            android:layout_height="34.0dip"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@id/bt_fragment_coupon_getcoupon"
+            android:layout_marginLeft="@dimen/b1"
+            android:layout_toLeftOf="@id/bt_fragment_coupon_getcoupon"
+            android:background="@drawable/bg_edit_cart_dailog_coner"
+            android:gravity="center"
+            android:hint="请输入您的优惠券号码"
+            android:singleLine="true"
+            android:textColor="@color/c8"
+            android:textSize="@dimen/s3"/>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/fragment_orders_detail_bottom"
+            android:layout_marginBottom="@dimen/coupon_both_size"
+            android:layout_marginTop="@dimen/coupon_both_size"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@null"
+            android:dividerHeight="@dimen/coupon_both_size"
+            android:listSelector="@android:color/transparent"
+            android:paddingLeft="@dimen/coupon_both_size"
+            android:paddingRight="@dimen/coupon_both_size"
+            android:scrollbars="none"/>
+
+        <LinearLayout
+            android:id="@+id/coupon_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_coupon_big"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="很遗憾,您还没有优惠券"
+                android:textColor="#5000"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/dialog_loading"
+                 android:id="@+id/loading_dialog"/>
+
+    </FrameLayout>
+
+
+</RelativeLayout>

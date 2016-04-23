@@ -2,11 +2,13 @@ package atguigu.com.lingshixiaomiao.pager.mine.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,13 +21,16 @@ import atguigu.com.lingshixiaomiao.pager.mine.pager.AddressPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.CollectionPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.EditAddressPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.LoginPager;
+import atguigu.com.lingshixiaomiao.pager.mine.pager.MyCoupon;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.ResetHeaderPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.ResetNicknamePager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.SettingPager;
+import atguigu.com.lingshixiaomiao.pager.mine.pager.TaoBaoOrder;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.UserAggrementPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.UserPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.WebPager;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.ShareUtils;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
@@ -39,6 +44,7 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
     private FrameLayout fl_mine_view;
     private ContentBasePager pager;
     private TextView tv_mine_title_complete;
+    private ImageView iv_share;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,16 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
         int position = getIntent().getIntExtra("pager", 0);
         Bundle bundle = getIntent().getExtras();
         switch (position) {
+            case Constants.MY_COUPON: // 我的优惠券
+                tv_mine_title_complete.setVisibility(View.VISIBLE);
+                tv_mine_title_complete.setTextColor(Color.RED);
+                tv_mine_title_complete.setTextSize(12);
+                pager = new MyCoupon(this);
+                break;
+            case Constants.TAOBAO_ORDER: // 我的淘宝订单
+                iv_share.setVisibility(View.VISIBLE);
+                pager = new TaoBaoOrder(this);
+                break;
             case Constants.SETTING_PAGER:
                 pager = new SettingPager(this);//设置界面
                 break;
@@ -119,9 +135,11 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
         tv_mine_title = (TextView) findViewById(R.id.tv_mine_title);
         fl_mine_view = (FrameLayout) findViewById(R.id.fl_mine_view);
         tv_mine_title_complete = (TextView) findViewById(R.id.tv_mine_title_complete);
+        iv_share = (ImageView) findViewById(R.id.iv_share);
 
         ib_mine_back.setOnClickListener(this);
         tv_mine_title_complete.setOnClickListener(this);
+        iv_share.setOnClickListener(this);
     }
 
     @Override
@@ -135,8 +153,14 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
                 //完成
                 pager.complete();
                 break;
+            case R.id.iv_share:
+                // 分享
+                ShareUtils.showShare(this);
+                break;
         }
     }
+
+
 
     @Override
     protected void onDestroy() {
