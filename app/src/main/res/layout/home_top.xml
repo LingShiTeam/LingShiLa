@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/headre_list"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical">
@@ -70,9 +71,9 @@
     <View
         style="@style/FineLineC4Style"
         android:layout_gravity="bottom"/>
-
+<!--
     <include layout="@layout/home_listview_item1"/>
-    <include layout="@layout/home_listview_item2"/>
+    <include layout="@layout/home_listview_item2"/>-->
 
 
 </LinearLayout>

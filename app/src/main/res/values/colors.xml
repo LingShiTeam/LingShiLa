@@ -51,5 +51,6 @@
     <color name="transparent">#00000000</color>
     <color name="white">#ffffffff</color>
     <color name="wihte_pulltorefresh">#fff8f8f8</color>
+    <color name="subject_shop">#ffff2d4b</color>
 
 </resources>

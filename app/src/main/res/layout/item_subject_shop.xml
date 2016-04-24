@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    android:padding="1dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:minHeight="200dp">
+
+        <ImageView
+            android:id="@+id/iv_shop_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/default_class_296_296" />
+
+        <ImageView
+            android:id="@+id/iv_shop_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/icon_sold"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <TextView
+
+        android:id="@+id/tv_shop_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:lineSpacingExtra="7dp"
+        android:maxLines="2"
+        android:minLines="2"
+        android:text="商品简介"
+        android:textColor="#000000"
+        android:textSize="14sp" />
+
+    <View style="@style/LineViewStyle" />
+
+    <RelativeLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_price_current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="2dp"
+            android:text="￥ 10.0"
+            android:textColor="#ffff2d4b"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_price_prime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tv_price_current"
+            android:layout_alignBottom="@id/tv_price_current"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/tv_price_current"
+            android:text="￥ 7.00"
+            android:textColor="#ffa0a0a0"
+            android:textSize="11sp"
+            android:background="@drawable/btn_cart_reduce_normal"/>
+
+
+        <ImageView
+            android:id="@+id/add_subshop_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/icon_add_to_cart_2x"
+            android:clickable="true"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/add_subshop_unable_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/icon_add_to_cart_unable_2x"
+            android:clickable="false"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -99,12 +99,12 @@
     <dimen name="s1">18.0dip</dimen>
     <dimen name="s10">26.0sp</dimen>
     <dimen name="s2">16.0dip</dimen>
-    <dimen name="s3">15.0dip</dimen>
+    <dimen name="s3">15.0sp</dimen>
     <dimen name="s4">13.0dip</dimen>
-    <dimen name="s5">11.0dip</dimen>
+    <dimen name="s5">11.0sp</dimen>
     <dimen name="s6">10.0dip</dimen>
     <dimen name="s7">12.0dip</dimen>
-    <dimen name="s8">14.0dip</dimen>
+    <dimen name="s8">14.0sp</dimen>
     <dimen name="s9">21.0sp</dimen>
     <dimen name="sell_empty">65.0dip</dimen>
     <dimen name="setting_btn_height">34.0dip</dimen>

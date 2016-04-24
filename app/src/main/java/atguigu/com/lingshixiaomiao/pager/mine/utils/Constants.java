@@ -33,6 +33,8 @@ public class Constants {
     public static final int RESULT_OK = -1;
     public static final int USERAGGREMENT_PAGER = 10;
     public static final int COLLECTION_PAGER = 11;
+    public static final int TAOBAO_ORDER = 12;
+    public static final int MY_COUPON = 13;
     public static final int ORDER_PAGER = 12;
 
     public static final String ORDER_TYPE_ALL = "all";

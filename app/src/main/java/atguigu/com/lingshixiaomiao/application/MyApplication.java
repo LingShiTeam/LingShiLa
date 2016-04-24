@@ -4,6 +4,9 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 
+import com.umeng.socialize.PlatformConfig;
+
+import org.xmlpull.v1.XmlPullParser;
 import org.xutils.x;
 
 import atguigu.com.lingshixiaomiao.LogUtils;
@@ -47,6 +50,11 @@ public class MyApplication extends Application {
              */
             RongIM.init(this);
         }
+
+        /**
+         * 第三方的登录初始化
+         */
+        PlatformConfig.setSinaWeibo("3388924422", "09aa9ea9b7a6d5b3a312fa826b6db8c4");
 
     }
 

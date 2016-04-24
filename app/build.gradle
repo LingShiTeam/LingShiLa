@@ -49,13 +49,18 @@ dependencies {
     compile files('lib/ShareSDK-Core-2.7.1.jar')
     compile files('lib/ShareSDK-QQ-2.7.1.jar')
     compile files('lib/ShareSDK-QZone-2.7.1.jar')
-    compile files('lib/ShareSDK-SinaWeibo-2.7.1.jar')
+    //compile files('lib/ShareSDK-SinaWeibo-2.7.1.jar')
     compile files('lib/ShareSDK-Wechat-2.7.1.jar')
     compile files('lib/ShareSDK-Wechat-Core-2.7.1.jar')
     compile files('lib/ShareSDK-Wechat-Favorite-2.7.1.jar')
     compile files('lib/ShareSDK-Wechat-Moments-2.7.1.jar')
     compile project(':pullToRefresh-library')
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile project(':IMKit')
     compile 'com.android.support:design:23.1.1'
     compile project(':lanmang_library')
+
+    compile files('libs/umeng_social_sdk.jar')
+    compile files('libs/weiboSDKCore_3.1.4.jar')
+    compile files('libs/SocialSDK_Sina.jar')
 }
