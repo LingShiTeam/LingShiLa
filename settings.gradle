@@ -1,2 +1,2 @@
-include ':app', ':demo', ':xutils_library', ':MyDaoGenerator', ':viewpagerindicator_library'
-include ':pickerview', ':zxing_library', ":pullToRefresh-library",':IMKit'
+include ':app', ':demo', ':xutils_library', ':MyDaoGenerator', ':viewpagerindicator_library', ':lanmang_library'
+include ':cityPicker_library', ':zxing_library', ":pullToRefresh-library", ':IMKit'

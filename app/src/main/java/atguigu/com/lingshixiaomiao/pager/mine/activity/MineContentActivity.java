@@ -1,5 +1,7 @@
 package atguigu.com.lingshixiaomiao.pager.mine.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -11,14 +13,20 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.net.URL;
+import java.net.URLConnection;
+
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.AboutPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.AddressPager;
+import atguigu.com.lingshixiaomiao.pager.mine.pager.CartMinePager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.CollectionPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.EditAddressPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.LoginPager;
+import atguigu.com.lingshixiaomiao.pager.mine.pager.MineCartPager;
+import atguigu.com.lingshixiaomiao.pager.mine.pager.OrderPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.ResetHeaderPager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.ResetNicknamePager;
 import atguigu.com.lingshixiaomiao.pager.mine.pager.SettingPager;
@@ -56,6 +64,17 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
         switch (position) {
             case Constants.SETTING_PAGER:
                 pager = new SettingPager(this);//设置界面
+                break;
+            case Constants.CART_PAGER:
+                pager = new MineCartPager(this);//购物车界面
+                tv_mine_title_complete.setVisibility(View.VISIBLE);
+                break;
+            case Constants.MINE_CART_PAGER:
+                pager = new CartMinePager(this);//购物车界面 可复用
+                tv_mine_title_complete.setVisibility(View.VISIBLE);
+                break;
+            case Constants.ORDER_PAGER:
+                pager = new OrderPager(this, bundle);//订单界面
                 break;
             case Constants.ABOUT_PAGER:
                 pager = new AboutPager(this);//关于零食小喵界面
@@ -146,24 +165,34 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        LogUtils.loge("resultCode = " + resultCode);
+
         super.onActivityResult(requestCode, resultCode, data);
         //处理扫描结果（在界面上显示）
-        if (resultCode == Constants.RESULT_OK && requestCode == 1) {
+        if (resultCode == RESULT_OK && requestCode == 1) {
+
             Bundle bundle = data.getExtras();
             String scanResult = bundle.getString("result");
             LogUtils.loge("scanResult = " + scanResult);
 
-            Intent intent = new Intent(this, MineContentActivity.class);
-            bundle = new Bundle();
-            bundle.putString("title", "扫描结果");
-            bundle.putString("url", scanResult);
-            intent.putExtras(bundle);
-            intent.putExtra("pager", Constants.WEBVIEW_PAGER);
-            startActivity(intent);
+
+            if (scanResult.startsWith("www")) {
+                scanResult = "http://" + scanResult;
+            }
+
+            try {
+                URL url = new URL(scanResult);
+                URLConnection urlConnection = url.openConnection();
+                showLink(scanResult);
+            } catch (Exception e) {
+                e.printStackTrace();
+                showResult(scanResult);
+            }
 
         }
 
-        if (requestCode == 2) {
+        if (requestCode == 2 && resultCode == RESULT_OK) {
             startPhotoZoom(data.getData());
         }
 
@@ -173,6 +202,39 @@ public class MineContentActivity extends SwipeBackActivity implements View.OnCli
                 setPicToView(data);
             }
         }
+    }
+
+    private void showResult(String resultString) {
+        new AlertDialog.Builder(this)
+                .setTitle("扫描结果")
+                .setMessage(resultString)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .show();
+    }
+
+    private void showLink(final String resultString) {
+        new AlertDialog.Builder(this)
+                .setTitle("扫描结果")
+                .setMessage("是否链接: " + resultString)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(MineContentActivity.this, MineContentActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("title", "扫描结果");
+                        bundle.putString("url", resultString);
+                        intent.putExtras(bundle);
+                        intent.putExtra("pager", Constants.WEBVIEW_PAGER);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .show();
     }
 
     /**

@@ -142,6 +142,7 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.PageIndicatorDefaults"/>
         <activity
             android:name=".GuideActivity"
@@ -149,7 +150,7 @@
         <activity
             android:name=".pager.mine.activity.MineContentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppBackTheme"/>
+            android:theme="@style/AppBackTheme2"/>
         <activity android:name=".pager.home.activity.LeftMenuItemActivity"
             android:theme="@style/Theme.PageIndicatorDefaults"/>
         <activity android:name=".pager.subject.ui.SubjectTopActivity"
@@ -299,10 +300,6 @@
         </activity>
         <!-- 融云 -->
 
-
-        <activity android:name=".pager.scale.activity.SnackInfomationActivity"></activity>
-
-        <activity android:name=".pager.scale.activity.CommentActivity"/>
         <!--百度定位-->
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
         </service>

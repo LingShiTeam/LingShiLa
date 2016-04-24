@@ -1,8 +1,6 @@
 package com.zxing.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
@@ -29,8 +27,6 @@ import com.zxing.decoding.InactivityTimer;
 import com.zxing.view.ViewfinderView;
 
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Vector;
 /**
  * Initial the camera
@@ -124,66 +120,15 @@ public class CaptureActivity extends Activity implements Callback {
 		if (resultString.equals("")) {
 			Toast.makeText(CaptureActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
 		}else {
-//			System.out.println("Result:"+resultString);
-			/*Intent resultIntent = new Intent();
+			System.out.println("Result:"+resultString);
+			Intent resultIntent = new Intent();
 			Bundle bundle = new Bundle();
 			bundle.putString("result", resultString);
 			resultIntent.putExtras(bundle);
-			this.setResult(RESULT_OK, resultIntent);*/
+			this.setResult(RESULT_OK, resultIntent);
 
-			if (resultString.startsWith("www")) {
-				resultString = "http://" + resultString;
-			}
-
-			try {
-				URL url = new URL(resultString);
-				URLConnection urlConnection = url.openConnection();
-				showLink(resultString);
-			} catch (Exception e) {
-				e.printStackTrace();
-				showResult(resultString);
-			}
 		}
-		//CaptureActivity.this.finish();
-	}
-
-	private void showResult(String resultString) {
-		new AlertDialog.Builder(this)
-		            .setTitle("扫描结果")
-		            .setMessage(resultString)
-		            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-		                @Override
-		                public void onClick(DialogInterface dialog, int which) {
-							finish();
-		                }
-		            })
-		            .show();
-	}
-
-	private void showLink(final String resultString) {
-		new AlertDialog.Builder(this)
-		            .setTitle("扫描结果")
-		            .setMessage("是否链接: " + resultString)
-		            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-		                @Override
-		                public void onClick(DialogInterface dialog, int which) {
-
-							Intent resultIntent = new Intent();
-							Bundle bundle = new Bundle();
-							bundle.putString("result", resultString);
-							resultIntent.putExtras(bundle);
-							CaptureActivity.this.setResult(RESULT_OK, resultIntent);
-
-							finish();
-		                }
-		            })
-		            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							finish();
-						}
-					})
-		            .show();
+		CaptureActivity.this.finish();
 	}
 
 	private void initCamera(SurfaceHolder surfaceHolder) {

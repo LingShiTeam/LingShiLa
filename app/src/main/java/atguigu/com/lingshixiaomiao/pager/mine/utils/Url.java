@@ -92,10 +92,10 @@ public class Url {
 
     public static final String[] COLLECTION_GOODS_URL = {"http://api.ds.lingshi.cccwei.com/?cid=759713&" +
             "uid=", "&tms=20160419191051&sig=10bd8b3956ec4e5f&wssig=a0d6ab092720d3d2&os_type=3" +
-            "&version=22&channel_name=feibo&srv=2804&pg_cur=", "&pg_size=20&since_id=", "&type=0"};
+            "&version=22&channel_name=feibo&srv=2804&pg_cur=", "&pg_size=", "&since_id=", "&type=0"};
     public static final String[] COLLECTION_SPECIAL_URL = {"http://api.ds.lingshi.cccwei.com/?cid=759713&" +
             "uid=", "&tms=20160420104346&sig=91de33e5e9cde2bc&wssig=ff30bb53d45ddeea&os_type=3" +
-            "&version=22&channel_name=feibo&srv=2806&pg_cur=", "&pg_size=20&type=1&since_id="};
+            "&version=22&channel_name=feibo&srv=2806&pg_cur=", "&pg_size=", "&type=1&since_id="};
 
     //http://api.ds.lingshi.cccwei.com/?cid=759713&uid=181772&tms=20160419210128&sig=e276acb544f6e0f1&wssig
     // =36816c644cb06345&os_type=3&version=22&channel_name=feibo&srv=2804&pg_cur=2&pg_size=20&since_id=6856&type=0
@@ -108,4 +108,39 @@ public class Url {
     public static final String[] RESET_PASSWORD_URL = {"http://api.ds.lingshi.cccwei.com/?cid=759713" +
             "&uid=0&tms=20160420113237&sig=e821043a493e3b29&wssig=09aaa10ca487d72b&os_type" +
             "=3&version=22&channel_name=feibo&srv=2102&mobi_num=", "&pwd=", "&msg_code=", "&opt=2"};
+
+    public static final String[] ORDER_URL = {"http://api.ds.lingshi.cccwei.com/?cid=759713&" +
+            "uid=", "&tms=20160421151848&sig=31ea1ddfe2f48d06&wssig=96626302acab06ad&os_type=3&version=22&channel_name=feibo" +
+            "&srv=2704&pg_cur=", "&pg_size=", "&type=", "&since_id=0"};
+
+    public static final String[] CART_URL = {"http://api.ds.lingshi.cccwei.com/?cid=759713&uid=", "&tms=20160421220732" +
+            "&sig=b821e071df4d600a&wssig=a81cbdd4c8d4251e&os_type=3&version=22&channel_name=feibo&srv="};
+
+    /**
+     * 删除购物车中的商品
+     */
+    public static final String[] CART_DELETE_UTL = {"http://api.ds.lingshi.cccwei.com/?cid=759713&" +
+            "uid=", "&tms=20160423211628&sig=e1c8b80a01b9522b&wssig=b7a89da36aa677e5&os_type=3&version=22&" +
+            "channel_name=feibo&srv=2603&ids="};
+    /**
+     *
+     http://api.ds.lingshi.cccwei.com/?cid=759713&uid=181772&tms=20160423223526&sig=502b215001dbdc5d
+     &wssig=294b0494ce39ec07&os_type=3&version=22&channel_name=feibo&srv=2603&ids=303828
+     */
+
+    /**
+     * 详情页添加购物车
+     */
+
+    public static final String[] DES_ADD_CART_URL = {"http://api.ds.lingshi.cccwei.com/?cid=759713&" +
+            "uid=", "&tms=20160423220017&sig=cea7affaf81b4126&wssig=07a5588823c2ac57&os_type=3" +
+            "&version=22&channel_name=feibo&srv=2601&goods_id=8356&kind_id=12&subkind_id=3651&num=1"};
+
+    /**
+     * 购物车修改数量
+     */
+
+    public static final String[] ADD_CART_URL = {"http://api.ds.lingshi.cccwei.com/?cid=759713" +
+            "&uid=", "&tms=20160423221823&sig=247e7e1e53f601dd&wssig=4230c702a98defa5&os_type=3&" +
+            "version=22&channel_name=feibo&srv=2602&item_id=", "&num="};
 }

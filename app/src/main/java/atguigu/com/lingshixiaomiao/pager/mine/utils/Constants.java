@@ -33,4 +33,16 @@ public class Constants {
     public static final int RESULT_OK = -1;
     public static final int USERAGGREMENT_PAGER = 10;
     public static final int COLLECTION_PAGER = 11;
+    public static final int ORDER_PAGER = 12;
+
+    public static final String ORDER_TYPE_ALL = "all";
+    public static final String ORDER_TYPE_WAIT_PAY = "wait_pay";
+    public static final String ORDER_TYPE_WAIT_SEND = "wait_send";
+    public static final String ORDER_TYPE_WAIT_RECEIVE = "wait_receive";
+    public static final String ORDER_TYPE_WAIT_COMMENT = "wait_comment";
+    public static final int CART_PAGER = 13;
+    public static final int MINE_CART_PAGER = 14;
+    public static boolean isToHome = false;
+    public static final String CART_CAN_BUY = "2604";
+    public static final String CART_CANNOT_BUY = "2608";
 }

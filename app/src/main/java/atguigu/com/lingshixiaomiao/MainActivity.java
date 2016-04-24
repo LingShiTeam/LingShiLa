@@ -318,4 +318,12 @@ public class MainActivity extends FragmentActivity {
         this.position = position;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Constants.isToHome) {
+            Constants.isToHome = false;
+            rg_main.check(R.id.rb_main_home);
+        }
+    }
 }

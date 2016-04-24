@@ -36,13 +36,20 @@ public class MinePager extends BasePager implements View.OnClickListener {
 
     private ImageButton ib_mine_setting;
     private ImageView ib_mine_user_header;
+    private ImageView iv_cart;
     private LinearLayout ll_mine_call_service;
     private LinearLayout ll_mine_service;
     private LinearLayout ll_mine_collections;
     private LinearLayout ll_register_login;
+    private LinearLayout ll_mine_order;
     private TextView tv_mine_login;
     private TextView tv_mine_register;
     private TextView tv_mine_nickname;
+    private TextView tv_mine_order_1;
+    private TextView tv_mine_order_2;
+    private TextView tv_mine_order_3;
+    private TextView tv_mine_order_4;
+    private TextView tv_mine_cart_num;
     private int position;
     private Bundle bundle;
 
@@ -60,21 +67,34 @@ public class MinePager extends BasePager implements View.OnClickListener {
     private void findViewById(View v) {
         ib_mine_setting = (ImageButton) v.findViewById(R.id.ib_mine_setting);
         ib_mine_user_header = (ImageView) v.findViewById(R.id.ib_mine_user_header);
+        iv_cart = (ImageView) v.findViewById(R.id.iv_cart);
         ll_mine_call_service = (LinearLayout) v.findViewById(R.id.ll_mine_call_service);
+        ll_mine_order = (LinearLayout) v.findViewById(R.id.ll_mine_order);
         ll_mine_collections = (LinearLayout) v.findViewById(R.id.ll_mine_collections);
         ll_mine_service = (LinearLayout) v.findViewById(R.id.ll_mine_service);
         ll_register_login = (LinearLayout) v.findViewById(R.id.ll_register_login);
         tv_mine_login = (TextView) v.findViewById(R.id.tv_mine_login);
         tv_mine_register = (TextView) v.findViewById(R.id.tv_mine_register);
         tv_mine_nickname = (TextView) v.findViewById(R.id.tv_mine_nickname);
+        tv_mine_order_1 = (TextView) v.findViewById(R.id.tv_mine_order_1);
+        tv_mine_order_2 = (TextView) v.findViewById(R.id.tv_mine_order_2);
+        tv_mine_order_3 = (TextView) v.findViewById(R.id.tv_mine_order_3);
+        tv_mine_order_4 = (TextView) v.findViewById(R.id.tv_mine_order_4);
+        tv_mine_cart_num = (TextView) v.findViewById(R.id.tv_mine_cart_num);
 
         //设置监听
+        tv_mine_order_1.setOnClickListener(this);
+        tv_mine_order_2.setOnClickListener(this);
+        tv_mine_order_3.setOnClickListener(this);
+        tv_mine_order_4.setOnClickListener(this);
         ib_mine_setting.setOnClickListener(this);
         ib_mine_user_header.setOnClickListener(this);
         tv_mine_login.setOnClickListener(this);
         tv_mine_register.setOnClickListener(this);
         tv_mine_nickname.setOnClickListener(this);
         ll_mine_collections.setOnClickListener(this);
+        ll_mine_order.setOnClickListener(this);
+        iv_cart.setOnClickListener(this);
         //与客服聊天 融云
         ll_mine_service.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,12 +127,17 @@ public class MinePager extends BasePager implements View.OnClickListener {
         LogUtils.loge("我的小喵 数据加载了");
     }
 
+    private int orderPosition = 0;
+
     @Override
     public void onClick(View v) {
-        bundle = null;
         switch (v.getId()) {
             case R.id.ib_mine_setting://设置界面
                 position = Constants.SETTING_PAGER;
+                break;
+            case R.id.iv_cart://购物车界面
+                //position = Constants.CART_PAGER;
+                position = Constants.MINE_CART_PAGER;
                 break;
             case R.id.ll_mine_collections://我的收藏界面
                 position = Constants.COLLECTION_PAGER;
@@ -132,8 +157,34 @@ public class MinePager extends BasePager implements View.OnClickListener {
                 bundle.putString("title", "注册");
                 position = Constants.WEBVIEW_PAGER;
                 break;
+            case R.id.ll_mine_order://订单0界面
+                orderPosition = 0;
+                startOrder();
+                break;
+            case R.id.tv_mine_order_1://订单1界面
+                orderPosition = 1;
+                startOrder();
+                break;
+            case R.id.tv_mine_order_2://订单2界面
+                orderPosition = 2;
+                startOrder();
+                break;
+            case R.id.tv_mine_order_3://订单3界面
+                orderPosition = 3;
+                startOrder();
+                break;
+            case R.id.tv_mine_order_4://订单4界面
+                orderPosition = 4;
+                startOrder();
+                break;
         }
         startActivity(MineContentActivity.class);
+    }
+
+    private void startOrder() {
+        bundle = new Bundle();
+        bundle.putInt("position", orderPosition);
+        position = Constants.ORDER_PAGER;
     }
 
     /**
@@ -198,7 +249,6 @@ public class MinePager extends BasePager implements View.OnClickListener {
 
     /**
      * 获取修改个人头像返回值
-     *
      */
     @Subscribe
     public void onEventMainThread(Bitmap bitmap) {

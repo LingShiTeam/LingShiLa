@@ -63,6 +63,10 @@
     <style name="AppBackTheme" parent="@android:style/Theme.Holo.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
     </style>
+    <style name="AppBackTheme2" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 
     <!--alertdialog去除边框-->
     <style name="dialog" parent="@android:style/Theme.Dialog">

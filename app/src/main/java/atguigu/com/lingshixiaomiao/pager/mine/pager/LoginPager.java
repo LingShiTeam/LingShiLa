@@ -2,6 +2,7 @@ package atguigu.com.lingshixiaomiao.pager.mine.pager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +49,7 @@ public class LoginPager extends ContentBasePager implements View.OnClickListener
     private boolean isOpenEye = false;
     private LoginBean.DataEntity data;
     private JsonUtils jsonUtils;
+    private LinearLayout ll_loading;
 
     /**
      * 构造方法
@@ -74,6 +77,7 @@ public class LoginPager extends ContentBasePager implements View.OnClickListener
         iv_mine_three_qq = (ImageView) v.findViewById(R.id.iv_mine_three_qq);
         iv_mine_three_weixin = (ImageView) v.findViewById(R.id.iv_mine_three_weixin);
         iv_mine_three_weibo = (ImageView) v.findViewById(R.id.iv_mine_three_weibo);
+        ll_loading = (LinearLayout) v.findViewById(R.id.ll_loading);
 
         setListener();
     }
@@ -159,12 +163,24 @@ public class LoginPager extends ContentBasePager implements View.OnClickListener
      * 登录
      */
     private void login() {
+        showLoadingAnim();
         String number = et_mine_login_phone.getText().toString();
         String password = et_mine_login_password.getText().toString();
         String url = Url.LOGIN_URLS[0] + number + Url.LOGIN_URLS[1] + password + Url.LOGIN_URLS[2];
         LogUtils.loge("登录 url = " + url);
         jsonUtils = new JsonUtils();
         jsonUtils.loadData(url, LoginBean.class);
+    }
+
+    private void showLoadingAnim() {
+        ll_loading.setVisibility(View.VISIBLE);
+        ImageView iv_loading = (ImageView) ll_loading.findViewById(R.id.iv_loading);
+        AnimationDrawable loading = (AnimationDrawable) iv_loading.getBackground();
+        loading.start();
+    }
+
+    private void hindLoadingAnim() {
+        ll_loading.setVisibility(View.GONE);
     }
 
     /**
@@ -174,6 +190,7 @@ public class LoginPager extends ContentBasePager implements View.OnClickListener
      */
     @Subscribe
     public void onEventMainThread(LoginBean loginBean) {
+        hindLoadingAnim();
         String rs_code = loginBean.getRs_code();
         if (Constants.SUCCESS.equals(rs_code)) {
             data = loginBean.getData();

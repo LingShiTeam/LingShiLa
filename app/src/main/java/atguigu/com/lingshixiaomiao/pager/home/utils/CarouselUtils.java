@@ -83,6 +83,23 @@ public class CarouselUtils {
                 .setFailureDrawableId(R.drawable.default_home_banner_640_270)
                 .setConfig(Bitmap.Config.ARGB_4444)
                 .build();
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     /**
