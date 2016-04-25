@@ -306,11 +306,9 @@
         </activity>
         <!-- 融云 -->
 
-        <activity android:name=".pager.scale.activity.SnackInfomationActivity"/>
         <activity
             android:name=".pager.home.activity.ShoppingListActivity"
             android:theme="@style/AppBackTheme"/>
-        <activity android:name=".pager.scale.activity.CommentActivity"/>
         <!--&lt;!&ndash; 百度定位 &ndash;&gt;
         <service
             android:name="com.baidu.location.f"

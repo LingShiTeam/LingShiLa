@@ -52,6 +52,8 @@ public class MinePager extends BasePager implements View.OnClickListener {
     private TextView tv_mine_cart_num;
     private int position;
     private Bundle bundle;
+    private LinearLayout ll_taobao_order;
+    private LinearLayout ll_mycoupon;
 
     public MinePager(Activity mActivity) {
         super(mActivity);
@@ -81,6 +83,8 @@ public class MinePager extends BasePager implements View.OnClickListener {
         tv_mine_order_3 = (TextView) v.findViewById(R.id.tv_mine_order_3);
         tv_mine_order_4 = (TextView) v.findViewById(R.id.tv_mine_order_4);
         tv_mine_cart_num = (TextView) v.findViewById(R.id.tv_mine_cart_num);
+        ll_taobao_order = (LinearLayout) v.findViewById(R.id.ll_taobao_order);
+        ll_mycoupon = (LinearLayout) v.findViewById(R.id.ll_mycoupon);
 
         //设置监听
         tv_mine_order_1.setOnClickListener(this);
@@ -95,6 +99,8 @@ public class MinePager extends BasePager implements View.OnClickListener {
         ll_mine_collections.setOnClickListener(this);
         ll_mine_order.setOnClickListener(this);
         iv_cart.setOnClickListener(this);
+        ll_taobao_order.setOnClickListener(this);
+        ll_mycoupon.setOnClickListener(this);
         //与客服聊天 融云
         ll_mine_service.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,6 +182,12 @@ public class MinePager extends BasePager implements View.OnClickListener {
             case R.id.tv_mine_order_4://订单4界面
                 orderPosition = 4;
                 startOrder();
+                break;
+            case R.id.ll_taobao_order: // 我的淘宝订单
+                position = Constants.TAOBAO_ORDER;
+                break;
+            case R.id.ll_mycoupon:
+                position = Constants.MY_COUPON;
                 break;
         }
         startActivity(MineContentActivity.class);
