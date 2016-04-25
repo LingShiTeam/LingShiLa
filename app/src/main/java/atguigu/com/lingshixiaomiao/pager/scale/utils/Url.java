@@ -31,4 +31,5 @@ public class Url {
     public static final String COLLECT_OUT_1 = "&tms=20160420154128&sig=83def29b01fe63e6&wssig=e2eecd2c64fdb2f3&os_type=3&version=22&channel_name=feibo&srv=2805&fav_id=";
 
     public static final String COLLECT_OUT_2 = "&type=0&opt=1";
+
 }

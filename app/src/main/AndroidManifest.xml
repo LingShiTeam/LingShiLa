@@ -132,7 +132,7 @@
         <activity android:name=".pager.home.activity.LeftMenuItemActivity"
             android:theme="@style/Theme.PageIndicatorDefaults"/>
         <activity android:name=".pager.subject.ui.SubjectTopActivity"
-            android:theme="@style/Theme.PageIndicatorDefaults" />
+            android:theme="@style/AppBackTheme"  />
 
         <!-- 极光推送 -->
         <!-- Rich push 核心功能 since 2.0.6 -->
@@ -296,15 +296,13 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="2e7dl8xQBTM3msWZxlAAC5jqycLdDKDe" />       <!--key:开发者申请的key-->
         <!--百度定位-->
+
+
+        <!-- subject activity-->
+        <activity android:name=".pager.subject.ui.DelicacyDetailsActivity"
+            android:theme="@style/AppBackTheme" />
+        <activity android:name=".pager.subject.ui.SubjectDetailsActivity"
+            android:theme="@style/AppBackTheme" />
+        <!-- subject activity-->
     </application>
-
-
-    <!-- subject activity-->
-    <activity android:name=".pager.subject.ui.DelicacyDetailsActivity"
-        android:theme="@style/Theme.PageIndicatorDefaults" />
-    <activity android:name=".pager.subject.ui.SubjectDetailsActivity"
-        android:theme="@style/Theme.PageIndicatorDefaults" />
-
-    <!-- subject activity-->
-
 </manifest>
