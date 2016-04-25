@@ -326,9 +326,8 @@ public class MainActivity extends FragmentActivity {
     @Subscribe
     public void onEventMainThread(LoginBean loginBean) {
         LogUtils.loge("接收到自动登录信息 = " + loginBean);
-
         if (Constants.SUCCESS.equals(loginBean.getRs_code())) {
-
+            GlobalVariables.uid = loginBean.getData().getUid();
             if ("".equals(loginBean.getData().getMobi_num())) {
                 // 进入手机号绑定界面
                 LogUtils.loge("TAG", "进入手机号绑定界面");
@@ -378,6 +377,8 @@ public class MainActivity extends FragmentActivity {
             android.util.Log.e("TAG", "data = " + data.get("access_token"));
             android.util.Log.e("TAG", "data = " + data.toString());
             Toast.makeText(getApplicationContext(), "Authorize succeed", Toast.LENGTH_SHORT).show();
+            // 用户uid
+            GlobalVariables.uid = data.get("uid");
             // 再次请求
             String weibo_info_url = Url.WEIBO_INFO[0] + data.get("uid") + Url.WEIBO_INFO[1] + Url.WEIBO_INFO[2];
             new JsonUtils().loadData(weibo_info_url, LoginBean.class);

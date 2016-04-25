@@ -9,6 +9,10 @@ import atguigu.com.lingshixiaomiao.MainActivity;
  * 全局变量
  */
 public class GlobalVariables {
+    // 友盟第三方登录的shareapi
     public static UMShareAPI mShareAPI;
+    // mainactivity
     public static MainActivity mainActivity;
+    // uid
+    public static String uid;
 }

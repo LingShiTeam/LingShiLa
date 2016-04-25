@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="atguigu.com.lingshixiaomiao"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest package="atguigu.com.lingshixiaomiao"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 百度定位权限 -->
     <!-- 这个权限用于进行网络定位 -->
@@ -73,7 +72,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-
 
     <!-- 极光推送的权限 -->
     <permission
@@ -162,7 +160,6 @@
         <activity
             android:name=".pager.subject.ui.SubjectTopActivity"
             android:theme="@style/AppBackTheme"/>
-
 
         <!-- 极光推送 -->
         <!-- Rich push 核心功能 since 2.0.6 -->
@@ -286,8 +283,10 @@
             android:theme="@style/AppBackTheme"/>
         <activity
             android:name=".pager.home.activity.SearchResultActivity"
-            android:theme="@style/AppBackTheme"></activity>
-        <activity android:name=".pager.scale.activity.SnackInfomationActivity" />
+            android:theme="@style/AppBackTheme"/>
+        <activity android:name=".pager.scale.activity.SnackInfomationActivity"
+        android:theme="@style/AppBackTheme" />
+
         <activity android:name=".pager.scale.activity.CommentActivity"/>
         <!-- 融云 -->
         <activity
@@ -295,14 +294,14 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
                 <data
                     android:host="atguigu.com.lingshixiaomiao"
                     android:pathPrefix="/conversation/"
-                    android:scheme="rong" />
+                    android:scheme="rong"/>
             </intent-filter>
         </activity>
         <!-- 融云 -->
@@ -393,17 +392,52 @@
 
         <activity android:name=".pager.mine.activity.BindPhoneNumActivity">
         </activity>
+
+        <!-- subject activity -->
+        <activity
+            android:name=".pager.subject.ui.DelicacyDetailsActivity"
+            android:theme="@style/Theme.PageIndicatorDefaults"/>
+        <activity
+            android:name=".pager.subject.ui.SubjectDetailsActivity"
+            android:theme="@style/Theme.PageIndicatorDefaults"/>
+
+        <!-- subject activity -->
+
+        <activity android:name=".pager.home.activity.PayInfoActivity">
+        </activity>
+
+        // 支付宝
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+        <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        <uses-permission android:name="android.launcher.permission.WRITE_SETTINGS" />
+
+        <supports-screens
+            android:anyDensity="true"
+            android:largeScreens="true"
+            android:normalScreens="true"
+            android:resizeable="true"
+            android:smallScreens="true" />
+
+        <!-- alipay sdk begin -->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+
+        <!-- alipay sdk end -->
+
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
     </application>
-
-
-    <!-- subject activity-->
-    <activity
-        android:name=".pager.subject.ui.DelicacyDetailsActivity"
-        android:theme="@style/Theme.PageIndicatorDefaults"/>
-    <activity
-        android:name=".pager.subject.ui.SubjectDetailsActivity"
-        android:theme="@style/Theme.PageIndicatorDefaults"/>
-
-    <!-- subject activity-->
 
 </manifest>

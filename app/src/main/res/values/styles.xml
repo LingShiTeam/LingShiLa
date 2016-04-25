@@ -120,4 +120,10 @@
         <item name="android:layout_marginRight">7dp</item>
     </style>
 
+    <style name="BoldLineStyle">
+        <item name="android:background">@color/c5</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/blod_line_height</item>
+    </style>
+
 </resources>
