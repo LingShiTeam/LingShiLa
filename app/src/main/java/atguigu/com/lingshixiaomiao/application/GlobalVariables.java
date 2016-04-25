@@ -16,7 +16,6 @@ public class GlobalVariables {
     public static MainActivity mainActivity;
     // uid
     public static String uid;
-
     //默认地址
     public static DefaultAddressBean defaultAddressBean;
 }

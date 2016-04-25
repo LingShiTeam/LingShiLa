@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.alipay.sdk.app.PayTask;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -30,6 +32,7 @@ import java.util.Random;
 
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.application.GlobalVariables;
 import atguigu.com.lingshixiaomiao.pager.alpay.H5PayDemoActivity;
 import atguigu.com.lingshixiaomiao.pager.alpay.PayResult;
 import atguigu.com.lingshixiaomiao.pager.alpay.SignUtils;
@@ -65,6 +68,7 @@ public class PayInfoActivity extends Activity implements View.OnClickListener {
     private ImageView btn_wx;
     private AlpayInfoBean alpayInfoBean;
     private String payInfo;
+    private LinearLayout item_confirm_is_show_pay_detail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +84,17 @@ public class PayInfoActivity extends Activity implements View.OnClickListener {
 
         registerEventBus();
         // 得到购物车中传递进来的items_id,items_items_id,总金额...
+        Bundle bundle = getIntent().getExtras();
+        Serializable shopping_info = bundle.getSerializable("shopping_info");
+        LogUtils.loge("TAG","shopping_info" + shopping_info.toString());
 
         // 模拟数据
+        String uid = GlobalVariables.uid;
+        if(uid == null) {
+            Toast.makeText(this,"未登录,请先登录",Toast.LENGTH_SHORT).show();
+        } else {
+            String payInfoUrl = Url.PAY_INFO_URL[0] + GlobalVariables.uid + Url.PAY_INFO_URL[1] + "4" + Url.PAY_INFO_URL[2] + "316914";
+        }
         //String payInfoUrl = Url.PAY_INFO_URL[0] + GlobalVariables.uid + Url.PAY_INFO_URL[1] + "4" + Url.PAY_INFO_URL[2] + "316914";
         String payInfoUrl = Url.PAY_INFO_URL[0] + "184237" + Url.PAY_INFO_URL[1] + "4" + Url.PAY_INFO_URL[2] + "316931";
         startLoading();
@@ -130,6 +143,7 @@ public class PayInfoActivity extends Activity implements View.OnClickListener {
         item_order_choice_wx = (RelativeLayout) findViewById(R.id.item_order_choice_wx);
         btn_zfb = (ImageView) findViewById(R.id.btn_zfb);
         btn_wx = (ImageView) findViewById(R.id.btn_wx);
+        item_confirm_is_show_pay_detail = (LinearLayout) findViewById(R.id.item_confirm_is_show_pay_detail);
 
         // pay
         goods_pay = (TextView) findViewById(R.id.goods_pay);
@@ -141,9 +155,46 @@ public class PayInfoActivity extends Activity implements View.OnClickListener {
 
         btn_zfb.setSelected(true);
 
+        item_order_choice_wx.setOnClickListener(this);
+        item_order_choice_zfb.setOnClickListener(this);
+        item_cost_detail.setOnClickListener(this);
+        item_cost_detail_up.setOnClickListener(this);
+
         goods_pay.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.goods_pay: // 支付
+                if (btn_wx.isSelected()) {
+                    Log.e("TAG", "微信支付");
+                    Toast.makeText(this, "微信支付尚未集成,请选择其他支付方式", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e("TAG", "支付宝支付");
+                    pay();
+                }
+                break;
+            case R.id.item_order_choice_wx: // 微信支付
+                btn_zfb.setSelected(false);
+                btn_wx.setSelected(true);
+                break;
+            case R.id.item_order_choice_zfb: // 支付宝支付
+                btn_zfb.setSelected(true);
+                btn_wx.setSelected(false);
+                break;
+            case R.id.item_cost_detail:
+                item_cost_detail.setVisibility(View.GONE);
+                item_cost_detail_up.setVisibility(View.VISIBLE);
+                item_confirm_is_show_pay_detail.setVisibility(View.VISIBLE);
+                break;
+            case R.id.item_cost_detail_up:
+                item_cost_detail.setVisibility(View.VISIBLE);
+                item_cost_detail_up.setVisibility(View.GONE);
+                item_confirm_is_show_pay_detail.setVisibility(View.GONE);
+                break;
+        }
+    }
 
     /**
      * 停止加载
@@ -176,15 +227,6 @@ public class PayInfoActivity extends Activity implements View.OnClickListener {
     public void unRegisterEventBus() {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.goods_pay:
-                pay();
-                break;
         }
     }
 
@@ -328,9 +370,8 @@ public class PayInfoActivity extends Activity implements View.OnClickListener {
     /**
      * 原生的H5（手机网页版支付切natvie支付） 【对应页面网页支付按钮】
      *
-     * @param v
      */
-    public void h5Pay(View v) {
+    public void h5Pay() {
         Intent intent = new Intent(this, H5PayDemoActivity.class);
         Bundle extras = new Bundle();
         /**
