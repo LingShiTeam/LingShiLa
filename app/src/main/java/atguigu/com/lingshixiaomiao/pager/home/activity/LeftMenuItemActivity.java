@@ -221,34 +221,39 @@ public class LeftMenuItemActivity extends Activity implements View.OnClickListen
         }
         vp_leftmenu_detail.setAdapter(adapter);
         tab_indicator.setViewPager(vp_leftmenu_detail);
-        tab_indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                // 屏蔽ViewPager的预加载
-                pagers.get(position).initData();
-                currPosition = position;
-                for (int i = 0; i < tabTitleLists.size(); i++) {
-                    if (i == currPosition) {
-                        tabView.getChildAt(i).setBackgroundResource(R.drawable.btn_look_normal);
-                    } else {
-                        tabView.getChildAt(i).setBackgroundResource(R.drawable.bg_btn_cancel_pressed);
-                    }
-
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        tab_indicator.setOnPageChangeListener(new MyOnPageChangeListener());
 
         stopLoading();
+    }
+
+    /**
+     * viewpager滑动状态改变的监听
+     */
+    class MyOnPageChangeListener implements ViewPager.OnPageChangeListener{
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            // 屏蔽ViewPager的预加载
+            pagers.get(position).initData();
+            currPosition = position;
+            for (int i = 0; i < tabTitleLists.size(); i++) {
+                if (i == currPosition) {
+                    tabView.getChildAt(i).setBackgroundResource(R.drawable.btn_look_normal);
+                } else {
+                    tabView.getChildAt(i).setBackgroundResource(R.drawable.bg_btn_cancel_pressed);
+                }
+
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
     }
 
 

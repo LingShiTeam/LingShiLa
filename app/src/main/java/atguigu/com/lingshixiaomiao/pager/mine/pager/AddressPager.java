@@ -10,13 +10,17 @@ import android.widget.Toast;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.List;
+
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.application.GlobalVariables;
 import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.adapter.AddressAdapter;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.AddressBean;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.ChangeAddressBean;
+import atguigu.com.lingshixiaomiao.pager.mine.bean.DefaultAddressBean;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
@@ -90,7 +94,41 @@ public class AddressPager extends ContentBasePager {
         if (Constants.SUCCESS.equals(addressBean.getRs_code())) {
             data = addressBean.getData();
             setAdapter();
+            setDefaultAddress();
         }
+    }
+
+    public void setDefaultAddress() {
+        List<AddressBean.DataEntity.ItemsEntity> items = data.getItems();
+        boolean hasDefault = false;
+        if (items != null) {
+            for (int i = 0; i < items.size(); i++) {
+                if (items.get(i).getType() == 1) {
+                    hasDefault = true;
+                    AddressBean.DataEntity.ItemsEntity t = items.get(i);
+                    DefaultAddressBean d = new DefaultAddressBean();
+                    d.setCity(t.getCity());
+                    d.setFull_add(t.getFull_add());
+                    d.setId(t.getId());
+                    d.setName(t.getName());
+                    d.setPhone(t.getPhone());
+                    d.setProper(t.getProper());
+                    d.setProvince(t.getProvince());
+                    d.setType(t.getType());
+                    GlobalVariables.defaultAddressBean = d;
+                }
+            }
+        }
+        if (!hasDefault) {
+            GlobalVariables.defaultAddressBean = null;
+        }
+
+        if (GlobalVariables.defaultAddressBean == null) {
+            LogUtils.loge("默认地址为null");
+        }else{
+            LogUtils.loge(GlobalVariables.defaultAddressBean.toString());
+        }
+
     }
 
     /**
@@ -98,6 +136,7 @@ public class AddressPager extends ContentBasePager {
      */
     @Subscribe
     public void onEventMainThread(ChangeAddressBean changeAddressBean) {
+        setDefaultAddress();
         int id = changeAddressBean.getData().getId();
         if (id != 0) {
             return;
@@ -110,12 +149,14 @@ public class AddressPager extends ContentBasePager {
             Toast.makeText(mActivity, "地址修改失败", Toast.LENGTH_SHORT).show();
         }
     }
+
     /**
      * 获取修改地址的返回值
      */
     @Subscribe
     public void onEventMainThread(AddressBean.DataEntity data) {
-       adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
+        setDefaultAddress();
     }
 
     private void setAdapter() {

@@ -1,10 +1,12 @@
 package atguigu.com.lingshixiaomiao.pager.mine.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by lanmang on 2016/4/11.
  * 登录
  */
-public class LoginBean {
+public class LoginBean implements Serializable {
 
     @Override
     public String toString() {
@@ -57,7 +59,7 @@ public class LoginBean {
         return rs_msg;
     }
 
-    public static class DataEntity {
+    public static class DataEntity implements Serializable {
 
         @Override
         public String toString() {

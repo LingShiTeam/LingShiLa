@@ -213,7 +213,7 @@ public class CollectionPager extends ContentBasePager {
     private int position = 0;
 
     private void setListener() {
-        vp_mine_collection.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        vp_mine_collection.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

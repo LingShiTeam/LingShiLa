@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/layout_orders_confirm_head"/>
+
+        <include
+            layout="@layout/layout_orders_confirm_footer"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/goods_pay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="1.0"
+        android:background="@drawable/bg_btn_add_cart"
+        android:gravity="center"
+        android:text="立即支付"
+        android:layout_margin="5dp"
+        android:textColor="@color/c6"
+        android:textSize="@dimen/s2"/>
+
+    <include layout="@layout/dialog_loading"
+             android:id="@+id/loading_dialog"/>
+
+</RelativeLayout>

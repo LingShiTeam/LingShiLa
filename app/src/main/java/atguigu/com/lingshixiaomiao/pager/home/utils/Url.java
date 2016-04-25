@@ -43,4 +43,38 @@ public class Url {
     public static final String MENU_ITEM_TAB_DES = "http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160415140544&sig=c98893f7c3cd52ff&wssig=3334a64360e583c4&os_type=" +
             "3&version=20&channel_name=wandoujia&srv=2406&pg_cur=1&pg_size=20&sub_id=";//0&parent_id=32&since_id=0";
 
+    /**
+     *  多项选择-商品列表URL-第一个(疯抢巧克力)
+     */
+    public static final String LOVERURL = "http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160420215705&sig=04b5079414613cb3&wssig=1d9a71b0dd70be0d&os_type=3&version=20&" +
+            "channel_name=wandoujia&srv=2407&pg_cur=1&pg_size=20&subject_id=560&since_id=0";
+
+    /**
+     *  多项选择-商品列表URL-第二个(两元秒杀)
+     */
+    public static final String MOVIEURL = "http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160421111343&sig=04cfeb6d7bbf9f39&wssig=d23c93168a2d4e3e&os_type=3&version=20&" +
+            "channel_name=wandoujia&srv=2407&pg_cur=1&pg_size=20&subject_id=566&since_id=0";
+
+    /**
+     *  多项选择-商品列表URL-第三个(饿了么)
+     */
+    public static final String TEAURL = "http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160421112240&sig=3809f5ba10957e54&wssig=af01744b9b9c257a&os_type=3&version=20&" +
+            "channel_name=wandoujia&srv=2407&pg_cur=1&pg_size=20&subject_id=472&since_id=0";
+
+    /**
+     *  多项选择-商品列表URL-第四个(热卖单品榜)
+     */
+    public static final String BEERURL = "http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160421112447&sig=b81a65c21c2cd52b&wssig=5f7556fb176b4eb0&os_type=3&version=20&" +
+            "channel_name=wandoujia&srv=2407&pg_cur=1&pg_size=20&subject_id=490&since_id=0";
+
+    /**
+     *  第二个头的数据链接
+     */
+    public static final String HOMEHEADERTWO = "http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160421114104&sig=390e90e11107830b&wssig=43c2e25690d6863a&os_type=3&version=20&" +
+            "channel_name=wandoujia&srv=2205&brand_id=576&pg_cur=1&pg_size=20&since_id=0";
+
+    /**
+     * 支付信息的url(items_id/items_items_id)
+     */
+    public static final String[] PAY_INFO_URL = {"http://api.ds.lingshi.cccwei.com/?cid=760272&uid=","&tms=20160424185336&sig=a29b776ccf97e0c8&wssig=364fcad7fdc36c56&os_type=3&version=20&channel_name=wandoujia&srv=2702&coupon_id=0&poster_ids=&add_id=25702&type=0&notes=%5B%7B%22note%22%3A%22%22%2C%22id%22%3A","%7D%5D&ids="};
 }
