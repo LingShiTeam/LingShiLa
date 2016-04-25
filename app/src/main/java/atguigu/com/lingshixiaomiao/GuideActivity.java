@@ -53,7 +53,7 @@ public class GuideActivity extends Activity {
         // 视图树观察者
         ll_guide_point.getViewTreeObserver().addOnGlobalLayoutListener(new MyOnGlobalLayoutListener());
         // viewpager的滑动监听
-        viewpager_guide.addOnPageChangeListener(new MyOnPageChangeListener());
+        viewpager_guide.setOnPageChangeListener(new MyOnPageChangeListener());
         viewpager_guide.setAdapter(new MyPagerAdapter());
     }
 

@@ -132,7 +132,7 @@ public class SettingPager extends ContentBasePager implements View.OnClickListen
             public void onClick(View v) {
                 //跳转到拍照界面扫描二维码
                 Intent intent = new Intent(mActivity, CaptureActivity.class);
-                mActivity.startActivityForResult(intent, Constants.PHOTO_PIC);
+                mActivity.startActivityForResult(intent, 1);
             }
         });
     }

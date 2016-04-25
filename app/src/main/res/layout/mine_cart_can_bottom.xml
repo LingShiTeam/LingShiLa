@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_mine_cart2_bottom"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp">
+
+    <TextView
+        android:id="@+id/tv_mine_cart2_bottom_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="共18件商品" />
+
+    <TextView
+        android:id="@+id/tv_mine_cart2_bottom_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="￥522.02"
+        android:textColor="#f00" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/tv_mine_cart2_bottom_price"
+        android:text="小计:   " />
+
+</RelativeLayout>

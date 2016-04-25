@@ -106,6 +106,7 @@ public class AddressAdapter extends RecyclerView.Adapter {
             switch (v.getId()) {
                 case R.id.tv_mine_address_default:
                     setDefaultAddress(getPosition());
+
                     break;
                 case R.id.tv_mine_address_delete:
                     showDeleteDialog();

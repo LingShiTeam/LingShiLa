@@ -60,7 +60,6 @@ public class JsonUtils<T> {
 
     private T parseJson(String json) {
         t = (T) new Gson().fromJson(json, aClass);
-
         LogUtils.loge(aClass.getSimpleName());
         sendEventBus();
         return t;
@@ -71,6 +70,5 @@ public class JsonUtils<T> {
      */
     private void sendEventBus() {
         EventBus.getDefault().post(t);
-
     }
 }

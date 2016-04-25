@@ -2,28 +2,79 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp">
+    android:orientation="horizontal">
 
-    <TextView
-        style="@style/mine_button_style"
-        android:drawableTop="@drawable/icon_pay_big"
-        android:text="待付款" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
 
-    <TextView
-        style="@style/mine_button_style"
-        android:drawableTop="@drawable/icon_delivery"
-        android:text="待发货" />
+        <TextView
+            android:id="@+id/mine_order_1"
+            style="@style/orderStyle" />
 
-    <TextView
-        style="@style/mine_button_style"
-        android:drawableTop="@drawable/icon_logistics"
-        android:text="待收货" />
+        <TextView
+            android:id="@+id/tv_mine_order_1"
+            style="@style/mine_button_style"
+            android:drawableTop="@drawable/icon_pay_big"
+            android:text="待付款" />
 
-    <TextView
-        style="@style/mine_button_style"
-        android:drawableTop="@drawable/icon_evaluate"
-        android:text="待评价" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/mine_order_2"
+            style="@style/orderStyle" />
+
+        <TextView
+            android:id="@+id/tv_mine_order_2"
+            style="@style/mine_button_style"
+            android:drawableTop="@drawable/icon_delivery"
+            android:text="待发货" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/mine_order_3"
+            style="@style/orderStyle" />
+
+        <TextView
+            android:id="@+id/tv_mine_order_3"
+            style="@style/mine_button_style"
+            android:drawableTop="@drawable/icon_logistics"
+            android:text="待收货" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/mine_order_4"
+            style="@style/orderStyle" />
+
+        <TextView
+            android:id="@+id/tv_mine_order_4"
+            style="@style/mine_button_style"
+            android:drawableTop="@drawable/icon_evaluate"
+            android:text="待评价" />
+
+    </RelativeLayout>
+
 
 </LinearLayout>

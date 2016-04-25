@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Created by CheungJhonny on 2016/4/20.
+ * 专题页面 顶部 gridview的商品列表实体类
  */
 public class SubTopShopBean {
 

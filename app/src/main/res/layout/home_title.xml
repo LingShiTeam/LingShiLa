@@ -99,10 +99,10 @@
             android:layout_alignTop="@id/home_car_parent"
             android:background="@drawable/bg_home_number"
             android:gravity="center"
-            android:text="23"
+            android:text="0"
             android:textColor="@color/c6"
             android:textSize="@dimen/s6"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
     </RelativeLayout>
 
 </LinearLayout>

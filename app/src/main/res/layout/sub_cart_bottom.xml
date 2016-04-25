@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_cart"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/c4"
+    android:orientation="horizontal"
+    android:padding="7dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="7dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_btn_cart"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
+
+
+        <ImageView
+            android:id="@+id/btn_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_cart_black"
+
+            />
+
+
+        <TextView
+            android:id="@+id/tv_cart_nums"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@id/btn_cart"
+            android:layout_alignTop="@id/btn_cart"
+            android:background="@drawable/bg_home_number"
+            android:gravity="center"
+            android:text="99"
+            android:textColor="@color/c6"
+            android:textSize="7sp" />
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/btn_buy_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_weight="3"
+        android:background="@drawable/bg_btn_add_cart"
+        android:gravity="center"
+        android:text="加入购物车"
+        android:textColor="#ffffff"
+        android:textSize="15sp" />
+</LinearLayout>
+

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="180dp">
+    android:layout_height="180dp"
+    android:paddingLeft="7dp"
+    android:paddingRight="7dp"
+    >
 
     <atguigu.com.lingshixiaomiao.pager.subject.view.NoscrollGridView
         android:id="@+id/gridview_top"
@@ -9,6 +12,7 @@
         android:layout_height="180dp"
         android:horizontalSpacing="7dp"
         android:numColumns="2"
-        android:verticalSpacing="7dp" />
+        android:verticalSpacing="7dp"
+        />
 </RelativeLayout>
 

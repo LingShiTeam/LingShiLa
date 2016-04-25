@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/tv_mine_order_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:drawableLeft="@drawable/icon_shop"
+            android:drawablePadding="5dp"
+            android:text="小喵自营商品" />
+
+        <TextView
+            android:id="@+id/tv_mine_order_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="交易关闭"
+            android:textColor="#f00" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#33000000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/fl_mine_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="#33000000"
+            android:padding="1dp">
+
+            <ImageView
+                android:id="@+id/tv_mine_order_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/default_bg_150_150" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_mine_order_goods_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="黑芝麻方块酥" />
+
+            <TextView
+                android:id="@+id/tv_mine_order_taste"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="口味:芝麻"
+                android:textColor="#66000000" />
+
+            <TextView
+                android:id="@+id/tv_mine_order_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="￥ 39.8"
+                android:textColor="#000" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_mine_order_count"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:gravity="bottom"
+            android:text="x1" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#33000000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/tv_mine_order_count_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="共1件商品" />
+
+        <TextView
+            android:id="@+id/tv_mine_order_freight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="运费 : ￥0.0" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="实付 : " />
+
+        <TextView
+            android:id="@+id/tv_mine_order_real_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥39.8"
+            android:textColor="#f00" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#33000000" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/tv_mine_order_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/mine_order_item_bg"
+            android:clickable="true"
+            android:padding="5dp"
+            android:text="删除该订单" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#11000000" />
+
+</LinearLayout>

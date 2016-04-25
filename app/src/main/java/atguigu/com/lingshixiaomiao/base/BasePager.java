@@ -17,7 +17,7 @@ public abstract class BasePager {
      */
     public View rootView;
     /**
-     * 判断子页面的数据是否已经初始化
+     * 判断子页面的数据是否已经初始化--屏蔽预加载
      */
     public boolean isInitData = false;
 
