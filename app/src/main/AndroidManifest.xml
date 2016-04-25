@@ -396,16 +396,8 @@
         <activity android:name=".pager.subject.ui.SubjectDetailsActivity"
             android:theme="@style/AppBackTheme" />
         <!-- subject activity-->
-    </application>
-        <!-- subject activity -->
-        <activity
-            android:name=".pager.subject.ui.DelicacyDetailsActivity"
-            android:theme="@style/Theme.PageIndicatorDefaults"/>
-        <activity
-            android:name=".pager.subject.ui.SubjectDetailsActivity"
-            android:theme="@style/Theme.PageIndicatorDefaults"/>
 
-        <!-- subject activity -->
+
 
         <activity android:name=".pager.home.activity.PayInfoActivity">
         </activity>
