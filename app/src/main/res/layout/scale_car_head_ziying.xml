@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/ll_car_item_ziying"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/cb_car_ziying_quanxuan"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/address_default_selector"
+            android:clickable="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp"
+            android:drawableLeft="@drawable/icon_shop"
+            android:drawablePadding="5dp"
+            android:text="小喵自营商品" />
+    </LinearLayout>
+
+
+</RelativeLayout>
