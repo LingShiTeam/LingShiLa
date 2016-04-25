@@ -42,16 +42,41 @@
         android:drawablePadding="5dp"
         android:gravity="center"
         android:textSize="12sp"
+        android:layout_marginTop="10dp"
     -->
     <style name="mine_button_style">
         <item name="android:clickable">true</item>
+        <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:drawablePadding">5dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+    <!--我的小喵 订单条个数-->
+   <!--
+    android:textColor="#fff"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="60dp"
+    android:background="@drawable/bg_home_number"
+    android:gravity="center"
+    android:text="1"
+    android:visibility="gone"-->
+    <style name="orderStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">60dp</item>
+        <item name="android:background">@drawable/bg_home_number</item>
+        <item name="android:gravity">center</item>
+        <item name="android:text">1</item>
+        <item name="android:visibility">gone</item>
+    </style>
+    <!--我的小喵 订单条个数-->
+
     <!--首页小标题属性-->
     <style name="FineLineC4Style">
         <item name="android:background">@color/c4</item>

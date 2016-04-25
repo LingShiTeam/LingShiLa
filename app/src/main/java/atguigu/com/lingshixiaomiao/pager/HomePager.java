@@ -58,6 +58,7 @@ import atguigu.com.lingshixiaomiao.pager.home.utils.Url;
 import atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout;
 import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.CartUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
 import atguigu.com.lingshixiaomiao.pager.scale.activity.SnackInfomationActivity;
@@ -69,6 +70,7 @@ public class HomePager extends BasePager implements View.OnClickListener {
 
     private ImageButton ib_left_menu;
     private TextView et_search;
+    private TextView tv_shopcount;
     private RelativeLayout rl_cart;
     private DrawerLayout dl_menu;
     private RefreshLayout refreshlayout_home;
@@ -128,6 +130,7 @@ public class HomePager extends BasePager implements View.OnClickListener {
     public HomePager(Activity mActivity, DrawerLayout dl_menu) {
         super(mActivity);
         this.dl_menu = dl_menu;
+        //CartUtils.getInstance().checkGoodsNum();
     }
 
     @Override
@@ -347,6 +350,7 @@ public class HomePager extends BasePager implements View.OnClickListener {
     private void findViewById(View parent) {
         ib_left_menu = (ImageButton) parent.findViewById(R.id.ib_left_menu);
         et_search = (TextView) parent.findViewById(R.id.et_search);
+        tv_shopcount = (TextView) parent.findViewById(R.id.tv_shopcount);
         rl_cart = (RelativeLayout) parent.findViewById(R.id.rl_cart);
         refreshlayout_home = (RefreshLayout) parent.findViewById(R.id.refreshlayout_home);
         listview_home = (ListView) parent.findViewById(R.id.listview_home);
@@ -471,7 +475,7 @@ public class HomePager extends BasePager implements View.OnClickListener {
             // 显示ListView列表
             showListView();
         }
-        unRegisterEventBus();
+        //unRegisterEventBus();
     }
 
 
@@ -713,6 +717,21 @@ public class HomePager extends BasePager implements View.OnClickListener {
     public void unRegisterEventBus() {
         if (EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().unregister(this);
+    }
+
+    /**
+     * 获取购物车商品数量
+     * @param cartUtils
+     */
+    @Subscribe
+    public void onEventMainThread(CartUtils cartUtils) {
+        int goodsNum =  cartUtils.getGoodsNum();
+        if (goodsNum > 0) {
+            tv_shopcount.setVisibility(View.VISIBLE);
+            tv_shopcount.setText(goodsNum + "");
+        }else{
+            tv_shopcount.setVisibility(View.INVISIBLE);
+        }
     }
 
 }

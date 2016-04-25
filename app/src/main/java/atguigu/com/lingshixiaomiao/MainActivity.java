@@ -40,9 +40,11 @@ import atguigu.com.lingshixiaomiao.pager.SubjectPager;
 import atguigu.com.lingshixiaomiao.pager.mine.activity.BindPhoneNumActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.CacheUtils;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.CartUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.OrderUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Url;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -170,6 +172,7 @@ public class MainActivity extends FragmentActivity {
         pagers.add(new SalePager(this));
         pagers.add(new SubjectPager(this));
         pagers.add(new MinePager(this));
+        OrderUtils.getInstance().checkOrderNum();
     }
 
     /**
@@ -359,6 +362,11 @@ public class MainActivity extends FragmentActivity {
             Constants.isToHome = false;
             rg_main.check(R.id.rb_main_home);
         }
+
+        CartUtils.getInstance().checkGoodsNum();
+
+        OrderUtils.getInstance().checkOrderNum();
+
     }
     public void loginWeiBo() {
         //DialogUtils.startLogin();

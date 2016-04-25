@@ -23,8 +23,10 @@ import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
 import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.CartUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.OrderUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Url;
 import io.rong.imkit.RongIM;
 
@@ -49,11 +51,18 @@ public class MinePager extends BasePager implements View.OnClickListener {
     private TextView tv_mine_order_2;
     private TextView tv_mine_order_3;
     private TextView tv_mine_order_4;
+    private TextView mine_order_1;
+    private TextView mine_order_2;
+    private TextView mine_order_3;
+    private TextView mine_order_4;
     private TextView tv_mine_cart_num;
     private int position;
     private Bundle bundle;
     private LinearLayout ll_taobao_order;
     private LinearLayout ll_mycoupon;
+    private int goodsNum;
+    private int[] orderNums;
+    private View inflate;
 
     public MinePager(Activity mActivity) {
         super(mActivity);
@@ -61,7 +70,7 @@ public class MinePager extends BasePager implements View.OnClickListener {
 
     @Override
     public View initView() {
-        View inflate = View.inflate(mActivity, R.layout.mine_pager, null);
+        inflate = View.inflate(mActivity, R.layout.mine_pager, null);
         findViewById(inflate);
         return inflate;
     }
@@ -82,6 +91,10 @@ public class MinePager extends BasePager implements View.OnClickListener {
         tv_mine_order_2 = (TextView) v.findViewById(R.id.tv_mine_order_2);
         tv_mine_order_3 = (TextView) v.findViewById(R.id.tv_mine_order_3);
         tv_mine_order_4 = (TextView) v.findViewById(R.id.tv_mine_order_4);
+        mine_order_1 = (TextView) v.findViewById(R.id.mine_order_1);
+        mine_order_2 = (TextView) v.findViewById(R.id.mine_order_2);
+        mine_order_3 = (TextView) v.findViewById(R.id.mine_order_3);
+        mine_order_4 = (TextView) v.findViewById(R.id.mine_order_4);
         tv_mine_cart_num = (TextView) v.findViewById(R.id.tv_mine_cart_num);
         ll_taobao_order = (LinearLayout) v.findViewById(R.id.ll_taobao_order);
         ll_mycoupon = (LinearLayout) v.findViewById(R.id.ll_mycoupon);
@@ -267,6 +280,63 @@ public class MinePager extends BasePager implements View.OnClickListener {
         ib_mine_user_header.setImageBitmap(bitmap);
     }
 
+    /**
+     * 获取购物车商品数量
+     *
+     * @param cartUtils
+     */
+    @Subscribe
+    public void onEventMainThread(CartUtils cartUtils) {
+        goodsNum = cartUtils.getGoodsNum();
+        if (goodsNum > 0) {
+            tv_mine_cart_num.setVisibility(View.VISIBLE);
+            tv_mine_cart_num.setText(goodsNum + "");
+        } else {
+            tv_mine_cart_num.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * 获取订单数量
+     *
+     * @param orderUtils
+     */
+    @Subscribe
+    public void onEventMainThread(OrderUtils orderUtils) {
+        orderNums = orderUtils.getOrderNums();
+        for (int i = 1; i < orderNums.length; i++) {
+            TextView textView = (TextView) inflate.findViewById(getOrderNumId(i));
+            if (orderNums[i] > 0) {
+                textView.setVisibility(View.VISIBLE);
+                textView.setText(orderNums[i] + "");
+            } else {
+                textView.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
+    private int getOrderNumId(int num) {
+
+        int id = 0;
+
+        switch (num) {
+            case 1:
+                id = R.id.mine_order_1;
+                break;
+            case 2:
+                id = R.id.mine_order_2;
+                break;
+            case 3:
+                id = R.id.mine_order_3;
+                break;
+            case 4:
+                id = R.id.mine_order_4;
+                break;
+        }
+
+        return id;
+    }
+
     @Override
     public void registerEventBus() {
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -280,4 +350,6 @@ public class MinePager extends BasePager implements View.OnClickListener {
             EventBus.getDefault().unregister(this);
         }
     }
+
+
 }
