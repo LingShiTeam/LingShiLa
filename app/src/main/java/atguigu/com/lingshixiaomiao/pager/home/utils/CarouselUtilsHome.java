@@ -97,7 +97,7 @@ public class CarouselUtilsHome {
         setHeadPoint();
 
         //设置顶部轮播图监听
-        viewPager.addOnPageChangeListener(new MyOnPageChangeListener());
+        viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
 
         viewPager.setCurrentItem(3000 * topics.size() % topPoints.size());
         handler.sendEmptyMessageDelayed(MESSAGE_PAGE_NEXT, 3000);

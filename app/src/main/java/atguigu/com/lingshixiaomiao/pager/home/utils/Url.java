@@ -73,5 +73,8 @@ public class Url {
     public static final String HOMEHEADERTWO = "http://api.ds.lingshi.cccwei.com/?cid=760272&uid=182129&tms=20160421114104&sig=390e90e11107830b&wssig=43c2e25690d6863a&os_type=3&version=20&" +
             "channel_name=wandoujia&srv=2205&brand_id=576&pg_cur=1&pg_size=20&since_id=0";
 
-
+    /**
+     * 支付信息的url(items_id/items_items_id)
+     */
+    public static final String[] PAY_INFO_URL = {"http://api.ds.lingshi.cccwei.com/?cid=760272&uid=","&tms=20160424185336&sig=a29b776ccf97e0c8&wssig=364fcad7fdc36c56&os_type=3&version=20&channel_name=wandoujia&srv=2702&coupon_id=0&poster_ids=&add_id=25702&type=0&notes=%5B%7B%22note%22%3A%22%22%2C%22id%22%3A","%7D%5D&ids="};
 }

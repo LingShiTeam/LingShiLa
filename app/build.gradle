@@ -58,8 +58,9 @@ dependencies {
     compile project(':pullToRefresh-library')
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile project(':IMKit')
-
     compile files('libs/umeng_social_sdk.jar')
     compile files('libs/weiboSDKCore_3.1.4.jar')
     compile files('libs/SocialSDK_Sina.jar')
+    compile files('libs/alipaySdk-20160223.jar')
+    //compile files('libs/android-support-v13.jar')
 }

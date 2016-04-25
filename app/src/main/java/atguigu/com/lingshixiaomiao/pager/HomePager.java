@@ -42,6 +42,7 @@ import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
 import atguigu.com.lingshixiaomiao.pager.home.activity.HomeHeader2Activity;
 import atguigu.com.lingshixiaomiao.pager.home.activity.LeftMenuItemActivity;
+import atguigu.com.lingshixiaomiao.pager.home.activity.PayInfoActivity;
 import atguigu.com.lingshixiaomiao.pager.home.activity.SearchActivity;
 import atguigu.com.lingshixiaomiao.pager.home.activity.ShoppingListActivity;
 import atguigu.com.lingshixiaomiao.pager.home.adapter.LeftMenuAdapter;
@@ -247,6 +248,10 @@ public class HomePager extends BasePager implements View.OnClickListener {
                 intent.putExtra("shoppinglist", Url.BEERURL);
                 mActivity.startActivity(intent);
                 break;
+            case R.id.rl_cart: // 进入购物车(模拟进入支付界面)
+                intent = new Intent(mActivity, PayInfoActivity.class);
+                mActivity.startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -314,6 +319,9 @@ public class HomePager extends BasePager implements View.OnClickListener {
 
         // 首页商品listView的item的点击监听
         listview_home.setOnItemClickListener(new MyOnItemClickListener());
+
+        // 点击购物车
+        rl_cart.setOnClickListener(this);
     }
 
     /**

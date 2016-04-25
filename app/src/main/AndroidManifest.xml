@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="atguigu.com.lingshixiaomiao"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest package="atguigu.com.lingshixiaomiao"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 百度定位权限 -->
     <!-- 这个权限用于进行网络定位 -->
@@ -286,7 +285,6 @@
             android:theme="@style/AppBackTheme"/>
         <activity android:name=".pager.scale.activity.SnackInfomationActivity"/>
         android:theme="@style/AppBackTheme" />
-
         <activity android:name=".pager.scale.activity.CommentActivity"/>
         <!-- 融云 -->
         <activity
@@ -311,7 +309,8 @@
             android:name=".pager.home.activity.ShoppingListActivity"
             android:theme="@style/AppBackTheme"/>
         <activity android:name=".pager.scale.activity.CommentActivity"/>
-        <!--&lt;!&ndash; 百度定位 &ndash;&gt;
+        <!--
+        &lt;!&ndash; 百度定位 &ndash;&gt;
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -319,13 +318,15 @@
 
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>-->
-        <!--百度定位-->
+            android:value="@integer/google_play_services_version"/>
+        -->
+        <!-- 百度定位 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote">
         </service>
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="2e7dl8xQBTM3msWZxlAAC5jqycLdDKDe"/>
@@ -392,17 +393,52 @@
 
         <activity android:name=".pager.mine.activity.BindPhoneNumActivity">
         </activity>
+
+        <!-- subject activity -->
+        <activity
+            android:name=".pager.subject.ui.DelicacyDetailsActivity"
+            android:theme="@style/Theme.PageIndicatorDefaults"/>
+        <activity
+            android:name=".pager.subject.ui.SubjectDetailsActivity"
+            android:theme="@style/Theme.PageIndicatorDefaults"/>
+
+        <!-- subject activity -->
+
+        <activity android:name=".pager.home.activity.PayInfoActivity">
+        </activity>
+
+        // 支付宝
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+        <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        <uses-permission android:name="android.launcher.permission.WRITE_SETTINGS" />
+
+        <supports-screens
+            android:anyDensity="true"
+            android:largeScreens="true"
+            android:normalScreens="true"
+            android:resizeable="true"
+            android:smallScreens="true" />
+
+        <!-- alipay sdk begin -->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+
+        <!-- alipay sdk end -->
+
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
     </application>
-
-
-    <!-- subject activity-->
-    <activity
-        android:name=".pager.subject.ui.DelicacyDetailsActivity"
-        android:theme="@style/Theme.PageIndicatorDefaults"/>
-    <activity
-        android:name=".pager.subject.ui.SubjectDetailsActivity"
-        android:theme="@style/Theme.PageIndicatorDefaults"/>
-
-    <!-- subject activity-->
 
 </manifest>
