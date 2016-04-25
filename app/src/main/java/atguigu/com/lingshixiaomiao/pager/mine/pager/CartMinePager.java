@@ -258,7 +258,7 @@ public class CartMinePager extends ContentBasePager implements View.OnClickListe
                 if (isComplete) {
                     Toast.makeText(mActivity, "开始删除", Toast.LENGTH_SHORT).show();
                     delete(items);
-                    hindComplete();
+                    complete();
                 } else {
                     Toast.makeText(mActivity, "开始结算", Toast.LENGTH_SHORT).show();
                     startPay();
@@ -339,7 +339,7 @@ public class CartMinePager extends ContentBasePager implements View.OnClickListe
     //结算
     private void startPay() {
         buyItems = new ArrayList<>();
-        if (items != null) {
+        if (items != null && items.size() > 0) {
             for(int i = 0; i < items.size(); i++) {
                 if (items.get(i).isCheck()) {
                     buyItems.add(items.get(i));
