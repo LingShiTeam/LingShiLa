@@ -4,9 +4,9 @@
     android:layout_height="50dp">
 
     <ImageView
-        android:id="@+id/iv_scale_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/iv_car_back"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="12dp"
         android:src="@drawable/btn_header_back_pressed" />
@@ -15,17 +15,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="特卖"
-        android:textSize="25sp" />
+        android:text="购物车"
+        android:textSize="22sp" />
 
-    <ImageView
-        android:id="@+id/iv_scale_shoppingcar"
+    <TextView
+        android:id="@+id/tv_car_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="12dp"
-        android:src="@drawable/btn_cart_pressed" />
+        android:clickable="true"
+        android:text="编辑"
+        android:textSize="18sp"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/tv_car_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="12dp"
+        android:clickable="true"
+        android:text="完成"
+        android:textSize="18sp"
+        android:visibility="invisible" />
 
     <View
         android:layout_width="match_parent"

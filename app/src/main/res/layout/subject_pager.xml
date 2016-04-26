@@ -17,7 +17,7 @@
             android:id="@+id/listview_subject"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            ptr:ptrMode = "both"
+            ptr:ptrMode = ""
             ptr:ptrDrawable = "@drawable/ic_page_loading"
             >
 

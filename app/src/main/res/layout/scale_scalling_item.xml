@@ -79,9 +79,9 @@
                 android:text="￥19.9" />
 
             <TextView
-                android:id="@+id/tv_scale_item_toshopping"
+                android:id="@+id/tv_scale_item_toshopping2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="3dp"
                 android:background="@drawable/scale_scalling_bg"

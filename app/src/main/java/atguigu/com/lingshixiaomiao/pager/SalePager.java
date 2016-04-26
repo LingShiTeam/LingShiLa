@@ -1,13 +1,13 @@
 package atguigu.com.lingshixiaomiao.pager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.viewpagerindicator.TabPageIndicator;
 
@@ -17,6 +17,7 @@ import java.util.List;
 import atguigu.com.lingshixiaomiao.MainActivity;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
+import atguigu.com.lingshixiaomiao.pager.scale.activity.ShoppingCarActivity;
 import atguigu.com.lingshixiaomiao.pager.scale.base.ScaleBasePager;
 import atguigu.com.lingshixiaomiao.pager.scale.bean.ScallingBean;
 import atguigu.com.lingshixiaomiao.pager.scale.detailpager.ScaleBeginPager;
@@ -161,8 +162,6 @@ public class SalePager extends BasePager {
 
                     //进入首页
                     MainActivity mainActivity = (MainActivity) mActivity;
-//                    mainActivity.setPosition(0);
-//                    mainActivity.setCurrentPage();
                     RadioGroup rg_main = (RadioGroup) mainActivity.findViewById(R.id.rg_main);
                     rg_main.check(R.id.rb_main_home);
                     break;
@@ -170,7 +169,8 @@ public class SalePager extends BasePager {
                 case R.id.iv_scale_shoppingcar:
 
                     //进入购物车页面
-                    Toast.makeText(mActivity, "进入购物车页面", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mActivity, ShoppingCarActivity.class);
+                    mActivity.startActivity(intent);
                     break;
             }
         }

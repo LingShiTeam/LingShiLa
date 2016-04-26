@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -23,6 +25,7 @@ import org.xutils.x;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
+import atguigu.com.lingshixiaomiao.pager.scale.bean.ScallToCarBean;
 import atguigu.com.lingshixiaomiao.pager.scale.utils.Url;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
@@ -39,6 +42,7 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
     private RelativeLayout head_right;
     private TextView home_car_number;
     private TextView goods_detail_addtocart;
+
     private boolean isCollect = false;
     private int snack_id;
 
@@ -275,12 +279,16 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
     }
 
     private void initView() {
+
         wv_infomation = (WebView) findViewById(R.id.wv_infomation);
         iv_infomation_share = (ImageView) findViewById(R.id.iv_infomation_share);
         iv_back = (ImageView) findViewById(R.id.iv_back);
         head_right = (RelativeLayout) findViewById(R.id.head_right);
         home_car_number = (TextView) findViewById(R.id.home_car_number);
         goods_detail_addtocart = (TextView) findViewById(R.id.goods_detail_addtocart);
+
+        head_right.setOnClickListener(new MyOnClickListener());
+        goods_detail_addtocart.setOnClickListener(new MyOnClickListener());
     }
 
     private void showShare() {
@@ -310,4 +318,93 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
         }
     }
 
+    /**
+     * 点击监听
+     */
+    private class MyOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+
+            switch (v.getId()) {
+                case R.id.head_right:
+
+                    Intent intent = new Intent(SnackInfomationActivity.this, ShoppingCarActivity.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.goods_detail_addtocart://添加到购物车
+
+                    String uploadDataForDetail = getIntent().getStringExtra("uploadDataForDetail");
+
+                    Log.e("TAG", "=================uploadDataForDetail: " + uploadDataForDetail);
+
+                    //如果未登录
+                    if (!LoginUtils.getInstance().isLogin()) {
+
+                        Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT).show();
+
+                        return;
+                    }
+
+                    //获取用户id
+                    LoginBean loginBean = (LoginBean) LoginUtils.getInstance().getData();
+                    String uid = loginBean.getData().getUid();
+
+                    uploadGotoCarData(uploadDataForDetail, uid);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 上传购物数据到服务器
+     *
+     * @param result
+     * @param uid
+     */
+    private void uploadGotoCarData(String result, String uid) {
+
+        Log.e("TAG", "=====================uploadGotoCarData: " + result);
+
+        ScallToCarBean scallToCarBean = new Gson().fromJson(result, ScallToCarBean.class);
+
+        Log.e("TAG", "======================scallToCarBean: " + scallToCarBean);
+
+        Log.e("TAG", "==========scallToCarBean.getData().getKindss(): " + scallToCarBean.getData().getKindss());
+
+        int kind_id = scallToCarBean.getData().getKindss().get(0).getId();
+
+        int subkind_id = scallToCarBean.getData().getKindss().get(0).getKinds().get(0).getId();
+
+        String url_0 = Url.GOTOCARR_0 + uid + Url.GOTOCARR_1 + snack_id + Url.GOTOCARR_2 + kind_id + Url.GOTOCARR_3 + subkind_id + Url.GOTOCARR_4;
+
+        Log.e("TAG", "url_0==============" + url_0);
+
+        RequestParams requestParamss = new RequestParams(url_0);
+
+        x.http().get(requestParamss, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+
+                Log.e("TAG", "onSuccess()================:" + result);
+
+                Toast.makeText(getApplicationContext(), "添加购物车成功", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.e("TAG", "onError()================");
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Log.e("TAG", "onCancelled()================");
+            }
+
+            @Override
+            public void onFinished() {
+                Log.e("TAG", "onFinished()================");
+            }
+        });
+    }
 }

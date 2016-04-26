@@ -31,4 +31,23 @@ public class Url {
     public static final String COLLECT_OUT_1 = "&tms=20160420154128&sig=83def29b01fe63e6&wssig=e2eecd2c64fdb2f3&os_type=3&version=22&channel_name=feibo&srv=2805&fav_id=";
 
     public static final String COLLECT_OUT_2 = "&type=0&opt=1";
+
+    public static final String SHOPPING_CAR_0 = "http://api.ds.lingshi.cccwei.com/?cid=760653&uid=";
+
+    public static final String SHOPPING_CAR_1 = "&tms=20160422092219&sig=67573b6847d6fb57&wssig=cb9f4fdf667f9fe1&os_type=3&version=22&channel_name=feibo&srv=2604";
+
+    public static final String GOTOCAR_0 = "http://api.ds.lingshi.cccwei.com/?cid=760653&uid=";
+
+    public static final String GOTOCAR_1 = "&tms=20160425143305&sig=5f8341032b4666e5&wssig=4923fca770e3e386&os_type=3&version=22&channel_name=feibo&srv=2505&goods_id=";
+
+
+    public static final String GOTOCARR_0 = "http://api.ds.lingshi.cccwei.com/?cid=760653&uid=";
+
+    public static final String GOTOCARR_1 = "&tms=20160425143307&sig=2ff3ff09c275af2d&wssig=4d42b9c31107dff0&os_type=3&version=22&channel_name=feibo&srv=2601&goods_id=";
+
+    public static final String GOTOCARR_2 = "&kind_id=";
+
+    public static final String GOTOCARR_3 = "&subkind_id=";
+
+    public static final String GOTOCARR_4 = "&num=1";
 }

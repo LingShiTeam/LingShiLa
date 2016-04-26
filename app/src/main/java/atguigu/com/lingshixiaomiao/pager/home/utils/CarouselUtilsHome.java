@@ -222,9 +222,12 @@ public class CarouselUtilsHome {
 
             // 第一个
             final List<HomeBean.DataEntity.BrandsEntity> brands = homeBean.getData().getBrands();
-            x.image().bind(item_home_promotion_img, brands.get(0).getImg().getImg_url());
-            item_home_promotion_discount.setText(brands.get(0).getDiscount());
-            item_home_promotion_desc.setText(brands.get(0).getTitle());
+            if(brands != null){
+
+                x.image().bind(item_home_promotion_img, brands.get(0).getImg().getImg_url());
+                item_home_promotion_discount.setText(brands.get(0).getDiscount());
+                item_home_promotion_desc.setText(brands.get(0).getTitle());
+            }
 
             if (flag) {
                 flag = false;
