@@ -58,7 +58,7 @@ public class CarouselUtils {
         handler.sendEmptyMessageDelayed(MESSAGE_PAGE_NEXT, 2000);
 
         //设置顶部轮播图监听
-        viewPager.addOnPageChangeListener(new MyOnPageChangeListener());
+        viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
 
     /**

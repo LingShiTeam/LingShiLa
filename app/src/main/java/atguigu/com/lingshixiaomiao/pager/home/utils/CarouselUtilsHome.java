@@ -2,7 +2,6 @@ package atguigu.com.lingshixiaomiao.pager.home.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
@@ -50,20 +49,6 @@ public class CarouselUtilsHome {
     private TextView home_item_title_left;
     private TextView home_item_title_right;
     private HomeBean homeBean;
-    // 第一个
-    ImageView item_home_promotion_img;
-    ImageView item_goods_empty;
-    TextView item_home_promotion_discount;
-    TextView item_home_promotion_desc;
-    TextView item_home_promotion_tag_time;
-    // 第二个
-    ImageView btn_lover;
-    ImageView btn_movie;
-    ImageView btn_tea;
-    ImageView btn_beer;
-
-    TextView home_item_title_left2;
-    TextView home_item_title_right2;
     private List<HomeBean.DataEntity.TopicsEntity> topics;
 
     /**
@@ -76,13 +61,14 @@ public class CarouselUtilsHome {
         this.context = context;
         // headview子控件
         initHeadView(headerView);
-
         imageOption = new ImageOptions.Builder()
                 //.setImageScaleType(ImageView.ScaleType.FIT_START)//等比例缩小到充满长/宽居中显示, 或原样显示
                 .setLoadingDrawableId(R.drawable.default_home_banner_640_270)
                 .setFailureDrawableId(R.drawable.default_home_banner_640_270)
                 .setConfig(Bitmap.Config.ARGB_4444)
                 .build();
+
+        //setData();
     }
 
     /**
@@ -96,19 +82,6 @@ public class CarouselUtilsHome {
         ll_top_points = (LinearLayout) headerView.findViewById(R.id.ll_top_points);
         home_item_title_left = (TextView) headerView.findViewById(R.id.home_item_title_left);
         home_item_title_right = (TextView) headerView.findViewById(R.id.home_item_title_right);
-        // 第一个视图
-        item_home_promotion_img = (ImageView) headerView.findViewById(R.id.item_home_promotion_img);
-        item_goods_empty = (ImageView) headerView.findViewById(R.id.item_goods_empty);
-        item_home_promotion_discount = (TextView) headerView.findViewById(R.id.item_home_promotion_discount);
-        item_home_promotion_desc = (TextView) headerView.findViewById(R.id.item_home_promotion_desc);
-        item_home_promotion_tag_time = (TextView) headerView.findViewById(R.id.item_home_promotion_tag_time);
-        // 第二个视图
-        btn_lover = (ImageView) headerView.findViewById(R.id.btn_lover);
-        btn_movie = (ImageView) headerView.findViewById(R.id.btn_movie);
-        btn_tea = (ImageView) headerView.findViewById(R.id.btn_tea);
-        btn_beer = (ImageView) headerView.findViewById(R.id.btn_beer);
-        home_item_title_left2 = (TextView) headerView.findViewById(R.id.home_item_title_left);
-        home_item_title_right2 = (TextView) headerView.findViewById(R.id.home_item_title_right);
     }
 
     /**
@@ -124,10 +97,11 @@ public class CarouselUtilsHome {
         setHeadPoint();
 
         //设置顶部轮播图监听
-        viewPager.addOnPageChangeListener(new MyOnPageChangeListener());
+        viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
 
         viewPager.setCurrentItem(3000 * topics.size() % topPoints.size());
         handler.sendEmptyMessageDelayed(MESSAGE_PAGE_NEXT, 3000);
+
 
     }
 
@@ -188,10 +162,8 @@ public class CarouselUtilsHome {
                     handler.sendEmptyMessageDelayed(MESSAGE_PAGE_NEXT, 3000);
                 }
             }
-
         }
     }
-
 
     private boolean flag = true;
 
@@ -220,45 +192,6 @@ public class CarouselUtilsHome {
             home_item_title_left.setText(homeBean.getData().getBrands_title_big());
             home_item_title_right.setText(homeBean.getData().getBrands_title_sml());
 
-            // 第一个
-            final List<HomeBean.DataEntity.BrandsEntity> brands = homeBean.getData().getBrands();
-            if(brands != null){
-
-                x.image().bind(item_home_promotion_img, brands.get(0).getImg().getImg_url());
-                item_home_promotion_discount.setText(brands.get(0).getDiscount());
-                item_home_promotion_desc.setText(brands.get(0).getTitle());
-            }
-
-            if (flag) {
-                flag = false;
-                // 倒计时
-                new CountDownTimer(brands.get(0).getTime() * 1000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        long lsatTime = brands.get(0).getTime() - System.currentTimeMillis()/1000;
-                        item_home_promotion_tag_time.setText("剩余时间:" + DataUtils.formatTime(lsatTime));
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        // 显示过期提示图片
-                        item_goods_empty.setVisibility(View.VISIBLE);
-                        flag = true;
-                    }
-                }.start();
-            }
-
-
-            // 第二个
-            List<HomeBean.DataEntity.SpecialsEntity> specials = homeBean.getData().getSpecials();
-            x.image().bind(btn_lover, specials.get(0).getImg().getImg_url());
-            x.image().bind(btn_movie, specials.get(1).getImg().getImg_url());
-            x.image().bind(btn_tea, specials.get(2).getImg().getImg_url());
-            x.image().bind(btn_beer, specials.get(3).getImg().getImg_url());
-            home_item_title_left2.setText(homeBean.getData().getNew_title_big());
-            home_item_title_right2.setText(homeBean.getData().getNew_title_sml());
-
             container.addView(imageView);
             return imageView;
         }
@@ -268,4 +201,5 @@ public class CarouselUtilsHome {
             container.removeView((View) object);
         }
     }
+
 }

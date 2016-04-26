@@ -108,20 +108,15 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
                         //如果未登录
                         if (!LoginUtils.getInstance().isLogin()) {
                             Toast.makeText(SnackInfomationActivity.this, "请登录", Toast.LENGTH_SHORT).show();
                             return;
                         }
-
                         if (!isCollect) {
-
                             //收藏
                             collect();
-
                         } else {
-
                             //取消收藏
                             cancellCollect();
                         }

@@ -178,6 +178,7 @@ public class SubjectListAdapter extends BaseAdapter {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             Intent intent = new Intent(activity, SubjectTopActivity.class);
+
             intent.putExtra("topUrl", itemsBeens.get(position).getAction().getInfo());
 
 

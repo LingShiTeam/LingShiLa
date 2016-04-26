@@ -92,7 +92,9 @@ public class SplashActivity extends Activity {
         set.addAnimation(aa);
         set.addAnimation(sa);
         // 启动动画
-        rl_splash.startAnimation(set);
+        if(rl_splash != null) {
+            rl_splash.startAnimation(set);
+        }
     }
 
     /**

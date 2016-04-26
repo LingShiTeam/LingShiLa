@@ -29,6 +29,22 @@ public class Url {
     /**
      * 专题详情页面 顶部top 点击后的数据地址
      */
-    public static final String SUBJECT_TOP_DATA = BASE_URL + "/?cid=109&uid=0&tms=20160420005812&sig=167038ac68b0ad50&wssig=6cba698c1e140169&os_type=3&version=20&channel_name=wandoujia&srv=2407&pg_cur=1&pg_size=20&subject_";
+    public static final String SUBJECT_TOP_DATA = BASE_URL + "/?cid=109&uid=0&tms=20160420005812&sig=167038ac68b0ad50&wssig=6cba698c1e140169&os_type=3&version=20&channel_name=wandoujia&srv=2407&pg_cur=";
+    /**
+     * 专题详情页面 listview 商品详情的地址
+     */
+    public static final String SUBJECT_DETAILS = BASE_URL + "/?cid=109&uid=";
+    public static final String SUBJECT_DETAILS_END = "&tms=20160423015946&sig=0c93723eb210e544&wssig=56a5c360937774f6&os_type=3&version=20&channel_name=wandoujia&srv=2408&subject_id=";
+    /**
+     * 商品列表的商品详情页面
+     */
+    public static final String SUBJECT_DELICACY_DETAILS = BASE_URL + "/?cid=109&uid=0&tms=20160422075904&sig=db983a1c7248e8b9&wssig=85d2a8009f1972e6&os_type=3&version=20&channel_name=wandoujia&srv=2505&goods_id=";
+    /**
+     * 收藏按钮 的地址(包括的收藏状态)
+     */
+    public static final String SUBJECT_COLLECTOR_STATRT = BASE_URL + "/?cid=109&uid=";
+    public static final String SUBJECT_COLLECTOR_MIDDLE = "&tms=20160423034018&sig=fee60a16fb4deb75&wssig=5e853a63aabf465f&os_type=3&version=20&channel_name=wandoujia&srv=2805&fav_id=";
+    public static final String SUBJECT_COLLECTOR_END = "&type=1&opt=";
+
 
 }

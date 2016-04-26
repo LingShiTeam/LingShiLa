@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_back_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="7dp"
+        android:background="@drawable/btn_header_back"
+        android:padding="3dp" />
+
+    <TextView
+        android:id="@+id/tv_subject_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="7dp"
+        android:text="商品列表"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+
+    <ImageView
+        android:id="@+id/iv_cart"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/btn_cart_normal"
+        android:padding="5dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_share"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/btn_share2x"
+        android:padding="5dp"
+        android:visibility="gone"
+        />
+
+
+</RelativeLayout>
+

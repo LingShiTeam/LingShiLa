@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bigkoo.pickerview.OptionsPickerView;
+import com.bigkoo.pickerview.CityPicker;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -16,18 +16,15 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import atguigu.com.lingshixiaomiao.R;
-import atguigu.com.lingshixiaomiao.application.MyApplication;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.AddressBean;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.ChangeAddressBean;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
-import atguigu.com.lingshixiaomiao.pager.mine.bean.ProvinceBean;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
@@ -70,8 +67,7 @@ public class EditAddressPager extends ContentBasePager implements View.OnClickLi
         super(mActivity);
         this.bundle = bundle;
         loadData(isEdit);
-        //loadCitiesData();
-        setPicker();
+        //setPicker(et_mine_edit_address_address, mActivity);
     }
 
     private void loadData(boolean isEdit) {
@@ -290,54 +286,15 @@ public class EditAddressPager extends ContentBasePager implements View.OnClickLi
                 break;
             case R.id.ll_mine_address:
                 //点击弹出选项选择器
-                pvOptions.show();
+                CityPicker.set(mActivity, new CityPicker.City() {
+                    @Override
+                    public void getData(String province, String city, String country) {
+                        et_mine_edit_address_address.setText(province + " " + city + " " + country);
+                    }
+                });
+
                 break;
         }
-    }
-
-
-    OptionsPickerView pvOptions;
-
-    public ArrayList<ProvinceBean> options1Items;
-    public ArrayList<ArrayList<String>> options2Items;
-    public ArrayList<ArrayList<ArrayList<String>>> options3Items;
-
-    private void setPicker() {
-
-        //选项选择器
-        pvOptions = new OptionsPickerView(mActivity);
-
-        MyApplication application = (MyApplication) mActivity.getApplication();
-        application.loadCities();
-        if (application.isLoadCities) {
-            options1Items = application.options1Items;
-            options2Items = application.options2Items;
-            options3Items = application.options3Items;
-        } else {
-            return;
-        }
-
-        //三级联动效果
-        pvOptions.setPicker(options1Items, options2Items, options3Items, true);
-        //设置选择的三级单位
-//        pwOptions.setLabels("省", "市", "区");
-        pvOptions.setTitle("选择城市");
-        pvOptions.setCyclic(false, true, true);
-        //设置默认选中的三级项目
-        //监听确定选择按钮
-        pvOptions.setSelectOptions(0, 0, 0);
-        pvOptions.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
-
-            @Override
-            public void onOptionsSelect(int options1, int option2, int options3) {
-                //返回的分别是三个级别的选中位置
-                EditAddressPager.this.province = options1Items.get(options1).getPickerViewText();
-                city = options2Items.get(options1).get(option2);
-                proper = options3Items.get(options1).get(option2).get(options3);
-                et_mine_edit_address_address.setText(EditAddressPager.this.province + " " + city + " " + proper);
-            }
-        });
-
     }
 
 }
