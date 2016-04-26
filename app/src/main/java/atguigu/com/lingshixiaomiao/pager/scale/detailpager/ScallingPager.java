@@ -62,6 +62,7 @@ public class ScallingPager extends ScaleBasePager {
     //判断是否为加载更多
     private boolean isLoadMore;
 
+    //进入物品详情页面的intent
     private Intent intent;
 
     public ScallingPager(Activity activity) {

@@ -6,7 +6,6 @@ import android.content.Context;
 
 import com.umeng.socialize.PlatformConfig;
 
-import org.xmlpull.v1.XmlPullParser;
 import org.xutils.x;
 
 import atguigu.com.lingshixiaomiao.LogUtils;
