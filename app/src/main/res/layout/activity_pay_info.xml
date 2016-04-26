@@ -26,6 +26,7 @@
         android:gravity="center"
         android:text="立即支付"
         android:layout_margin="5dp"
+        android:layout_marginBottom="10dp"
         android:textColor="@color/c6"
         android:textSize="@dimen/s2"/>
 

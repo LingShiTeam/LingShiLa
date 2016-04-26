@@ -2,8 +2,10 @@ package atguigu.com.lingshixiaomiao.pager.mine.pager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,6 +17,7 @@ import java.util.List;
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.application.GlobalVariables;
+import atguigu.com.lingshixiaomiao.pager.home.activity.PayInfoActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.adapter.AddressAdapter;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
@@ -71,10 +74,16 @@ public class AddressPager extends ContentBasePager {
     public void initData() {
         super.initData();
         LoginBean loginBean = (LoginBean) LoginUtils.getInstance().getData();
-        String uid = loginBean.getData().getUid();
+        if(loginBean != null) {
+            String uid = loginBean.getData().getUid();
+            String url = Url.MANAGE_ADDRESS_URL[0] + uid + Url.MANAGE_ADDRESS_URL[1];
+            jsonUtils = new JsonUtils();
+            jsonUtils.loadData(url, AddressBean.class);
+        }
+       /* String uid = loginBean.getData().getUid();
         String url = Url.MANAGE_ADDRESS_URL[0] + uid + Url.MANAGE_ADDRESS_URL[1];
         jsonUtils = new JsonUtils();
-        jsonUtils.loadData(url, AddressBean.class);
+        jsonUtils.loadData(url, AddressBean.class);*/
     }
 
     @Override
@@ -163,6 +172,17 @@ public class AddressPager extends ContentBasePager {
         rv_address_manage.setLayoutManager(new LinearLayoutManager(mActivity));
         adapter = new AddressAdapter(mActivity, data);
         rv_address_manage.setAdapter(adapter);
+        adapter.setRecycleItemClickListener(new AddressAdapter.RecycleItemClickListener() {
+            @Override
+            public void OnClick(View view, int position) {
+                Intent intent = new Intent(mActivity, PayInfoActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("address", data.getItems().get(position));
+                intent.putExtras(bundle);
+                mActivity.setResult(Activity.RESULT_OK,intent);
+                mActivity.finish();
+            }
+        });
     }
 
     @Override
