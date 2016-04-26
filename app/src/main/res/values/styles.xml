@@ -56,24 +56,24 @@
     </style>
 
     <!--我的小喵 订单条个数-->
-   <!--
-    android:textColor="#fff"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="60dp"
-    android:background="@drawable/bg_home_number"
-    android:gravity="center"
-    android:text="1"
-    android:visibility="gone"-->
+    <!--
+     android:textColor="#fff"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_marginLeft="60dp"
+     android:background="@drawable/bg_home_number"
+     android:gravity="center"
+     android:text="1"
+     android:visibility="gone"-->
     <style name="orderStyle">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">10dp</item>
+        <item name="android:layout_height">10dp</item>
         <item name="android:textColor">#fff</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">60dp</item>
         <item name="android:background">@drawable/bg_home_number</item>
         <item name="android:gravity">center</item>
         <item name="android:text">1</item>
-        <item name="android:visibility">gone</item>
+        <item name="android:textSize">6sp</item>
     </style>
     <!--我的小喵 订单条个数-->
 
@@ -88,6 +88,7 @@
     <style name="AppBackTheme" parent="@android:style/Theme.Holo.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
     </style>
+
     <style name="AppBackTheme2" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
@@ -137,7 +138,7 @@
     </style>
 
 
-   <!--线性 视图-->
+    <!--线性 视图-->
     <style name="LineViewStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>

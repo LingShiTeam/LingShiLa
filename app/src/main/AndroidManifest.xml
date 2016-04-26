@@ -32,7 +32,6 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <!-- 扫描二维码 -->
 
-
     <!-- 零食小喵本身要求的权限 -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -72,6 +71,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+
 
     <!-- 极光推送的权限 -->
     <permission
@@ -157,9 +157,8 @@
 
         <activity android:name=".pager.home.activity.LeftMenuItemActivity"
             android:theme="@style/Theme.PageIndicatorDefaults"/>
-        <activity
-            android:name=".pager.subject.ui.SubjectTopActivity"
-            android:theme="@style/AppBackTheme"/>
+        <activity android:name=".pager.subject.ui.SubjectTopActivity"
+            android:theme="@style/AppBackTheme"  />
 
         <!-- 极光推送 -->
         <!-- Rich push 核心功能 since 2.0.6 -->
@@ -391,15 +390,14 @@
         <activity android:name=".pager.mine.activity.BindPhoneNumActivity">
         </activity>
 
-        <!-- subject activity -->
-        <activity
-            android:name=".pager.subject.ui.DelicacyDetailsActivity"
-            android:theme="@style/Theme.PageIndicatorDefaults"/>
-        <activity
-            android:name=".pager.subject.ui.SubjectDetailsActivity"
-            android:theme="@style/Theme.PageIndicatorDefaults"/>
+        <!-- subject activity-->
+        <activity android:name=".pager.subject.ui.DelicacyDetailsActivity"
+            android:theme="@style/AppBackTheme" />
+        <activity android:name=".pager.subject.ui.SubjectDetailsActivity"
+            android:theme="@style/AppBackTheme" />
+        <!-- subject activity-->
 
-        <!-- subject activity -->
+
 
         <activity android:name=".pager.home.activity.PayInfoActivity">
         </activity>

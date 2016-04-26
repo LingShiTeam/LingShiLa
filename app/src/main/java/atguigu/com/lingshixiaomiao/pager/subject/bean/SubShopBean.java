@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by CheungJhonny on 2016/4/22.
  *
- * 顶部shop 的列表shop的实体类
+ * 顶部shop 的列表shop单个的实体类
  */
 public class SubShopBean {
 

@@ -1,17 +1,40 @@
 package atguigu.com.lingshixiaomiao.pager.subject.ui;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
+import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
+import atguigu.com.lingshixiaomiao.pager.subject.bean.CollectStatusBean;
+import atguigu.com.lingshixiaomiao.pager.subject.bean.SubDetailsBean;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.Url;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
@@ -31,14 +54,36 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
     private AnimationDrawable loadAnim;
 
     /**
-     * 专题详情请求的地址
+     * 专题详情请数据地址
      */
     private String subDetailsUrl;
+
     /**
      * 需要请求数据的id
      */
     private String id;
+    /**
+     * 专题详情页面的尸体类
+     */
+    private SubDetailsBean subDetailsBean;
 
+    /**
+     * 确定是否收藏
+     */
+    private boolean isCollect = false;
+    /**
+     * 登录账号的实体类
+     */
+    private LoginBean loginBean;
+    /**
+     * 登录账号的id
+     */
+    private String uid;
+
+
+    /**
+     * 商品是否被收藏
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +92,7 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
         initView();
         //获取数据
         initData();
+
         //设置监听
         setListener();
     }
@@ -56,8 +102,7 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
      */
     private void setListener() {
         iv_back_sub.setOnClickListener(new MyOnClickListener());
-
-        wv_sub_details.setWebViewClient(new WebViewClient(){
+        wv_sub_details.setWebViewClient(new WebViewClient() {
 
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -84,46 +129,269 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
      * 获取数据
      */
     private void initData() {
-        tv_subject_title.setText("专题详情");
-        id = getIntent().getStringExtra("detailsUrl");
-        loadAnim = (AnimationDrawable) subject_loading.getBackground();
-        if(loadAnim != null && !loadAnim.isRunning()) {
-            loadAnim.start();
+        if (LoginUtils.getInstance().isLogin()) {//当判断为登录状态时候 需要根据uid 来请求数据
+            loginBean = (LoginBean) LoginUtils.getInstance().getData();
+            uid = loginBean.getData().getUid();
+            subDetailsUrl = Url.SUBJECT_DETAILS + uid + Url.SUBJECT_DETAILS_END + id;
+        } else {//当前为未登录状态时 不使用uid 登录
+            subDetailsUrl = Url.SUBJECT_DETAILS + 0 + Url.SUBJECT_DETAILS_END + id;
+        }
+        //联网请求数据
+        new JsonUtils().loadData(subDetailsUrl, SubDetailsBean.class);
+        Log.d("TAG", "sub 收藏的数据走这里");
+
+    }
+
+    @Subscribe
+    public void onEventMainThread(SubDetailsBean subDetailsBean) {
+        this.subDetailsBean = subDetailsBean;
+        // Log.d("TAG", "subject 的单个商品的尸体类 ");
+        getWebDataFromNet();
+    }
+
+//
+
+    /**
+     * 联网获取webview 中的数据
+     */
+    @SuppressLint("JavascriptInterface")
+    private void getWebDataFromNet() {
+        Log.d("TAG", subDetailsBean.getData().getTitle());
+
+        if (subDetailsBean == null) {
+            return;
+        }
+        wv_sub_details.loadUrl(subDetailsBean.getData().getWeb_url());
+        int collect_status = subDetailsBean.getData().getCollect_status();
+        Log.d("TAG", "collect_status:" + collect_status);
+
+    }
+
+
+    /**
+     * 获取js调用java的接口对象
+     *
+     * @return
+     */
+    private Object getHtmlObject() {
+
+        Object insertObj = new Object() {
+            /**
+             * 收藏
+             */
+            @JavascriptInterface
+            public void clickCollect() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //如果未登录
+                        if (!LoginUtils.getInstance().isLogin()) {
+                            Toast.makeText(SubjectDetailsActivity.this, "请登录哦", Toast.LENGTH_SHORT).show();
+                            //进入登录的选择界面
+                            showisLogin();
+                            return;
+                        }
+                        //获取登录状态
+                        int collect_status = subDetailsBean.getData().getCollect_status();
+                        //联网传递数据
+                        getDataCollectFormNet(collect_status);
+                    }
+                });
+            }
+        };
+
+
+        return insertObj;
+    }
+
+    /**
+     * 是否登录的自定义对话框
+     */
+    private void showisLogin() {
+        int width = getWindowManager().getDefaultDisplay().getWidth();
+        int height = getWindowManager().getDefaultDisplay().getHeight();
+
+        Log.d("SubjectDetailsActivity", "width" + width + "height" + height);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        LinearLayout loginLayout = (LinearLayout) inflater.inflate(R.layout.dialog_login, null);
+
+        final Dialog loginDialog = new AlertDialog.Builder(SubjectDetailsActivity.this).create();
+        loginDialog.show();
+        loginDialog.getWindow().setContentView(loginLayout);
+        loginDialog.getWindow().setLayout((int) (width * 0.7), (int) (height * 0.20));
+
+        //取消按钮
+        Button buttonCacel = (Button) loginLayout.findViewById(R.id.dialog_login_cacel);
+        buttonCacel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginDialog.dismiss();
+            }
+        });
+
+        Button buttonLogin = (Button) loginLayout.findViewById(R.id.dialog_login_go);
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //dialog 消失
+                loginDialog.dismiss();
+                //启动登录的界面 并且携带结果的回调数据
+                Intent intent = new Intent(SubjectDetailsActivity.this, MineContentActivity.class);
+                intent.putExtra("pager", Constants.LOGIN_PAGER);
+                startActivityForResult(intent, 1);
+            }
+        });
+    }
+
+    /**
+     * 联网获取请求的数据
+     *
+     * @param collect_status 商品的收藏状态
+     */
+    private void getDataCollectFormNet(final int collect_status) {
+        String collStaUrl = null;
+        if (0 == collect_status) {//没有收藏 可以收藏
+            collStaUrl = Url.SUBJECT_COLLECTOR_STATRT + uid + Url.SUBJECT_COLLECTOR_MIDDLE + id + Url.SUBJECT_COLLECTOR_END + 0;
+            Log.d("TAG", "登录后的id " + uid);
+
+        } else {//已经收藏 可以取消收藏
+            collStaUrl = Url.SUBJECT_COLLECTOR_STATRT + uid + Url.SUBJECT_COLLECTOR_MIDDLE + id + Url.SUBJECT_COLLECTOR_END + 1;
+            Log.d("TAG", "登录后的id " + uid);
+
         }
 
-        subDetailsUrl = Url.SUBJECT_DETAILS + id + "&cid=10002&uid=0&tms=20150721190147&sig=8c35f5a024148111&wssig=308efe4382a088e0&os_type=3&version=12";
-        Log.d("TAG", "webView 的地址啊" + subDetailsUrl);
-        Log.d( "TAG","webView 的id " + id);
-        //webView 加载数据
-        wv_sub_details.loadUrl(subDetailsUrl);
-        //获取设置模式
-        WebSettings webSettings = wv_sub_details.getSettings();
-        webSettings.setJavaScriptEnabled(true);//调用js
-        //webSettings.setBuiltInZoomControls(true);//当前页面是可以缩放的时候
-       // webSettings.setUseWideViewPort(true);//当前页面乐意加载的时候 如果可以缩放页面,可以双击进行缩放
+
+        RequestParams params = new RequestParams(collStaUrl);
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.d("TAG", "sub 收藏成功后" + result);
+                processCollectData(result, collect_status);
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    /**
+     * 解析收藏的时候请求的数据
+     *
+     * @param json
+     * @param collect_status 收藏的状态
+     */
+    private void processCollectData(String json, int collect_status) {
+
+        if (collect_status == 0) { //可以收藏
+            CollectStatusBean collectStatusBean = new Gson().fromJson(json, CollectStatusBean.class);
+            if ("1000".equals(collectStatusBean.getRs_code())) {
+                wv_sub_details.loadUrl("javascript: changeCollect('true')");
+                subDetailsBean.getData().setHotindex(subDetailsBean.getData().getHotindex() + 1);
+                wv_sub_details.loadUrl("javascript: changeCollectNum('" + subDetailsBean.getData().getHotindex() + "')");
+                subDetailsBean.getData().setCollect_status(1);
+                Toast.makeText(this, "好吃的到碗里了哦", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            wv_sub_details.loadUrl("javascript: changeCollect('false')");
+            subDetailsBean.getData().setHotindex(subDetailsBean.getData().getHotindex() - 1);
+            wv_sub_details.loadUrl("javascript: changeCollectNum('" + subDetailsBean.getData().getHotindex() + "')");
+            subDetailsBean.getData().setCollect_status(0);
+            Toast.makeText(this, "取消收藏", Toast.LENGTH_SHORT).show();
+        }
 
 
     }
+
 
     /**
      * 初始化布局文件
      */
     private void initView() {
+
+
         iv_back_sub = (ImageView) findViewById(R.id.iv_back_sub);
         tv_subject_title = (TextView) findViewById(R.id.tv_subject_title);
         iv_cart = (ImageView) findViewById(R.id.iv_cart);
 
         wv_sub_details = (WebView) findViewById(R.id.wv_sub_details);
         ll_subject_loading = (LinearLayout) findViewById(R.id.ll_subject_loading);
-        subject_loading = (ImageView)findViewById(R.id.subject_loading);
+        subject_loading = (ImageView) findViewById(R.id.subject_loading);
+        tv_subject_title.setText("专题详情");
+
+        //开启加载页面的动画
+        loadAnim = (AnimationDrawable) subject_loading.getBackground();
+        if (loadAnim != null && !loadAnim.isRunning()) {
+            loadAnim.start();
+        }
+
+        //注册Eventbus;
+        registerEventBus();
+        //获取设置模式
+        WebSettings webSettings = wv_sub_details.getSettings();
+        //设置编码
+        webSettings.setDefaultTextEncodingName("utf-8");
+        webSettings.setJavaScriptEnabled(true);//调用js 实现
+        /**
+         *添加一个js交互的接口 方便html 布局文件中javascript代码可以与后台java进行直接交互访问
+         * ""为该对象起别名 对应html中的 contact
+         */
+        wv_sub_details.addJavascriptInterface(getHtmlObject(), "bridge");
+        id = getIntent().getStringExtra("detailsUrl");
+
+    }
+
+
+    /**
+     * 注册EventBus
+     */
+    public void registerEventBus() {
+        if (!EventBus.getDefault().isRegistered(this)) {//判断是否注册
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    /**
+     * 反注册 EventBus
+     */
+    public void unRegisterEventBus() {
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        wv_sub_details.clearHistory();
+        unRegisterEventBus();
     }
 
-
+    /**
+     * 登录界面 正常登录时 传回到这里的一个结果 来判断是否成功
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("TAG", "111111111111111111");
+       // new JsonUtils().loadData(subDetailsUrl, SubDetailsBean.class);
+        initData();
+    }
 }

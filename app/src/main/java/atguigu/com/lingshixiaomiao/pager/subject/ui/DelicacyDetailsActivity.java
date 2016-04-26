@@ -36,6 +36,7 @@ public class DelicacyDetailsActivity extends SwipeBackActivity {
     private TextView tv_cart_nums;
     private TextView btn_buy_cart;
     private LinearLayout ll_cart;
+    private ImageView iv_share;
 
     /**
      *  点击的首页的地址
@@ -87,6 +88,10 @@ public class DelicacyDetailsActivity extends SwipeBackActivity {
      */
     private void initData() {
         tv_subject_title.setText("美味详情");
+        iv_cart.setVisibility(View.GONE);
+       iv_share.setVisibility(View.VISIBLE);
+
+
         //获取请求数据的地址
         String id = getIntent().getStringExtra("DelicacyDetails");
         shopDeatilUrl = Url.SUBJECT_DELICACY_DETAILS + id;
@@ -106,12 +111,11 @@ public class DelicacyDetailsActivity extends SwipeBackActivity {
             return;
         }
         //加载数据
-        wv_Delicacy.loadUrl(subShopBean.getData().getUrl());
         Log.d("TAG", "html shop 的地址 " + subShopBean.getData().getUrl());
         WebSettings webSettings = wv_Delicacy.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setBuiltInZoomControls(true);
-        webSettings.setUseWideViewPort(true);
+
+        wv_Delicacy.loadUrl(subShopBean.getData().getUrl());
     }
 
     /**
@@ -141,7 +145,7 @@ public class DelicacyDetailsActivity extends SwipeBackActivity {
                 LogUtils.loge("TAG", "shop details  onSuccess" + result);
 
                 if (result != null) {
-                    processJaon(result);
+                    processJson(result);
                     Log.d("TAG","shop 详情 " +  result);
                 }
             }
@@ -170,7 +174,7 @@ public class DelicacyDetailsActivity extends SwipeBackActivity {
      * 解析数据
      * @param json
      */
-    private void processJaon(String json) {
+    private void processJson(String json) {
         String myJson = json.replaceFirst("kinds", "kind");
         subShopBean =  new Gson().fromJson(myJson, SubShopBean.class);
         setWebViewDataFormNet();
@@ -192,5 +196,6 @@ public class DelicacyDetailsActivity extends SwipeBackActivity {
         tv_cart_nums = (TextView)findViewById(R.id.tv_cart_nums);
         btn_buy_cart = (TextView)findViewById(R.id.btn_buy_cart);
         ll_cart = (LinearLayout)findViewById(R.id.ll_cart);
+        iv_share = (ImageView)findViewById(R.id.iv_share);
     }
 }

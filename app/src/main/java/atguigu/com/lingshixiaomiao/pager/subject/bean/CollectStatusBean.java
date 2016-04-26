@@ -1,14 +1,17 @@
-package atguigu.com.lingshixiaomiao.pager.subject.adapter;
+package atguigu.com.lingshixiaomiao.pager.subject.bean;
 
 /**
- * Created by CheungJhonny on 2016/4/21.
- *  没有数据的尸体类
+ * Created by CheungJhonny on 2016/4/23.
+ *
+ * 请求数据返回状态的实体类
  */
-public class NoDataBean {
+public class CollectStatusBean {
+
     /**
-     * rs_code : 1004
-     * rs_msg : 没有更多了。
+     * rs_code : 2019
+     * rs_msg : 已收藏
      */
+
     private String rs_code;
     private String rs_msg;
 
