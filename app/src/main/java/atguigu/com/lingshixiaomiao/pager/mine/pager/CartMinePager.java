@@ -26,6 +26,7 @@ import java.util.List;
 
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.application.GlobalVariables;
 import atguigu.com.lingshixiaomiao.pager.home.activity.PayInfoActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.adapter.CartMineAdapter;
 import atguigu.com.lingshixiaomiao.pager.mine.base.ContentBasePager;
@@ -59,6 +60,7 @@ public class CartMinePager extends ContentBasePager implements View.OnClickListe
     private List<CartBean.DataEntity.ItemssEntity.ItemsEntity> items;
     private List<CartBean.DataEntity.ItemssEntity.ItemsEntity> buyItems;
     private SwipeRefreshLayout srl_mine_cart_refresh;
+    private CartBean cartBean;
 
 
     /**
@@ -150,6 +152,8 @@ public class CartMinePager extends ContentBasePager implements View.OnClickListe
     private void parseJson(String json, boolean canBuy) {
         if (canBuy) {
             CartBean cartBean = new Gson().fromJson(json, CartBean.class);
+            this.cartBean = cartBean;
+            GlobalVariables.cartBean = cartBean;
             if (Constants.SUCCESS.equals(cartBean.getRs_code())) {
                 itemss = cartBean.getData().getItemss();
                 items = itemss.get(0).getItems();
@@ -256,7 +260,10 @@ public class CartMinePager extends ContentBasePager implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_mine_cart2_jiesuan:
-                List<CartBean.DataEntity.ItemssEntity.ItemsEntity> items = this.itemss.get(0).getItems();
+                if(itemss != null) {
+
+                }
+
                 if (isComplete) {
                     Toast.makeText(mActivity, "开始删除", Toast.LENGTH_SHORT).show();
                     delete(items);
@@ -401,10 +408,10 @@ public class CartMinePager extends ContentBasePager implements View.OnClickListe
      */
     private void startBuy(List<CartBean.DataEntity.ItemssEntity.ItemsEntity> buyItems, Context context) {
         Intent intent = new Intent(mActivity, PayInfoActivity.class);
-       /* Bundle bundle = new Bundle();
-        bundle.putSerializable("shopping_info", buyItems);
+        /*Bundle bundle = new Bundle();
+        bundle.putSerializable("shoppingInfo", cartBean);
         intent.putExtras(bundle);*/
-        //mActivity.startActivity(intent);
+        mActivity.startActivity(intent);
     }
 
 }

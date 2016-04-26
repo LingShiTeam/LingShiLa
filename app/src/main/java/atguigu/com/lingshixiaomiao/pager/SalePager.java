@@ -1,15 +1,22 @@
 package atguigu.com.lingshixiaomiao.pager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.viewpagerindicator.TabPageIndicator;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +24,9 @@ import java.util.List;
 import atguigu.com.lingshixiaomiao.MainActivity;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
+import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.CartUtils;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.scale.base.ScaleBasePager;
 import atguigu.com.lingshixiaomiao.pager.scale.bean.ScallingBean;
 import atguigu.com.lingshixiaomiao.pager.scale.detailpager.ScaleBeginPager;
@@ -31,14 +41,18 @@ public class SalePager extends BasePager {
 
     private TabPageIndicator indicator_scale;
     private ViewPager vp_scale;
-    private ImageView iv_scale_back;
-    private ImageView iv_scale_shoppingcar;
 
     //vp页面的集合
     private List<ScaleBasePager> detailPagers;
 
     //特卖中lv数据集合
     private List<ScallingBean.DataEntity.ItemsEntity> itemsEntities;
+    private ImageButton ib_left_menu;
+    private ImageView iv_search_back;
+    private EditText et_search;
+    private TextView tv_shopname;
+    private RelativeLayout rl_cart;
+    private TextView tv_shopcount;
 
 
     public SalePager(Activity mActivity) {
@@ -52,11 +66,23 @@ public class SalePager extends BasePager {
 
         indicator_scale = (TabPageIndicator) rootView.findViewById(R.id.indicator_scale);
         vp_scale = (ViewPager) rootView.findViewById(R.id.vp_scale);
-        iv_scale_back = (ImageView) rootView.findViewById(R.id.iv_scale_back);
-        iv_scale_shoppingcar = (ImageView) rootView.findViewById(R.id.iv_scale_shoppingcar);
 
-        iv_scale_back.setOnClickListener(new MyOnclickListener());
-        iv_scale_shoppingcar.setOnClickListener(new MyOnclickListener());
+        ib_left_menu = (ImageButton) rootView.findViewById(R.id.ib_left_menu);
+        iv_search_back = (ImageView) rootView.findViewById(R.id.iv_search_back);
+        et_search = (EditText) rootView.findViewById(R.id.et_search);
+        tv_shopname = (TextView) rootView.findViewById(R.id.tv_shopname);
+        rl_cart = (RelativeLayout) rootView.findViewById(R.id.rl_cart);
+        tv_shopcount = (TextView) rootView.findViewById(R.id.tv_shopcount);
+
+        ib_left_menu.setVisibility(View.GONE);
+        iv_search_back.setVisibility(View.VISIBLE);
+        et_search.setVisibility(View.GONE);
+        tv_shopname.setVisibility(View.VISIBLE);
+
+        tv_shopname.setText("特卖");
+
+        iv_search_back.setOnClickListener(new MyOnclickListener());
+        rl_cart.setOnClickListener(new MyOnclickListener());
 
         return rootView;
     }
@@ -157,22 +183,47 @@ public class SalePager extends BasePager {
 
             switch (v.getId()) {
 
-                case R.id.iv_scale_back:
+                case R.id.iv_search_back:
 
                     //进入首页
                     MainActivity mainActivity = (MainActivity) mActivity;
-//                    mainActivity.setPosition(0);
-//                    mainActivity.setCurrentPage();
                     RadioGroup rg_main = (RadioGroup) mainActivity.findViewById(R.id.rg_main);
                     rg_main.check(R.id.rb_main_home);
                     break;
 
-                case R.id.iv_scale_shoppingcar:
+                case R.id.rl_cart:
 
                     //进入购物车页面
-                    Toast.makeText(mActivity, "进入购物车页面", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mActivity, MineContentActivity.class);
+                    intent.putExtra("pager", Constants.MINE_CART_PAGER);
+                    mActivity.startActivity(intent);
                     break;
             }
         }
+    }
+
+    /**
+     * 获取购物车商品数量
+     *
+     * @param cartUtils
+     */
+    @Subscribe
+    public void onEventMainThread(CartUtils cartUtils) {
+        int goodsNum = cartUtils.getGoodsNum();
+        if (goodsNum > 0) {
+            tv_shopcount.setVisibility(View.VISIBLE);
+            tv_shopcount.setText(goodsNum + "");
+        } else {
+            tv_shopcount.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * 注册EventBus
+     */
+    @Override
+    public void registerEventBus() {
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
     }
 }

@@ -22,11 +22,11 @@ import com.alipay.sdk.app.PayTask;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -39,6 +39,11 @@ import atguigu.com.lingshixiaomiao.pager.alpay.SignUtils;
 import atguigu.com.lingshixiaomiao.pager.home.bean.AlpayInfoBean;
 import atguigu.com.lingshixiaomiao.pager.home.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.Url;
+import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
+import atguigu.com.lingshixiaomiao.pager.mine.bean.AddressBean;
+import atguigu.com.lingshixiaomiao.pager.mine.bean.CartBean;
+import atguigu.com.lingshixiaomiao.pager.mine.bean.DefaultAddressBean;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 
 /**
  * 支付信息界面
@@ -69,6 +74,7 @@ public class PayInfoActivity extends Activity implements View.OnClickListener {
     private AlpayInfoBean alpayInfoBean;
     private String payInfo;
     private LinearLayout item_confirm_is_show_pay_detail;
+    private CartBean cartBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,14 +90,17 @@ public class PayInfoActivity extends Activity implements View.OnClickListener {
 
         registerEventBus();
         // 得到购物车中传递进来的items_id,items_items_id,总金额...
-        Bundle bundle = getIntent().getExtras();
-        Serializable shopping_info = bundle.getSerializable("shopping_info");
-        LogUtils.loge("TAG","shopping_info" + shopping_info.toString());
+        cartBean = GlobalVariables.cartBean;
+        if (cartBean != null) {
+            LogUtils.loge("TAG", "shopping_info" + cartBean.toString());
+            setData();
+        }
+
 
         // 模拟数据
         String uid = GlobalVariables.uid;
-        if(uid == null) {
-            Toast.makeText(this,"未登录,请先登录",Toast.LENGTH_SHORT).show();
+        if (uid == null) {
+            Toast.makeText(this, "未登录,请先登录", Toast.LENGTH_SHORT).show();
         } else {
             String payInfoUrl = Url.PAY_INFO_URL[0] + GlobalVariables.uid + Url.PAY_INFO_URL[1] + "4" + Url.PAY_INFO_URL[2] + "316914";
         }
@@ -159,8 +168,26 @@ public class PayInfoActivity extends Activity implements View.OnClickListener {
         item_order_choice_zfb.setOnClickListener(this);
         item_cost_detail.setOnClickListener(this);
         item_cost_detail_up.setOnClickListener(this);
-
+        orders_confirm_address_viewgroup.setOnClickListener(this);
         goods_pay.setOnClickListener(this);
+
+    }
+
+    // 更新订单信息
+    private void setData() {
+        DefaultAddressBean defaultAddress = GlobalVariables.defaultAddressBean;
+        if (defaultAddress != null) {
+            orders_confirm_no_select_address.setVisibility(View.GONE);
+            orders_confirm_name.setText(defaultAddress.getName());
+            orders_confirm_phone.setText(defaultAddress.getPhone());
+            orders_confirm_address.setText(defaultAddress.getFull_add());
+        }
+        List<CartBean.DataEntity.ItemssEntity> itemss = cartBean.getData().getItemss();
+        item_cost_goods.setText(itemss.get(0).getSum_price() + "");
+        item_cost_post.setText(itemss.get(0).getFreight() + "");
+        item_coupon_amount.setText("¥0");
+        item_cost_pay_all.setText(itemss.get(0).getSum_price() + itemss.get(0).getFreight() + "");
+
     }
 
     @Override
@@ -193,6 +220,25 @@ public class PayInfoActivity extends Activity implements View.OnClickListener {
                 item_cost_detail_up.setVisibility(View.GONE);
                 item_confirm_is_show_pay_detail.setVisibility(View.GONE);
                 break;
+            case R.id.orders_confirm_address_viewgroup:
+                Intent intent = new Intent(this, MineContentActivity.class);
+                intent.putExtra("pager", Constants.ADDRESS_PAGER);
+                startActivityForResult(intent, 1);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            AddressBean.DataEntity.ItemsEntity entity = (AddressBean.DataEntity.ItemsEntity) data.getExtras().getSerializable("address");
+            if (entity != null) {
+                orders_confirm_no_select_address.setVisibility(View.GONE);
+                orders_confirm_name.setText(entity.getName());
+                orders_confirm_phone.setText(entity.getPhone());
+                orders_confirm_address.setText(entity.getFull_add());
+            }
         }
     }
 
@@ -334,7 +380,7 @@ public class PayInfoActivity extends Activity implements View.OnClickListener {
         /**
          * 完整的符合支付宝参数规范的订单信息
          */
-        //final String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + getSignType();
+        final String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + getSignType();
 
         Runnable payRunnable = new Runnable() {
 
@@ -369,7 +415,6 @@ public class PayInfoActivity extends Activity implements View.OnClickListener {
 
     /**
      * 原生的H5（手机网页版支付切natvie支付） 【对应页面网页支付按钮】
-     *
      */
     public void h5Pay() {
         Intent intent = new Intent(this, H5PayDemoActivity.class);

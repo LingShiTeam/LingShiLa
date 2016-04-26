@@ -98,6 +98,7 @@
                 android:text="[美国滋滋脆]POPCORNERS干酪胡椒玉米片 142g" />
 
             <TextView
+                android:id="@+id/tv_car_item_kouwei"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -112,6 +113,7 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/btn_car_item_jian"
                     android:layout_width="35dp"
                     android:layout_height="30dp"
                     android:background="@null"
@@ -129,6 +131,7 @@
                     android:background="#33000000" />
 
                 <Button
+                    android:id="@+id/btn_car_item_shuliang"
                     android:layout_width="50dp"
                     android:layout_height="30dp"
                     android:background="@null"
@@ -144,6 +147,7 @@
                     android:background="#33000000" />
 
                 <Button
+                    android:id="@+id/btn_car_item_jia"
                     android:layout_width="35dp"
                     android:layout_height="30dp"
                     android:background="@null"
@@ -163,7 +167,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_"
+                android:id="@+id/tv_car_item_currentprice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
@@ -171,6 +175,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tv_car_item_preprice"
                 android:gravity="right"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

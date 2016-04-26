@@ -1,12 +1,13 @@
 package atguigu.com.lingshixiaomiao.pager.mine.bean;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by lanmang on 2016/4/13.
  * 地址类
  */
-public class AddressBean {
+public class AddressBean implements Serializable {
 
     @Override
     public String toString() {
@@ -56,7 +57,7 @@ public class AddressBean {
         this.rs_msg = rs_msg;
     }
 
-    public static class DataEntity {
+    public static class DataEntity implements Serializable {
 
         @Override
         public String toString() {
@@ -78,7 +79,7 @@ public class AddressBean {
          * type : 1
          */
 
-        private List<ItemsEntity> items;
+        private ArrayList<ItemsEntity> items;
 
         public int getCount() {
             return count;
@@ -88,15 +89,15 @@ public class AddressBean {
             this.count = count;
         }
 
-        public List<ItemsEntity> getItems() {
+        public ArrayList<ItemsEntity> getItems() {
             return items;
         }
 
-        public void setItems(List<ItemsEntity> items) {
+        public void setItems(ArrayList<ItemsEntity> items) {
             this.items = items;
         }
 
-        public static class ItemsEntity {
+        public static class ItemsEntity implements Serializable {
 
             @Override
             public String toString() {

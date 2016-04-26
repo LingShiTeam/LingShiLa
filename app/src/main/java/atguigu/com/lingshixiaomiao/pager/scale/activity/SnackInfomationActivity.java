@@ -21,7 +21,10 @@ import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.CartUtils;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
 import atguigu.com.lingshixiaomiao.pager.scale.utils.Url;
 import cn.sharesdk.framework.ShareSDK;
@@ -58,6 +61,7 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
     }
 
     private void initHTML() {
+
         //设置响应javascript控件
         wv_infomation.getSettings().setJavaScriptEnabled(true);
 
@@ -270,12 +274,22 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
     }
 
     private void initView() {
+
         wv_infomation = (WebView) findViewById(R.id.wv_infomation);
         iv_infomation_share = (ImageView) findViewById(R.id.iv_infomation_share);
         iv_back = (ImageView) findViewById(R.id.iv_back);
         head_right = (RelativeLayout) findViewById(R.id.head_right);
         home_car_number = (TextView) findViewById(R.id.home_car_number);
         goods_detail_addtocart = (TextView) findViewById(R.id.goods_detail_addtocart);
+
+        head_right.setOnClickListener(this);
+        if(CartUtils.getInstance().getGoodsNum() != 0) {
+            home_car_number.setVisibility(View.VISIBLE);
+            home_car_number.setText(CartUtils.getInstance().getGoodsNum() + "");
+        } else {
+            home_car_number.setVisibility(View.GONE);
+        }
+
     }
 
     private void showShare() {
@@ -302,7 +316,18 @@ public class SnackInfomationActivity extends Activity implements View.OnClickLis
             case R.id.iv_back:
                 finish();
                 break;
+            case R.id.head_right:
+                //进入购物车页面
+                Intent intent = new Intent(this, MineContentActivity.class);
+                intent.putExtra("pager", Constants.MINE_CART_PAGER);
+                startActivity(intent);
+                break;
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
