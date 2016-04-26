@@ -3,6 +3,7 @@ package atguigu.com.lingshixiaomiao.application;
 import com.umeng.socialize.UMShareAPI;
 
 import atguigu.com.lingshixiaomiao.MainActivity;
+import atguigu.com.lingshixiaomiao.pager.mine.bean.CartBean;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.DefaultAddressBean;
 
 /**
@@ -18,4 +19,6 @@ public class GlobalVariables {
     public static String uid;
     //默认地址
     public static DefaultAddressBean defaultAddressBean;
+    // 购物车订单信息
+    public static CartBean cartBean;
 }
