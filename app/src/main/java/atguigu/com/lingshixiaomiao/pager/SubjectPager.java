@@ -59,8 +59,8 @@ public class SubjectPager extends BasePager implements View.OnClickListener {
     @ViewInject(R.id.listview_subject)
     private PullToRefreshListView listView;
 
-    @ViewInject(R.id.iv_cart)
-    private ImageView iv_cart;
+    @ViewInject(R.id.iv_subject_tiptop)
+    private ImageView iv_subject_tiptop;
 
     /**
      * 加载中的页面显示的布局
@@ -127,13 +127,10 @@ public class SubjectPager extends BasePager implements View.OnClickListener {
     @Override
     public View initView() {
         View view = View.inflate(mActivity, R.layout.subject_pager, null);
-        //listView = (ListView) view.findViewById(R.id.listview_subject);
-        //iv_cart = (ImageView) view.findViewById(R.id.iv_cart);
         x.view().inject(this, view);
 
         ll_subject_loading = (LinearLayout) view.findViewById(R.id.ll_subject_loading);
         subject_loading = (ImageView) view.findViewById(R.id.subject_loading);
-        // loadingAnim = (AnimationDrawable) mActivity.getResources().getDrawable(R.drawable.ic_page_loading);
 
         registerEventBus();
 
@@ -160,6 +157,7 @@ public class SubjectPager extends BasePager implements View.OnClickListener {
 
         iv_search_back.setOnClickListener(this);
         rl_cart.setOnClickListener(this);
+        iv_subject_tiptop.setOnClickListener(this);
 
     }
 
@@ -225,6 +223,9 @@ public class SubjectPager extends BasePager implements View.OnClickListener {
                 Intent intent = new Intent(mActivity, MineContentActivity.class);
                 intent.putExtra("pager", Constants.MINE_CART_PAGER);
                 mActivity.startActivity(intent);
+                break;
+            case R.id.iv_subject_tiptop:
+                listView.getRefreshableView().setSelection(0);
                 break;
         }
     }
@@ -477,7 +478,7 @@ public class SubjectPager extends BasePager implements View.OnClickListener {
 
 
         if (listAdapter == null) {
-            listAdapter = new SubjectListAdapter(mActivity, itemsListbeen, itemsBeens);
+            listAdapter = new SubjectListAdapter(mActivity, itemsListbeen, itemsBeens,iv_subject_tiptop);
             Log.d("TAG", "SubjectPager" + "走到这里");
         }
         listView.setAdapter(listAdapter);

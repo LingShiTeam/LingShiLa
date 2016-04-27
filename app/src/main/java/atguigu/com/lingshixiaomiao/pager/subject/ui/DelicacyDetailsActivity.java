@@ -41,6 +41,9 @@ import atguigu.com.lingshixiaomiao.pager.subject.utils.Url;
 import de.greenrobot.dao.InternalUnitTestDaoAccess;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
+/**
+ *  美味详情页面
+ */
 public class DelicacyDetailsActivity extends SwipeBackActivity {
 
 
@@ -119,13 +122,16 @@ public class DelicacyDetailsActivity extends SwipeBackActivity {
            }
             LoginBean loginBean = (LoginBean) LoginUtils.getInstance().getData();
             String uid = loginBean.getData().getUid();
-            int good_id = subShopBean.getData().getId();
-            int kindsId = subShopBean.getData().getKinds().get(0).getId();
+
+            int good_id =  subShopBean.getData().getId();
+            int  kindsId = subShopBean.getData().getKindss().get(0).getId();
+            int subKinds = subShopBean.getData().getKindss().get(0).getKinds().get(0).getId();
             int num = 1;
 
-
             String cartUrl = Url.SUBJECT_ADDCART_START + uid + Url.SUBJECT_ADDCART_MIDDLE1 + good_id +
-                    Url.SUBJECT_ADDCART_MIDDLE2 + kindsId + num;
+                    Url.SUBJECT_ADDCART_MIDDLE2 + kindsId + Url.SUBJECT_ADDCART_MIDDLE3  +subKinds +
+                    Url.SUBJECT_ADDCART_END + num;
+            Log.d("TAG","--------------" +  cartUrl);
 
             //上传数据
             getAddCartDataFormNet(cartUrl);
@@ -162,6 +168,9 @@ public class DelicacyDetailsActivity extends SwipeBackActivity {
         });
     }
 
+    /**
+     * 进入购物车的界面
+     */
     class MyOnClickListener implements View.OnClickListener {
 
         @Override
@@ -170,8 +179,6 @@ public class DelicacyDetailsActivity extends SwipeBackActivity {
             Intent intent = new Intent(DelicacyDetailsActivity.this, MineContentActivity.class);
             intent.putExtra("pager", Constants.MINE_CART_PAGER);
             startActivity(intent);
-
-
         }
     }
 
@@ -191,15 +198,46 @@ public class DelicacyDetailsActivity extends SwipeBackActivity {
             shopDeatilUrl = Url.SUBJECT_DELICACY_DETAILS_START + 0 + Url.SUBJECT_DELICACY_DETAILS_END + shopId;
         }
 
-        new JsonUtils().loadData(shopDeatilUrl, SubShopBean.class);
+        getDataFromNet(shopDeatilUrl);
+
         Log.d("TAG", "shopDeatilUrl" + shopDeatilUrl);
     }
 
+    /**
+     * 解析
+     * @param shopDeatilUrl
+     */
+    private void getDataFromNet(String shopDeatilUrl) {
+        RequestParams params = new RequestParams(shopDeatilUrl);
 
-    @Subscribe
-    public void onEventMainThread(SubShopBean subShopBean) {
-        this.subShopBean = subShopBean;
-        //获取网页的数据
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                String result1 = result.replaceFirst("kinds", "kindss");
+                processData(result1);
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    private void processData(String json) {
+         subShopBean = new Gson().fromJson(json, SubShopBean.class);
+        //加载h5的页面
         setWebViewDataFormNet();
     }
 
@@ -244,8 +282,6 @@ public class DelicacyDetailsActivity extends SwipeBackActivity {
         iv_share.setVisibility(View.VISIBLE);
         //开始加载动画
         startAnimation();
-        //注册EventBus
-        registerEventBus();
 
         //获取设置模式
         WebSettings settings = wv_Delicacy.getSettings();
@@ -460,29 +496,11 @@ public class DelicacyDetailsActivity extends SwipeBackActivity {
     }
 
 
-    /**
-     * 注册EventBus
-     */
-    public void registerEventBus() {
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-    }
-
-    /**
-     * 反注册
-     */
-    public void unRegisterEventBus() {
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unRegisterEventBus();
     }
 
     @Override

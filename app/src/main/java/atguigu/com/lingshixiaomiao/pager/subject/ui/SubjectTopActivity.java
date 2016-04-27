@@ -21,6 +21,8 @@ import java.util.List;
 
 import atguigu.com.lingshixiaomiao.LogUtils;
 import atguigu.com.lingshixiaomiao.R;
+import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.subject.adapter.SubShopAdapter;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubTopShopBean;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.Url;
@@ -34,6 +36,7 @@ public class SubjectTopActivity extends SwipeBackActivity {
 
     private ImageView iv_back_sub;
     private ImageView iv_cart;
+    private ImageView iv_subject_tiptop;
 
     private PullToRefreshGridView gd_shop;
     /**
@@ -90,8 +93,30 @@ public class SubjectTopActivity extends SwipeBackActivity {
         //设置item的点击监听事件
         gd_shop.setOnItemClickListener(new MyOnItemClickListener());
 
+        //设置购物车的监听
+        iv_cart.setOnClickListener(new MyCartOnClickListener());
+
+        iv_subject_tiptop.setOnClickListener(new MyComeTopOnClickListener());
     }
 
+    class MyComeTopOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            gd_shop.getRefreshableView().setSelection(0);
+        }
+    }
+    class MyCartOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            //进入购物车页面
+            Intent intent = new Intent(SubjectTopActivity.this, MineContentActivity.class);
+            intent.putExtra("pager", Constants.MINE_CART_PAGER);
+            startActivity(intent);
+
+        }
+    }
     /**
      * item的点击监听事件
      */
@@ -256,7 +281,7 @@ public class SubjectTopActivity extends SwipeBackActivity {
 
             //适配器
             if (adapter == null) {
-                adapter = new SubShopAdapter(this, shopBean,shopItems);
+                adapter = new SubShopAdapter(this, shopBean,shopItems,iv_subject_tiptop);
             }
             gd_shop.setAdapter(adapter);
             //加载数据完成
@@ -283,7 +308,7 @@ public class SubjectTopActivity extends SwipeBackActivity {
 
         iv_back_sub = (ImageView) findViewById(R.id.iv_back_sub);
         iv_cart = (ImageView) findViewById(R.id.iv_cart);
-
+        iv_subject_tiptop = (ImageView) findViewById(R.id.iv_subject_tiptop);
         gd_shop = (PullToRefreshGridView) findViewById(R.id.gd_shop);
         //设置GridView的刷新状态
         initRefreshGridView();
@@ -294,5 +319,6 @@ public class SubjectTopActivity extends SwipeBackActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        finish();
     }
 }

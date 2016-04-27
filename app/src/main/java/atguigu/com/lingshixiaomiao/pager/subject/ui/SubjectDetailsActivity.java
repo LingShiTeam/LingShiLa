@@ -458,7 +458,7 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
         wv_sub_details = (WebView) findViewById(R.id.wv_sub_details);
         ll_subject_loading = (LinearLayout) findViewById(R.id.ll_subject_loading);
         subject_loading = (ImageView) findViewById(R.id.subject_loading);
-        tv_subject_title.setText("专题详情");
+
 
         //开启加载页面的动画
         loadAnim = (AnimationDrawable) subject_loading.getBackground();

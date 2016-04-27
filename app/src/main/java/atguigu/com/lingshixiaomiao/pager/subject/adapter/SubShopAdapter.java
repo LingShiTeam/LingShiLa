@@ -26,11 +26,14 @@ public class SubShopAdapter extends BaseAdapter {
     private final Context context;
     private List<SubTopShopBean.DataBean.ItemsBean> shopItems;
     private ImageOptions imageOptions;
+    
+    private ImageView iv_subject_tiptop;
 
-    public SubShopAdapter(Context context, SubTopShopBean shopBean, List<SubTopShopBean.DataBean.ItemsBean> shopItems) {
+    public SubShopAdapter(Context context, SubTopShopBean shopBean, List<SubTopShopBean.DataBean.ItemsBean> shopItems, ImageView iv_subject_tiptop) {
         this.context = context;
         this.shopBean = shopBean;
         this.shopItems = shopItems;
+        this.iv_subject_tiptop = iv_subject_tiptop;
         imageOptions = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)//设置等比例缩小到充满长宽居中显示 或愿样显示
                 .setLoadingDrawableId(R.drawable.default_home_banner_640_270)
@@ -78,6 +81,12 @@ public class SubShopAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
+
+        if (position >= 10) {
+            iv_subject_tiptop.setVisibility(View.VISIBLE);
+        } else {
+            iv_subject_tiptop.setVisibility(View.GONE);
+        }
 
         //装载数据
         holder.tv_shop_name.setText(shopItems.get(position).getTitle());

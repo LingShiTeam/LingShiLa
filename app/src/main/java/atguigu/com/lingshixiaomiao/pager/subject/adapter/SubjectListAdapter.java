@@ -44,7 +44,7 @@ public class SubjectListAdapter extends BaseAdapter {
      */
     private final List<SubjectTopBean.DataBean.ItemsBean> itemsBeens;
 
-
+    private final ImageView iv_subject_tiptop;
 
     //GridView
     private SubjectTopAdapter subjectTopAdapter;
@@ -67,11 +67,12 @@ public class SubjectListAdapter extends BaseAdapter {
 
 
     public SubjectListAdapter(Activity activity, List<SubjectListBean.DataBean.ItemsBean> listBeans,
-                              List<SubjectTopBean.DataBean.ItemsBean> itemsBeens) {
+                              List<SubjectTopBean.DataBean.ItemsBean> itemsBeens, ImageView iv_subject_tiptop) {
 
         this.activity = activity;
         this.listBeans = listBeans;
         this.itemsBeens = itemsBeens;
+        this.iv_subject_tiptop = iv_subject_tiptop;
 
     }
 
@@ -142,6 +143,13 @@ public class SubjectListAdapter extends BaseAdapter {
                 convertView.setTag(true);
             }
 
+        }
+
+
+        if (position >= 10) {
+            iv_subject_tiptop.setVisibility(View.VISIBLE);
+        } else {
+            iv_subject_tiptop.setVisibility(View.GONE);
         }
 
 

@@ -12,14 +12,14 @@ public class SubShopBean {
 
     /**
      * rs_code : 1000
-     * data : {"id":9398,"url":"http://ds.lingshi.cccwei.com/api.php?apptype=0&srv=2506&goods_id=9398&cid=10002&uid=0&tms=20150721190147&sig=8c35f5a024148111&wssig=308efe4382a088e0&os_type=3&version=20","collect_status":0,"desc":"这里的零食看了好想吃","title":"[好巴食] 川味山椒味豆腐干95g袋","salestitle":"","xm_say":"","status":0,"guide_type":0,"img":{"img_url":"http://img.lingshi.cccwei.com/lingshi/374/74/4/356614ad461987d266cc2e8df02ad374.jpeg","img_w":640,"img_h":640},"kinds":[{"id":12,"title":"口味","kinds":[{"id":6817,"title":"山椒味","price":{"current":4.2,"prime":7.6},"surplus_num":12}]}],"guide_info":{"open_type":0,"real_url":"","real_id":0},"active_info":{"status":0}}
+     * data : {"id":9398,"url":"http://ds.lingshi.cccwei.com/api.php?apptype=0&srv=2506&goods_id=9398&cid=10002&uid=184164&tms=20150721190147&sig=8c35f5a024148111&wssig=308efe4382a088e0&os_type=3&version=20","collect_status":0,"desc":"这里的零食看了好想吃","title":"[好巴食] 川味山椒味豆腐干95g袋","salestitle":"","xm_say":"","status":0,"guide_type":0,"img":{"img_url":"http://img.lingshi.cccwei.com/lingshi/374/74/4/356614ad461987d266cc2e8df02ad374.jpeg","img_w":640,"img_h":640},"kindss":[{"id":12,"title":"口味","kinds":[{"id":6817,"title":"山椒味","price":{"current":4.2,"prime":7.6},"surplus_num":9}]}],"guide_info":{"open_type":0,"real_url":"","real_id":0},"active_info":{"status":0}}
      * rs_msg : success
      */
 
     private String rs_code;
     /**
      * id : 9398
-     * url : http://ds.lingshi.cccwei.com/api.php?apptype=0&srv=2506&goods_id=9398&cid=10002&uid=0&tms=20150721190147&sig=8c35f5a024148111&wssig=308efe4382a088e0&os_type=3&version=20
+     * url : http://ds.lingshi.cccwei.com/api.php?apptype=0&srv=2506&goods_id=9398&cid=10002&uid=184164&tms=20150721190147&sig=8c35f5a024148111&wssig=308efe4382a088e0&os_type=3&version=20
      * collect_status : 0
      * desc : 这里的零食看了好想吃
      * title : [好巴食] 川味山椒味豆腐干95g袋
@@ -28,7 +28,7 @@ public class SubShopBean {
      * status : 0
      * guide_type : 0
      * img : {"img_url":"http://img.lingshi.cccwei.com/lingshi/374/74/4/356614ad461987d266cc2e8df02ad374.jpeg","img_w":640,"img_h":640}
-     * kinds : [{"id":12,"title":"口味","kinds":[{"id":6817,"title":"山椒味","price":{"current":4.2,"prime":7.6},"surplus_num":12}]}]
+     * kindss : [{"id":12,"title":"口味","kinds":[{"id":6817,"title":"山椒味","price":{"current":4.2,"prime":7.6},"surplus_num":9}]}]
      * guide_info : {"open_type":0,"real_url":"","real_id":0}
      * active_info : {"status":0}
      */
@@ -92,10 +92,10 @@ public class SubShopBean {
         /**
          * id : 12
          * title : 口味
-         * kinds : [{"id":6817,"title":"山椒味","price":{"current":4.2,"prime":7.6},"surplus_num":12}]
+         * kinds : [{"id":6817,"title":"山椒味","price":{"current":4.2,"prime":7.6},"surplus_num":9}]
          */
 
-        private List<KindsBean> kind;
+        private List<KindssBean> kindss;
 
         public int getId() {
             return id;
@@ -193,12 +193,12 @@ public class SubShopBean {
             this.active_info = active_info;
         }
 
-        public List<KindsBean> getKinds() {
-            return kind;
+        public List<KindssBean> getKindss() {
+            return kindss;
         }
 
-        public void setKinds(List<KindsBean> kinds) {
-            this.kind = kinds;
+        public void setKindss(List<KindssBean> kindss) {
+            this.kindss = kindss;
         }
 
         public static class ImgBean {
@@ -273,14 +273,14 @@ public class SubShopBean {
             }
         }
 
-        public static class KindsBean {
+        public static class KindssBean {
             private int id;
             private String title;
             /**
              * id : 6817
              * title : 山椒味
              * price : {"current":4.2,"prime":7.6}
-             * surplus_num : 12
+             * surplus_num : 9
              */
 
             private List<KindsBean> kinds;
@@ -309,7 +309,7 @@ public class SubShopBean {
                 this.kinds = kinds;
             }
 
-            public static class KindBean {
+            public static class KindsBean {
                 private int id;
                 private String title;
                 /**

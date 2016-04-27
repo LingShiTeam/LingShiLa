@@ -29,6 +29,18 @@
 
         </com.handmark.pulltorefresh.library.PullToRefreshListView>
 
+        <ImageView
+            android:id="@+id/iv_subject_tiptop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_top"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="25dp"
+            android:layout_marginRight="25dp"
+            android:visibility="gone"
+            />
+
         <include layout="@layout/subject_loading"
                 />
     </RelativeLayout>

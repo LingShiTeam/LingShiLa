@@ -6,8 +6,12 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.viewpagerindicator.TabPageIndicator;
 
@@ -32,14 +36,20 @@ public class SalePager extends BasePager {
 
     private TabPageIndicator indicator_scale;
     private ViewPager vp_scale;
-    private ImageView iv_scale_back;
-    private ImageView iv_scale_shoppingcar;
+   /* private ImageView iv_scale_back;
+    private ImageView iv_scale_shoppingcar;*/
 
     //vp页面的集合
     private List<ScaleBasePager> detailPagers;
 
     //特卖中lv数据集合
     private List<ScallingBean.DataEntity.ItemsEntity> itemsEntities;
+    private ImageButton ib_left_menu;
+    private ImageView iv_search_back;
+    private EditText et_search;
+    private TextView tv_shopname;
+    private RelativeLayout rl_cart;
+    private TextView tv_shopcount;
 
 
     public SalePager(Activity mActivity) {
@@ -53,11 +63,18 @@ public class SalePager extends BasePager {
 
         indicator_scale = (TabPageIndicator) rootView.findViewById(R.id.indicator_scale);
         vp_scale = (ViewPager) rootView.findViewById(R.id.vp_scale);
-        iv_scale_back = (ImageView) rootView.findViewById(R.id.iv_scale_back);
-        iv_scale_shoppingcar = (ImageView) rootView.findViewById(R.id.iv_scale_shoppingcar);
+       /* iv_scale_back = (ImageView) rootView.findViewById(R.id.iv_scale_back);
+        iv_scale_shoppingcar = (ImageView) rootView.findViewById(R.id.iv_scale_shoppingcar);*/
 
-        iv_scale_back.setOnClickListener(new MyOnclickListener());
-        iv_scale_shoppingcar.setOnClickListener(new MyOnclickListener());
+        ib_left_menu = (ImageButton) rootView.findViewById(R.id.ib_left_menu);
+        iv_search_back = (ImageView) rootView.findViewById(R.id.iv_search_back);
+        et_search = (EditText) rootView.findViewById(R.id.et_search);
+        tv_shopname = (TextView) rootView.findViewById(R.id.tv_shopname);
+        rl_cart = (RelativeLayout) rootView.findViewById(R.id.rl_cart);
+        tv_shopcount = (TextView) rootView.findViewById(R.id.tv_shopcount);
+
+        iv_search_back.setOnClickListener(new MyOnclickListener());
+        rl_cart.setOnClickListener(new MyOnclickListener());
 
         return rootView;
     }
@@ -158,7 +175,7 @@ public class SalePager extends BasePager {
 
             switch (v.getId()) {
 
-                case R.id.iv_scale_back:
+                case R.id.iv_search_back:
 
                     //进入首页
                     MainActivity mainActivity = (MainActivity) mActivity;
@@ -166,7 +183,7 @@ public class SalePager extends BasePager {
                     rg_main.check(R.id.rb_main_home);
                     break;
 
-                case R.id.iv_scale_shoppingcar:
+                case R.id.rl_cart:
 
                     //进入购物车页面
                     Intent intent = new Intent(mActivity, ShoppingCarActivity.class);

@@ -19,6 +19,8 @@
             <include layout="@layout/subject_loading" />
 
         </WebView>
+
+
     </FrameLayout>
 
     <include layout="@layout/sub_cart_bottom"/>

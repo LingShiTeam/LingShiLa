@@ -435,10 +435,9 @@
             android:exported="false"
             android:screenOrientation="behind"></activity>
 
-        <activity android:name=".pager.scale.activity.ShoppingCarActivity" />
-
-            android:screenOrientation="behind"></activity>
+        <activity android:name=".pager.scale.activity.ShoppingCarActivity"
+                android:screenOrientation="behind"></activity>
         <activity android:name=".pager.subject.ui.AllCmmentActivity"></activity>
-    </application>
+   </application>
 
 </manifest>
