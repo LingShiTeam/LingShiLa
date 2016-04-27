@@ -36,15 +36,31 @@ public class Url {
     public static final String SUBJECT_DETAILS = BASE_URL + "/?cid=109&uid=";
     public static final String SUBJECT_DETAILS_END = "&tms=20160423015946&sig=0c93723eb210e544&wssig=56a5c360937774f6&os_type=3&version=20&channel_name=wandoujia&srv=2408&subject_id=";
     /**
-     * 商品列表的商品详情页面
+     * 商品列表的美味详情详情页面的请求地址
      */
-    public static final String SUBJECT_DELICACY_DETAILS = BASE_URL + "/?cid=109&uid=0&tms=20160422075904&sig=db983a1c7248e8b9&wssig=85d2a8009f1972e6&os_type=3&version=20&channel_name=wandoujia&srv=2505&goods_id=";
+    public static final String SUBJECT_DELICACY_DETAILS_START = BASE_URL + "/?cid=109&uid=";
+    public static final String SUBJECT_DELICACY_DETAILS_END = "&tms=20160422075904&sig=db983a1c7248e8b9&wssig=85d2a8009f1972e6&os_type=3&version=20&channel_name=wandoujia&srv=2505&goods_id=";
     /**
      * 收藏按钮 的地址(包括的收藏状态)
      */
     public static final String SUBJECT_COLLECTOR_STATRT = BASE_URL + "/?cid=109&uid=";
     public static final String SUBJECT_COLLECTOR_MIDDLE = "&tms=20160423034018&sig=fee60a16fb4deb75&wssig=5e853a63aabf465f&os_type=3&version=20&channel_name=wandoujia&srv=2805&fav_id=";
     public static final String SUBJECT_COLLECTOR_END = "&type=1&opt=";
+
+
+    /**
+     * 添加购物车的请求网址 (专题详情)
+     */
+    public static final String SUBJECT_ADDCART_START = BASE_URL + "/?cid=109&uid=";
+    public static final String SUBJECT_ADDCART_MIDDLE1 = "&tms=20160427083323&sig=d213f498d76b90ea&wssig=dd161666f74972ce&os_type=3&version=20&channel_name=wandoujia&srv=2601&goods_id=";
+    public static final String SUBJECT_ADDCART_MIDDLE2 = "&kind_id=";
+    public static final String SUBJECT_ADDCART_MIDDLE3 = "&subkind_id=";
+    public static final String SUBJECT_ADDCART_END = "&num=";
+
+    /**
+     * 添加到购物车
+     */
+
 
 
 }

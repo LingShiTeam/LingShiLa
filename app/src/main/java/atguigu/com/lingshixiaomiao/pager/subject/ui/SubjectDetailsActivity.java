@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,7 @@ import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.StringUtils;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.CollectStatusBean;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubDetailsBean;
 import atguigu.com.lingshixiaomiao.pager.subject.utils.Url;
@@ -59,9 +61,9 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
     private String subDetailsUrl;
 
     /**
-     * 需要请求数据的id
+     * 需要请求数据的id 商品的Id
      */
-    private String id;
+    private String shopId;
     /**
      * 专题详情页面的尸体类
      */
@@ -114,6 +116,8 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
             }
         });
 
+
+        //
     }
 
 
@@ -132,9 +136,9 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
         if (LoginUtils.getInstance().isLogin()) {//当判断为登录状态时候 需要根据uid 来请求数据
             loginBean = (LoginBean) LoginUtils.getInstance().getData();
             uid = loginBean.getData().getUid();
-            subDetailsUrl = Url.SUBJECT_DETAILS + uid + Url.SUBJECT_DETAILS_END + id;
+            subDetailsUrl = Url.SUBJECT_DETAILS + uid + Url.SUBJECT_DETAILS_END + shopId;
         } else {//当前为未登录状态时 不使用uid 登录
-            subDetailsUrl = Url.SUBJECT_DETAILS + 0 + Url.SUBJECT_DETAILS_END + id;
+            subDetailsUrl = Url.SUBJECT_DETAILS + 0 + Url.SUBJECT_DETAILS_END + shopId;
         }
         //联网请求数据
         new JsonUtils().loadData(subDetailsUrl, SubDetailsBean.class);
@@ -148,8 +152,6 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
         // Log.d("TAG", "subject 的单个商品的尸体类 ");
         getWebDataFromNet();
     }
-
-//
 
     /**
      * 联网获取webview 中的数据
@@ -191,6 +193,7 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
                             showisLogin();
                             return;
                         }
+
                         //获取登录状态
                         int collect_status = subDetailsBean.getData().getCollect_status();
                         //联网传递数据
@@ -198,12 +201,111 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
                     }
                 });
             }
+
+            /**
+             * 分享 点击事件
+             */
+            @JavascriptInterface
+            public void clickShare(){
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //调用分享的dialog
+                        //  ShareUtils.showShare(SubjectDetailsActivity.this);
+                        //改变分享的增加
+                        changeShareNum();
+                    }
+                });
+            }
+
+            /**
+             * 详情页面的itmes 的点击实事件
+             * @param id
+             */
+            @JavascriptInterface
+            public void clickItem(final int id){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //携带一个商品的的id 传递到DdetailsActivity
+                        Intent intent = new Intent(SubjectDetailsActivity.this,DelicacyDetailsActivity.class);
+                        intent.putExtra("DelicacyDetails",id + "");
+                        startActivity(intent);
+                    }
+                });
+            }
+
+
+            /**
+             * 添加到购物车
+             */
+            @JavascriptInterface
+            public void addToCartOnHtml(int id,int king_id,String subKinds,int good_id,int num){
+
+                Log.d("TAG", "id:" + id);
+                Log.d("TAG", "king_id:" + king_id);
+                Log.d("TAG", subKinds);
+                Log.d("TAG", "good_id:" + good_id);
+                Log.d("TAG", "num:" + num);
+
+                String addCartUrl = Url.SUBJECT_ADDCART_START + uid + Url.SUBJECT_ADDCART_MIDDLE1 +
+                        id + Url.SUBJECT_ADDCART_MIDDLE2 + king_id + Url.SUBJECT_ADDCART_MIDDLE3 + subKinds +
+                        Url.SUBJECT_ADDCART_END + num;
+
+                getDataCartFromNet(addCartUrl);
+
+
+            }
         };
 
-
-        return insertObj;
+       return insertObj;
     }
 
+    /**
+     *
+     * @param addCartUrl 购物车请求
+     */
+    private void getDataCartFromNet(String addCartUrl) {
+        RequestParams params = new RequestParams(addCartUrl);
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Toast.makeText(SubjectDetailsActivity.this, "已将添加到购物车", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+
+    }
+
+    /**
+     * 设置分享的数目的增加
+     */
+    private void changeShareNum() {
+        //获取当前的实体类中分享的数据
+        int share_num = subDetailsBean.getData().getShare_num() + 1;
+        //本地的shqre_num 的变化
+        subDetailsBean.getData().setShare_num(share_num);
+        wv_sub_details.loadUrl("javascript: changeShareNum('"+ share_num + "')");
+        //网络请求的的变化
+        //getDataChangeShare();
+
+    }
     /**
      * 是否登录的自定义对话框
      */
@@ -252,11 +354,11 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
     private void getDataCollectFormNet(final int collect_status) {
         String collStaUrl = null;
         if (0 == collect_status) {//没有收藏 可以收藏
-            collStaUrl = Url.SUBJECT_COLLECTOR_STATRT + uid + Url.SUBJECT_COLLECTOR_MIDDLE + id + Url.SUBJECT_COLLECTOR_END + 0;
+            collStaUrl = Url.SUBJECT_COLLECTOR_STATRT + uid + Url.SUBJECT_COLLECTOR_MIDDLE + shopId + Url.SUBJECT_COLLECTOR_END + 0;
             Log.d("TAG", "登录后的id " + uid);
 
         } else {//已经收藏 可以取消收藏
-            collStaUrl = Url.SUBJECT_COLLECTOR_STATRT + uid + Url.SUBJECT_COLLECTOR_MIDDLE + id + Url.SUBJECT_COLLECTOR_END + 1;
+            collStaUrl = Url.SUBJECT_COLLECTOR_STATRT + uid + Url.SUBJECT_COLLECTOR_MIDDLE + shopId + Url.SUBJECT_COLLECTOR_END + 1;
             Log.d("TAG", "登录后的id " + uid);
 
         }
@@ -350,7 +452,7 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
          * ""为该对象起别名 对应html中的 contact
          */
         wv_sub_details.addJavascriptInterface(getHtmlObject(), "bridge");
-        id = getIntent().getStringExtra("detailsUrl");
+        shopId = getIntent().getStringExtra("detailsUrl");
 
     }
 
@@ -377,7 +479,9 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //反注册
         unRegisterEventBus();
+        finish();
     }
 
     /**
@@ -390,8 +494,7 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("TAG", "111111111111111111");
-       // new JsonUtils().loadData(subDetailsUrl, SubDetailsBean.class);
+        //重新加载数据
         initData();
     }
 }
