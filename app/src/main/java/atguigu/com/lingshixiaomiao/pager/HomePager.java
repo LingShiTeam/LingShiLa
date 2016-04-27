@@ -42,7 +42,6 @@ import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
 import atguigu.com.lingshixiaomiao.pager.home.activity.HomeHeader2Activity;
 import atguigu.com.lingshixiaomiao.pager.home.activity.LeftMenuItemActivity;
-import atguigu.com.lingshixiaomiao.pager.home.activity.PayInfoActivity;
 import atguigu.com.lingshixiaomiao.pager.home.activity.SearchActivity;
 import atguigu.com.lingshixiaomiao.pager.home.activity.ShoppingListActivity;
 import atguigu.com.lingshixiaomiao.pager.home.adapter.LeftMenuAdapter;
@@ -232,7 +231,6 @@ public class HomePager extends BasePager implements View.OnClickListener {
                 break;
             case R.id.btn_lover:
                 intent = new Intent(mActivity, ShoppingListActivity.class);
-                //String url_lover = Url.SHOPPING_CHOCOLATE_TOP + "pg_cur=1" + Url.SHOPPING_CHOCOLATE_BOTTOM;
                 intent.putExtra("shoppinglist", Url.LOVERURL);
                 mActivity.startActivity(intent);
                 break;
@@ -252,7 +250,8 @@ public class HomePager extends BasePager implements View.OnClickListener {
                 mActivity.startActivity(intent);
                 break;
             case R.id.rl_cart: // 进入购物车(模拟进入支付界面)
-                intent = new Intent(mActivity, PayInfoActivity.class);
+                intent = new Intent(mActivity, MineContentActivity.class);
+                intent.putExtra("pager", Constants.MINE_CART_PAGER);
                 mActivity.startActivity(intent);
                 break;
             default:
@@ -651,6 +650,11 @@ public class HomePager extends BasePager implements View.OnClickListener {
                         intent.putExtra("pager", Constants.);
                         mActivity.startActivity(intent);
                         dl_menu.closeDrawers(); */
+
+                        Intent intent = new Intent(mActivity, MineContentActivity.class);
+                        intent.putExtra("pager", Constants.MINE_CART_PAGER);
+                        mActivity.startActivity(intent);
+                        dl_menu.closeDrawers();
                     }
                 });
 
@@ -726,6 +730,7 @@ public class HomePager extends BasePager implements View.OnClickListener {
     @Subscribe
     public void onEventMainThread(CartUtils cartUtils) {
         int goodsNum =  cartUtils.getGoodsNum();
+        Log.e("TAG", "goodsNum = " + goodsNum);
         if (goodsNum > 0) {
             tv_shopcount.setVisibility(View.VISIBLE);
             tv_shopcount.setText(goodsNum + "");

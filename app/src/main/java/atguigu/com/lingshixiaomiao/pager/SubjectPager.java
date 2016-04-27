@@ -7,9 +7,14 @@ import android.graphics.drawable.AnimationDrawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -27,8 +32,12 @@ import org.xutils.x;
 import java.util.List;
 
 import atguigu.com.lingshixiaomiao.LogUtils;
+import atguigu.com.lingshixiaomiao.MainActivity;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.base.BasePager;
+import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.CartUtils;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.scale.utils.CacheUtil;
 import atguigu.com.lingshixiaomiao.pager.subject.adapter.SubjectListAdapter;
 import atguigu.com.lingshixiaomiao.pager.subject.bean.SubjectListBean;
@@ -44,7 +53,7 @@ import atguigu.com.lingshixiaomiao.pager.subject.utils.Url;
  * Created by lanmang on 2016/4/8.
  * 专题页面
  */
-public class SubjectPager extends BasePager {
+public class SubjectPager extends BasePager implements View.OnClickListener {
 
 
     @ViewInject(R.id.listview_subject)
@@ -98,6 +107,12 @@ public class SubjectPager extends BasePager {
 
 
     private String pagerLastId;
+    private ImageButton ib_left_menu;
+    private ImageView iv_search_back;
+    private EditText et_search;
+    private TextView tv_shopname;
+    private RelativeLayout rl_cart;
+    private TextView tv_shopcount;
 
     /**
      * 构造方法
@@ -122,8 +137,29 @@ public class SubjectPager extends BasePager {
 
         registerEventBus();
 
+        findView(view);
 
         return view;
+
+    }
+
+    private void findView(View view) {
+        ib_left_menu = (ImageButton) view.findViewById(R.id.ib_left_menu);
+        iv_search_back = (ImageView) view.findViewById(R.id.iv_search_back);
+        et_search = (EditText) view.findViewById(R.id.et_search);
+        tv_shopname = (TextView) view.findViewById(R.id.tv_shopname);
+        rl_cart = (RelativeLayout) view.findViewById(R.id.rl_cart);
+        tv_shopcount = (TextView) view.findViewById(R.id.tv_shopcount);
+
+        ib_left_menu.setVisibility(View.GONE);
+        iv_search_back.setVisibility(View.VISIBLE);
+        et_search.setVisibility(View.GONE);
+        tv_shopname.setVisibility(View.VISIBLE);
+
+        tv_shopname.setText("专题");
+
+        iv_search_back.setOnClickListener(this);
+        rl_cart.setOnClickListener(this);
 
     }
 
@@ -173,6 +209,24 @@ public class SubjectPager extends BasePager {
 
         //设置listview的点击监听事件
        listView.setOnItemClickListener(new MyOnItemClickListener());
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_search_back:
+                //进入首页
+                MainActivity mainActivity = (MainActivity) mActivity;
+                RadioGroup rg_main = (RadioGroup) mainActivity.findViewById(R.id.rg_main);
+                rg_main.check(R.id.rb_main_home);
+                break;
+            case R.id.rl_cart:
+                //进入购物车页面
+                Intent intent = new Intent(mActivity, MineContentActivity.class);
+                intent.putExtra("pager", Constants.MINE_CART_PAGER);
+                mActivity.startActivity(intent);
+                break;
+        }
     }
 
 
@@ -439,5 +493,20 @@ public class SubjectPager extends BasePager {
         }
     }
 
+    /**
+     * 获取购物车商品数量
+     *
+     * @param cartUtils
+     */
+    @Subscribe
+    public void onEventMainThread(CartUtils cartUtils) {
+        int goodsNum = cartUtils.getGoodsNum();
+        if (goodsNum > 0) {
+            tv_shopcount.setVisibility(View.VISIBLE);
+            tv_shopcount.setText(goodsNum + "");
+        } else {
+            tv_shopcount.setVisibility(View.INVISIBLE);
+        }
+    }
 
 }

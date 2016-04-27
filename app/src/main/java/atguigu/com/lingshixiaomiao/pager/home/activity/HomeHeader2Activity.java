@@ -24,6 +24,7 @@ import atguigu.com.lingshixiaomiao.pager.home.utils.DataUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.home.utils.Url;
 import atguigu.com.lingshixiaomiao.pager.home.view.HeaderGridView;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.CartUtils;
 import atguigu.com.lingshixiaomiao.pager.scale.activity.SnackInfomationActivity;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
@@ -198,6 +199,13 @@ public class HomeHeader2Activity extends SwipeBackActivity implements View.OnCli
         et_search.setVisibility(View.GONE);
         tv_shopname.setVisibility(View.VISIBLE);
         tv_shopname.setText("坚果大本营");
+
+        if(CartUtils.getInstance().getGoodsNum() != 0) {
+            tv_shopcount.setVisibility(View.VISIBLE);
+            tv_shopcount.setText(CartUtils.getInstance().getGoodsNum() + "");
+        } else {
+            tv_shopcount.setVisibility(View.GONE);
+        }
     }
 
     /**

@@ -42,8 +42,8 @@
             android:gravity="center"
             android:paddingLeft="3.0dip"
             android:paddingRight="3.0dip"
-            android:text="\ 99"
             android:textColor="@color/c6"
+            android:visibility="gone"
             android:textSize="@dimen/s6"/>
     </RelativeLayout>
 

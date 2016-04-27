@@ -15,8 +15,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +34,7 @@ import org.xutils.x;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.mine.activity.MineContentActivity;
 import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.CartUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.Constants;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.JsonUtils;
 import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
@@ -41,10 +45,6 @@ import atguigu.com.lingshixiaomiao.pager.subject.utils.Url;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 public class SubjectDetailsActivity extends SwipeBackActivity {
-
-    private ImageView iv_back_sub;
-    private TextView tv_subject_title;
-    private ImageView iv_cart;
 
     private WebView wv_sub_details;
     private LinearLayout ll_subject_loading;
@@ -81,6 +81,12 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
      * 登录账号的id
      */
     private String uid;
+    private ImageButton ib_left_menu;
+    private ImageView iv_search_back;
+    private EditText et_search;
+    private TextView tv_shopname;
+    private RelativeLayout rl_cart;
+    private TextView tv_shopcount;
 
 
     /**
@@ -103,7 +109,6 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
      * 设置各种监听
      */
     private void setListener() {
-        iv_back_sub.setOnClickListener(new MyOnClickListener());
         wv_sub_details.setWebViewClient(new WebViewClient() {
 
             @Override
@@ -116,8 +121,6 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
             }
         });
 
-
-        //
     }
 
 
@@ -125,7 +128,12 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
         //返回专题页面
         @Override
         public void onClick(View v) {
-            finish();
+            switch (v.getId()) {
+                case R.id.iv_search_back:
+                    finish();
+                    break;
+            }
+
         }
     }
 
@@ -193,7 +201,6 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
                             showisLogin();
                             return;
                         }
-
                         //获取登录状态
                         int collect_status = subDetailsBean.getData().getCollect_status();
                         //联网传递数据
@@ -425,9 +432,28 @@ public class SubjectDetailsActivity extends SwipeBackActivity {
     private void initView() {
 
 
-        iv_back_sub = (ImageView) findViewById(R.id.iv_back_sub);
-        tv_subject_title = (TextView) findViewById(R.id.tv_subject_title);
-        iv_cart = (ImageView) findViewById(R.id.iv_cart);
+        ib_left_menu = (ImageButton) findViewById(R.id.ib_left_menu);
+        iv_search_back = (ImageView) findViewById(R.id.iv_search_back);
+        et_search = (EditText) findViewById(R.id.et_search);
+        tv_shopname = (TextView) findViewById(R.id.tv_shopname);
+        rl_cart = (RelativeLayout) findViewById(R.id.rl_cart);
+        tv_shopcount = (TextView) findViewById(R.id.tv_shopcount);
+
+        ib_left_menu.setVisibility(View.GONE);
+        iv_search_back.setVisibility(View.VISIBLE);
+        et_search.setVisibility(View.GONE);
+        tv_shopname.setVisibility(View.VISIBLE);
+
+        tv_shopname.setText("专题详情");
+        if(CartUtils.getInstance().getGoodsNum() != 0) {
+            tv_shopcount.setVisibility(View.VISIBLE);
+            tv_shopcount.setText(CartUtils.getInstance().getGoodsNum() + "");
+        } else {
+            tv_shopcount.setVisibility(View.GONE);
+        }
+
+        iv_search_back.setOnClickListener(new MyOnClickListener());
+        rl_cart.setOnClickListener(new MyOnClickListener());
 
         wv_sub_details = (WebView) findViewById(R.id.wv_sub_details);
         ll_subject_loading = (LinearLayout) findViewById(R.id.ll_subject_loading);

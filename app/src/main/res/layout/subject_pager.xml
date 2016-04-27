@@ -5,7 +5,13 @@
     android:orientation="vertical">
 
 
-    <include layout="@layout/subject_pager_title"/>
+   <!-- <include layout="@layout/subject_pager_title"/>-->
+    <include layout="@layout/home_title"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/darker_gray" />
     <!--中间部分的布局-->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,7 +23,7 @@
             android:id="@+id/listview_subject"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            ptr:ptrMode = "both"
+            ptr:ptrMode = ""
             ptr:ptrDrawable = "@drawable/ic_page_loading"
             >
 

@@ -5,7 +5,8 @@
     android:orientation="vertical">
 
 
-    <include layout="@layout/subject_top_tatils" />
+   <!-- <include layout="@layout/subject_top_tatils" />-->
+    <include layout="@layout/home_title" />
 
     <FrameLayout
         android:layout_width="match_parent"

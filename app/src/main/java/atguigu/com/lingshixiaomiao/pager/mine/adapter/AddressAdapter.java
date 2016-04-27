@@ -57,9 +57,9 @@ public class AddressAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         AddressBean.DataEntity.ItemsEntity item = items.get(position);
-        ViewHolder h = (ViewHolder) holder;
+        final ViewHolder h = (ViewHolder) holder;
 
         h.tv_mine_address_name.setText(item.getName());
         h.tv_mine_address_number.setText(item.getPhone());
@@ -71,11 +71,29 @@ public class AddressAdapter extends RecyclerView.Adapter {
             h.tv_mine_address_default.setSelected(false);
         }
         h.tv_mine_address_name.setText(item.getName());
+        h.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(recycleItemClickListener != null) {
+                    recycleItemClickListener.OnClick(h.view,position);
+                }
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    public interface RecycleItemClickListener{
+        public void OnClick(View view,int position);
+    }
+
+    private RecycleItemClickListener recycleItemClickListener;
+
+    public void setRecycleItemClickListener(RecycleItemClickListener recycleItemClickListener) {
+        this.recycleItemClickListener = recycleItemClickListener;
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -86,9 +104,11 @@ public class AddressAdapter extends RecyclerView.Adapter {
         private TextView tv_mine_address_default;
         private TextView tv_mine_address_delete;
         private TextView tv_mine_address_edit;
+        private View view;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            view = itemView;
             tv_mine_address_name = (TextView) itemView.findViewById(R.id.tv_mine_address_name);
             tv_mine_address_number = (TextView) itemView.findViewById(R.id.tv_mine_address_number);
             tv_mine_address = (TextView) itemView.findViewById(R.id.tv_mine_address);
@@ -99,6 +119,7 @@ public class AddressAdapter extends RecyclerView.Adapter {
             tv_mine_address_default.setOnClickListener(this);
             tv_mine_address_delete.setOnClickListener(this);
             tv_mine_address_edit.setOnClickListener(this);
+
         }
 
         @Override
@@ -106,7 +127,6 @@ public class AddressAdapter extends RecyclerView.Adapter {
             switch (v.getId()) {
                 case R.id.tv_mine_address_default:
                     setDefaultAddress(getPosition());
-
                     break;
                 case R.id.tv_mine_address_delete:
                     showDeleteDialog();

@@ -27,6 +27,8 @@ import java.util.List;
 import atguigu.com.lingshixiaomiao.R;
 import atguigu.com.lingshixiaomiao.pager.home.utils.NetWorkUtils;
 import atguigu.com.lingshixiaomiao.pager.home.view.RefreshLayout;
+import atguigu.com.lingshixiaomiao.pager.mine.bean.LoginBean;
+import atguigu.com.lingshixiaomiao.pager.mine.utils.LoginUtils;
 import atguigu.com.lingshixiaomiao.pager.scale.activity.SnackInfomationActivity;
 import atguigu.com.lingshixiaomiao.pager.scale.base.ScaleBasePager;
 import atguigu.com.lingshixiaomiao.pager.scale.bean.ScaleBeginBean;
@@ -55,6 +57,7 @@ public class ScaleBeginPager extends ScaleBasePager {
     private List<ScaleBeginBean.DataEntity.ItemsEntity> itemsEntities;
 
     private MyLvAdapter adapter;
+    private Intent intent;
 
     public ScaleBeginPager(Activity activity) {
         super(activity);
@@ -62,6 +65,7 @@ public class ScaleBeginPager extends ScaleBasePager {
 
     @Override
     public View initView() {
+
         View rootView = View.inflate(mActivity, R.layout.scale_begin_pager, null);
         lv_scale_begin = (ListView) rootView.findViewById(R.id.lv_scale_begin);
         rl_scale_begin = (RefreshLayout) rootView.findViewById(R.id.rl_scale_begin);
@@ -296,11 +300,83 @@ public class ScaleBeginPager extends ScaleBasePager {
     private class MyOnItemClickListener implements android.widget.AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent(mActivity, SnackInfomationActivity.class);
+
+            intent = new Intent(mActivity, SnackInfomationActivity.class);
             intent.putExtra("snack_id", itemsEntities.get(position).getId());
             intent.putExtra("image_url", itemsEntities.get(position).getImg().getImg_url());
             intent.putExtra("snack_title", itemsEntities.get(position).getTitle());
-            mActivity.startActivity(intent);
+
+            //携带购物按钮上传所需的数据
+            goToCarForDetail(position);
         }
+    }
+
+    /**
+     * 得到详情页面添加购物车的请求信息
+     *
+     * @param position
+     * @return
+     */
+    private void goToCarForDetail(int position) {
+
+        //如果未登录
+        if (!LoginUtils.getInstance().isLogin()) {
+
+            Toast.makeText(mActivity, "请登录", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+
+        //获取物品id
+        int good_id = itemsEntities.get(position).getId();
+
+        //获取用户id
+        LoginBean loginBean = (LoginBean) LoginUtils.getInstance().getData();
+        String uid = loginBean.getData().getUid();
+
+        //得到请求地址
+        String url = Url.GOTOCAR_0 + uid + Url.GOTOCAR_1 + good_id;
+
+        Log.e("TAG", "goToCarForDetail()==========url:" + url);
+
+        //get请求上传数据
+        RequestParams requestParams = new RequestParams(url);
+
+        x.http().get(requestParams, new Callback.CommonCallback<String>() {
+
+            @Override
+            public void onSuccess(String result) {
+
+                Log.e("TAG", "=================onSuccess(): " + result);
+
+                String s = result.replaceFirst("kinds", "kindss");
+
+                intent.putExtra("uploadDataForDetail", s);
+
+
+                Log.e("TAG", "=============intent.putExtra(): " + result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+                Log.e("TAG", "onError()");
+                Toast.makeText(mActivity, "添加购物车失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+                Log.e("TAG", "onCancelled()");
+                Toast.makeText(mActivity, "添加购物车失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinished() {
+
+                Log.e("TAG", "onFinished()");
+                mActivity.startActivity(intent);
+            }
+        });
     }
 }
